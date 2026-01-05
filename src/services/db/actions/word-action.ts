@@ -8,6 +8,10 @@ class WordAction extends BaseAction {
     super(STORES.WORDS)
   }
 
+  async getAll<T = FullWord>(): Promise<T[]> {
+    return super.getAll<T>()
+  }
+
   async addWord(word: Word): Promise<IDBValidKey> {
     return this.add({
       id: crypto.randomUUID(),

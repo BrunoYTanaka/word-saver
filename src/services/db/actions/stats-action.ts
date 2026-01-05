@@ -31,11 +31,14 @@ class StatsAction {
     )
 
     // Words by difficulty
-    const difficultyStats = words.reduce((acc, word) => {
-      const difficulty = word.difficulty || 'medium'
-      acc[difficulty] = (acc[difficulty] || 0) + 1
-      return acc
-    }, {})
+    const difficultyStats = words.reduce(
+      (acc, word) => {
+        const difficulty = word.difficulty || 'medium'
+        acc[difficulty] = (acc[difficulty] || 0) + 1
+        return acc
+      },
+      {} as Record<string, number>
+    )
 
     // Recent activity (last 7 days)
     const weekAgo = new Date()

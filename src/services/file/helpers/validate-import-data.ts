@@ -1,13 +1,28 @@
-export function validateImportData(data) {
-  const errors = [];
-  let isValid = true;
+import { Settings } from '../../../types/Settings'
+import { FullAlert } from '../../../types/Alert'
+import { FullWord } from '../../../types/Word'
+import { FullContext } from '../../../types/Context'
+
+interface Data {
+  words?: FullWord[]
+  contexts?: FullContext[]
+  alerts?: FullAlert[]
+  settings?: Settings
+}
+
+export function validateImportData(data: Data): {
+  isValid: boolean
+  errors: string[]
+} {
+  const errors: string[] = []
+  let isValid = true
 
   // Check if data is an object
-  if (!data || typeof data !== "object") {
+  if (!data || typeof data !== 'object') {
     return {
       isValid: false,
-      errors: ["Dados devem ser um objeto JSON válido"],
-    };
+      errors: ['Dados devem ser um objeto JSON válido']
+    }
   }
 
   // Validate words structure
@@ -18,10 +33,10 @@ export function validateImportData(data) {
           `Palavra ${
             index + 1
           }: campos obrigatórios ausentes (id, word, definition)`
-        );
-        isValid = false;
+        )
+        isValid = false
       }
-    });
+    })
   }
 
   // Validate contexts structure
@@ -30,10 +45,10 @@ export function validateImportData(data) {
       if (!context.id || !context.name) {
         errors.push(
           `Contexto ${index + 1}: campos obrigatórios ausentes (id, name)`
-        );
-        isValid = false;
+        )
+        isValid = false
       }
-    });
+    })
   }
 
   // Validate alerts structure
@@ -44,11 +59,11 @@ export function validateImportData(data) {
           `Alerta ${
             index + 1
           }: campos obrigatórios ausentes (id, frequency, time)`
-        );
-        isValid = false;
+        )
+        isValid = false
       }
-    });
+    })
   }
 
-  return { isValid, errors };
+  return { isValid, errors }
 }

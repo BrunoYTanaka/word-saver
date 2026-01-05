@@ -1,5 +1,3 @@
-import { Settings } from 'http2'
-import { FullAlert } from '../../../types/Alert'
 import { FullContext } from '../../../types/Context'
 import { FullWord } from '../../../types/Word'
 import { DB_VERSION } from '../config/database'
@@ -12,10 +10,10 @@ import WordService from './word-action'
 class ExportImportAction {
   async exportData() {
     const data = {
-      words: await WordService.getAll<FullWord>(),
-      contexts: await ContextService.getAll<FullContext>(),
-      alerts: await AlertService.getAll<FullAlert>(),
-      settings: await SettingService.getAll<Settings>(),
+      words: await WordService.getAll(),
+      contexts: await ContextService.getAll(),
+      alerts: await AlertService.getAll(),
+      settings: await SettingService.getSettings(),
       exportedAt: new Date().toISOString(),
       version: DB_VERSION
     }

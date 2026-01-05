@@ -8,6 +8,10 @@ class AlertAction extends BaseAction {
     super(STORES.ALERTS)
   }
 
+  async getAll<T = FullAlert>(): Promise<T[]> {
+    return super.getAll<T>()
+  }
+
   async addAlert(alert: Alert): Promise<IDBValidKey> {
     return this.add({
       id: crypto.randomUUID(),

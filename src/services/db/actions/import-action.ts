@@ -4,18 +4,20 @@ import { FullWord } from '../../../types/Word'
 import { STORES } from '../config/database'
 import database from '../core/database'
 
-interface ImportData {
-  data: {
-    words?: FullWord[]
-    contexts?: FullContext[]
-    alerts?: FullAlert[]
-    settings?: { [key: string]: string }[]
-  }
-  mode: 'merge' | 'replace'
+interface Data {
+  words?: FullWord[]
+  contexts?: FullContext[]
+  alerts?: FullAlert[]
+  settings?: { [key: string]: string }[]
 }
 
+type Mode = 'merge' | 'replace'
+
 class ExportImportAction {
-  async importData({ data, mode = 'merge' }: ImportData): Promise<{
+  async importData(
+    data: Data,
+    mode: Mode = 'merge'
+  ): Promise<{
     success: boolean
     imported: number
   }> {
