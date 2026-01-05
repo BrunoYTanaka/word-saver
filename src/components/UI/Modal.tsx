@@ -1,0 +1,167 @@
+import { useEffect, useRef } from 'react'
+import { X } from 'lucide-react'
+import Button from './Button'
+
+const Modal = ({
+  isOpen = false,
+  onClose,
+  title = '',
+  size = 'md',
+  children,
+  footer = null,
+  closeOnOverlayClick = true,
+  closeOnEscape = true,
+  showCloseButton = true,
+  className = ''
+}) => {
+  const modalRef = useRef(null)
+  const overlayRef = useRef(null)
+
+  // Size classes
+  const sizeClasses = {
+    sm: 'max-w-md',
+    md: 'max-w-lg',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+    full: 'max-w-full mx-4'
+  }
+
+  // Handle escape key
+  useEffect(() => {
+    if (!isOpen || !closeOnEscape) return
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen, closeOnEscape, onClose])
+
+  // Handle body scroll lock
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
+
+  // Focus management
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      // Focus the modal when it opens
+      modalRef.current.focus()
+    }
+  }, [isOpen])
+
+  // Handle overlay click
+  const handleOverlayClick = (event) => {
+    if (closeOnOverlayClick && event.target === overlayRef.current) {
+      onClose()
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Overlay */}
+      <div
+        ref={overlayRef}
+        className="animate-fade-in fixed inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={handleOverlayClick}
+        aria-hidden="true"
+      />
+
+      {/* Modal */}
+      <div
+        ref={modalRef}
+        className={`
+          relative w-full ${sizeClasses[size]} animate-slide-up max-h-[90vh] overflow-hidden
+          rounded-lg bg-white shadow-xl focus:outline-none
+          dark:bg-gray-800 ${className}
+        `}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={title ? 'modal-title' : undefined}
+        tabIndex={-1}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
+          {title && (
+            <h2
+              id="modal-title"
+              className="text-lg font-semibold text-gray-900 dark:text-gray-100"
+            >
+              {title}
+            </h2>
+          )}
+
+          {showCloseButton && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              icon={<X />}
+              className="ml-auto"
+              aria-label="Fechar modal"
+            />
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="max-h-[calc(90vh-140px)] overflow-y-auto p-6">
+          {children}
+        </div>
+
+        {/* Footer */}
+        {footer && (
+          <div className="dark:bg-gray-750 flex items-center justify-end gap-3 border-t border-gray-200 bg-gray-50 p-6 dark:border-gray-700">
+            {footer}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Preset modal footers
+Modal.Footer = {
+  // Cancel/Confirm footer
+  Actions: ({
+    onCancel,
+    onConfirm,
+    cancelText = 'Cancelar',
+    confirmText = 'Confirmar',
+    confirmVariant = 'primary',
+    loading = false
+  }) => (
+    <>
+      <Button variant="ghost" onClick={onCancel} disabled={loading}>
+        {cancelText}
+      </Button>
+      <Button variant={confirmVariant} onClick={onConfirm} loading={loading}>
+        {confirmText}
+      </Button>
+    </>
+  ),
+
+  // Single action footer
+  Single: ({ onAction, text = 'OK', variant = 'primary', loading = false }) => (
+    <Button variant={variant} onClick={onAction} loading={loading}>
+      {text}
+    </Button>
+  ),
+
+  // Custom footer with multiple actions
+  Custom: ({ children }) => children
+}
+
+export default Modal
