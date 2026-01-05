@@ -13,6 +13,10 @@ class ContextAction extends BaseAction {
     return super.getAll<T>()
   }
 
+  async get<T = FullContext>(id: string): Promise<T> {
+    return super.get<T>(id)
+  }
+
   async addContext(context: Context): Promise<IDBValidKey> {
     return this.add({
       id: crypto.randomUUID(),
