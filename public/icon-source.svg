@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f4f8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" stroke="#4c51bf" stroke-width="4"/>
+
+  <!-- Book/Document icon representing word saving -->
+  <g fill="url(#iconGradient)">
+    <!-- Book base -->
+    <rect x="150" y="140" width="212" height="280" rx="12" ry="12" fill="url(#iconGradient)" stroke="#4c51bf" stroke-width="2"/>
+
+    <!-- Book spine -->
+    <rect x="150" y="140" width="24" height="280" rx="12" ry="12" fill="#4c51bf"/>
+
+    <!-- Pages lines -->
+    <line x1="190" y1="180" x2="320" y2="180" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+    <line x1="190" y1="210" x2="300" y2="210" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+    <line x1="190" y1="240" x2="340" y2="240" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+    <line x1="190" y1="270" x2="280" y2="270" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Word/Vocabulary symbol - stylized "W" -->
+    <text x="256" y="350" text-anchor="middle" fill="#4c51bf" font-family="Arial, sans-serif" font-size="80" font-weight="bold">W</text>
+
+    <!-- Bookmark -->
+    <path d="M320 140 L340 140 L340 200 L330 190 L320 200 Z" fill="#f093fb"/>
+  </g>
+
+  <!-- Shine effect -->
+  <ellipse cx="200" cy="180" rx="30" ry="15" fill="rgba(255,255,255,0.3)" transform="rotate(-30 200 180)"/>
+</svg>

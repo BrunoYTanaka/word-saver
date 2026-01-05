@@ -2,7 +2,7 @@ import { dbService } from '../db'
 import type { IAlertScheduler, Alert, INotificationService } from './types'
 
 export class AlertScheduler implements IAlertScheduler {
-  private scheduledAlerts: Map<string, NodeJS.Timeout> = new Map()
+  private scheduledAlerts: Map<string, number> = new Map()
   private notificationService: INotificationService
 
   constructor(notificationService: INotificationService) {

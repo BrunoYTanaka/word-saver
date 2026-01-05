@@ -98,7 +98,7 @@ function Table({ data, columns }: TableProps) {
 
   return (
     <>
-      <div className="relative flex size-full flex-col overflow-scroll rounded-lg bg-card bg-clip-border shadow-md dark:border-border">
+      <div className="relative flex size-full flex-col overflow-auto rounded-lg bg-card bg-clip-border shadow-md dark:border-border">
         <table className="w-full min-w-max table-auto border-collapse text-left">
           <thead>
             <tr>

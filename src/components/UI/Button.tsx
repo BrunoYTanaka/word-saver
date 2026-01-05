@@ -79,13 +79,13 @@ function Button({
   const iconSize = iconSizes[size] || iconSizes['md']
 
   const buttonClasses = cn(
-    className,
-    'inline-flex items-center justify-center font-medium transition-all duration-200',
+    'inline-flex items-center justify-center font-medium transition-all duration-200 gap-3',
     'border-none outline-none select-none cursor-pointer',
     'rounded-md',
     sizeClasses[size],
     variantClasses[variant],
-    (disabled || loading) && 'cursor-not-allowed opacity-50'
+    (disabled || loading) && 'cursor-not-allowed opacity-50',
+    className
   )
 
   return (

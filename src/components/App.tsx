@@ -7,10 +7,12 @@ import AddContextModal from '../components/Modals/AddContextModal'
 import SetAlertModal from '../components/Modals/SetAlertModal'
 import SettingsModal from '../components/Modals/SettingsModal'
 import ExportDataModal from '../components/Modals/ExportDataModal'
+import PWAInstallPrompt from '../components/PWA/PWAInstallPrompt'
+import PWAStatus from '../components/PWA/PWAStatus'
 import { ThemeProvider } from '../context/ThemeContext'
 
 // Theme wrapper component
-function ThemeWrapper({ children }) {
+function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const { isLoading } = useTheme()
 
   if (isLoading) {
@@ -44,6 +46,10 @@ function App() {
           <SetAlertModal />
           <SettingsModal />
           <ExportDataModal />
+
+          {/* PWA Components */}
+          <PWAInstallPrompt />
+          <PWAStatus />
         </ThemeWrapper>
       </AppProvider>
     </ThemeProvider>

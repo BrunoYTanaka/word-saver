@@ -13,10 +13,10 @@ const Header = () => {
         <div className="flex items-center justify-between gap-4 p-2">
           {/* Logo/Title */}
           <div className="flex items-center gap-3">
-            <div className="bg-primary-600 flex size-8 items-center justify-center rounded-lg">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
               <span className="text-lg font-bold text-white">W</span>
             </div>
-            <h1 className="hidden text-xl font-bold text-gray-900 sm:block dark:text-gray-100">
+            <h1 className="hidden text-xl font-bold text-gray-900 dark:text-gray-100 sm:block">
               Word Saver
             </h1>
           </div>
