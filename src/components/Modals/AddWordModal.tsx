@@ -4,18 +4,29 @@ import Modal from '../UI/Modal'
 import Input from '../UI/Input'
 import Button from '../UI/Button'
 
-const AddWordModal = () => {
+interface AddWordFormData {
+  word: string
+  definition: string
+  contextId: string
+  tags: string
+}
+
+type ErrorTypes = {
+  [key in keyof AddWordFormData]?: string
+}
+
+function AddWordModal() {
   const { showAddWordModal, toggleAddWordModal, addWord, contexts, loading } =
     useApp()
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AddWordFormData>({
     word: '',
     definition: '',
     contextId: '',
     tags: ''
   })
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<ErrorTypes>({})
 
   // Reset form when modal opens
   useEffect(() => {
@@ -31,7 +42,7 @@ const AddWordModal = () => {
   }, [showAddWordModal, contexts])
 
   // Handle input changes
-  const handleChange = (field, value) => {
+  const handleChange = (field: keyof AddWordFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -41,7 +52,7 @@ const AddWordModal = () => {
 
   // Validate form
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: ErrorTypes = {}
 
     if (!formData.word.trim()) {
       newErrors.word = 'Palavra é obrigatória'
@@ -60,7 +71,9 @@ const AddWordModal = () => {
   }
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent
+  ) => {
     e.preventDefault()
 
     if (!validateForm()) return
@@ -128,7 +141,7 @@ const AddWordModal = () => {
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Definição
-            <span className="text-red-500 ml-1">*</span>
+            <span className="ml-1 text-red-500">*</span>
           </label>
           <textarea
             value={formData.definition}
@@ -138,14 +151,14 @@ const AddWordModal = () => {
             required
             rows={3}
             className={`
-              w-full rounded-md border bg-white text-gray-900 placeholder:text-gray-500
-              focus:outline-none focus:ring-2 focus:border-transparent
-              disabled:cursor-not-allowed disabled:opacity-50 transition-colors
-              dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-400 px-3 py-2 box-border
+              box-border w-full rounded-md border bg-background px-3
+              py-2 text-sm text-foreground transition-colors
+              focus:border-transparent focus:outline-none
+              focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50
               ${
                 errors.definition
                   ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
-                  : 'border-gray-300 focus:ring-primary-500 dark:border-gray-600'
+                  : 'focus:ring-primary-500 border-gray-300 dark:border-gray-600'
               }
             `}
           />
@@ -160,11 +173,11 @@ const AddWordModal = () => {
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Contexto
-            <span className="text-red-500 ml-1">*</span>
+            <span className="ml-1 text-red-500">*</span>
           </label>
           {contexts.length === 0 ? (
-            <div className="text-center py-4 bg-gray-50 dark:bg-gray-700 rounded-md">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <div className="rounded-md bg-gray-50 py-4 text-center dark:bg-gray-700">
+              <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
                 Nenhum contexto disponível
               </p>
               <Button
@@ -172,8 +185,6 @@ const AddWordModal = () => {
                 size="sm"
                 onClick={() => {
                   toggleAddWordModal()
-                  // This would open the add context modal
-                  // toggleAddContextModal();
                 }}
                 disabled={loading}
               >
@@ -187,18 +198,20 @@ const AddWordModal = () => {
               disabled={loading}
               required
               className={`
-                w-full rounded-md border bg-white text-gray-900
-                focus:outline-none focus:ring-2 focus:border-transparent
-                disabled:cursor-not-allowed disabled:opacity-50 transition-colors
-                dark:bg-gray-800 dark:text-gray-100 px-3 py-2 h-10
+                h-10 w-full rounded-md border bg-background
+                px-3 py-2 text-sm text-foreground
+                transition-colors focus:border-transparent focus:outline-none
+                focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50
                 ${
                   errors.contextId
                     ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
-                    : 'border-gray-300 focus:ring-primary-500 dark:border-gray-600'
+                    : 'focus:ring-primary-500 border-gray-300 dark:border-gray-600'
                 }
               `}
             >
-              <option value="">Selecione um contexto...</option>
+              <option value="" className="">
+                Selecione um contexto...
+              </option>
               {contexts.map((context) => (
                 <option key={context.id} value={context.id}>
                   {context.name}

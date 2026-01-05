@@ -1,20 +1,29 @@
-// Add Context Modal Component
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
+
+interface AddContextFormData {
+  name: string
+  color: string
+  icon: string
+}
+
+type ErrorTypes = {
+  [key in keyof AddContextFormData]?: string
+}
 
 const AddContextModal = () => {
   const { showAddContextModal, toggleAddContextModal, addContext, loading } =
     useApp()
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AddContextFormData>({
     name: '',
     color: '#3B82F6',
     icon: '📚'
   })
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<ErrorTypes>({})
 
   // Predefined colors for context
   const colors = [
@@ -67,7 +76,7 @@ const AddContextModal = () => {
   }, [showAddContextModal])
 
   // Handle input changes
-  const handleChange = (field, value) => {
+  const handleChange = (field: keyof AddContextFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -77,7 +86,7 @@ const AddContextModal = () => {
 
   // Validate form
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: ErrorTypes = {}
 
     if (!formData.name.trim()) {
       newErrors.name = 'Nome do contexto é obrigatório'
@@ -88,7 +97,9 @@ const AddContextModal = () => {
   }
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent
+  ) => {
     e.preventDefault()
 
     if (!validateForm()) return
@@ -161,13 +172,13 @@ const AddContextModal = () => {
                 onClick={() => handleChange('color', color)}
                 disabled={loading}
                 className={`
-                  w-10 h-10 rounded-lg border-2 transition-all
+                  size-10 rounded-lg border-2 transition-all
                   ${
                     formData.color === color
-                      ? 'border-gray-900 dark:border-gray-100 scale-110'
-                      : 'border-gray-300 dark:border-gray-600 hover:scale-105'
+                      ? 'scale-110 border-gray-900 dark:border-gray-100'
+                      : 'border-gray-300 hover:scale-105 dark:border-gray-600'
                   }
-                  disabled:opacity-50 disabled:cursor-not-allowed
+                  disabled:cursor-not-allowed disabled:opacity-50
                 `}
                 style={{ backgroundColor: color }}
                 aria-label={`Cor ${color}`}
@@ -189,13 +200,13 @@ const AddContextModal = () => {
                 onClick={() => handleChange('icon', icon)}
                 disabled={loading}
                 className={`
-                  w-8 h-8 text-lg rounded border transition-all
+                  size-8 rounded border text-lg transition-all
                   ${
                     formData.icon === icon
                       ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                      : 'border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
                   }
-                  disabled:opacity-50 disabled:cursor-not-allowed
+                  disabled:cursor-not-allowed disabled:opacity-50
                 `}
                 aria-label={`Ícone ${icon}`}
               >
@@ -210,9 +221,9 @@ const AddContextModal = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Visualização
           </label>
-          <div className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+          <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800">
             <div
-              className="w-6 h-6 rounded flex items-center justify-center text-sm"
+              className="flex size-6 items-center justify-center rounded text-sm"
               style={{ backgroundColor: formData.color }}
             >
               {formData.icon}

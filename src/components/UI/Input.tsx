@@ -46,23 +46,27 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         lg: 'h-11'
       }
 
-      const paddingClasses = icon
-        ? iconPosition === 'left'
-          ? {
-              sm: 'pl-9 pr-3',
-              md: 'pl-10 pr-4',
-              lg: 'pl-11 pr-5'
-            }[size]
-          : {
-              sm: 'pr-9 pl-3',
-              md: 'pr-10 pl-4',
-              lg: 'pr-11 pl-5'
-            }[size]
-        : {
-            sm: 'px-3',
-            md: 'px-3',
-            lg: 'px-5'
-          }[size]
+      const paddingClasses = {
+        left: {
+          sm: 'pl-9 pr-3',
+          md: 'pl-10 pr-4',
+          lg: 'pl-11 pr-5'
+        },
+        right: {
+          sm: 'pr-9 pl-3',
+          md: 'pr-10 pl-4',
+          lg: 'pr-11 pl-5'
+        },
+        none: {
+          sm: 'px-3',
+          md: 'px-3',
+          lg: 'px-5'
+        }
+      }
+
+      const iconPositionKey = icon ? iconPosition : 'none'
+
+      const paddingClass = paddingClasses[iconPositionKey][size]
 
       const stateClasses = disabled
         ? 'opacity-50 cursor-not-allowed'
@@ -75,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       return cn(
         baseClasses,
         sizeClasses[size],
-        paddingClasses,
+        paddingClass,
         stateClasses,
         errorClasses,
         inputClassName
@@ -93,9 +97,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={cn('relative flex flex-col', className)}>
         {label && (
-          <label className="text-foreground mb-1.5 block text-sm font-medium">
+          <label className="mb-1.5 block text-sm font-medium text-foreground">
             {label}
-            {required && <span className="text-destructive ml-1">*</span>}
+            {required && <span className="ml-1 text-destructive">*</span>}
           </label>
         )}
 

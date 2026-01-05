@@ -2,7 +2,20 @@ import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import Button from './Button'
 
-const Modal = ({
+interface ModalProps {
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  children: React.ReactNode
+  footer?: React.ReactNode
+  closeOnOverlayClick?: boolean
+  closeOnEscape?: boolean
+  showCloseButton?: boolean
+  className?: string
+}
+
+function Modal({
   isOpen = false,
   onClose,
   title = '',
@@ -13,9 +26,9 @@ const Modal = ({
   closeOnEscape = true,
   showCloseButton = true,
   className = ''
-}) => {
-  const modalRef = useRef(null)
-  const overlayRef = useRef(null)
+}: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   // Size classes
   const sizeClasses = {
@@ -30,7 +43,7 @@ const Modal = ({
   useEffect(() => {
     if (!isOpen || !closeOnEscape) return
 
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
       }
@@ -62,7 +75,7 @@ const Modal = ({
   }, [isOpen])
 
   // Handle overlay click
-  const handleOverlayClick = (event) => {
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && event.target === overlayRef.current) {
       onClose()
     }
@@ -123,7 +136,7 @@ const Modal = ({
 
         {/* Footer */}
         {footer && (
-          <div className="dark:bg-gray-750 flex items-center justify-end gap-3 border-t border-gray-200 bg-gray-50 p-6 dark:border-gray-700">
+          <div className="flex items-center justify-end gap-3 border-t border-gray-200 bg-inherit p-6 dark:border-gray-700">
             {footer}
           </div>
         )}
@@ -133,6 +146,27 @@ const Modal = ({
 }
 
 // Preset modal footers
+interface ModalFooterActionsProps {
+  onCancel: () => void
+  onConfirm: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => Promise<void>
+  cancelText?: string
+  confirmText?: string
+  confirmVariant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'ghost'
+  loading?: boolean
+}
+
+interface ModalFooterSingleProps {
+  onAction: () => void
+  text?: string
+  variant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'ghost'
+  loading?: boolean
+}
+
+interface ModalFooterCustomProps {
+  children: React.ReactNode
+}
 Modal.Footer = {
   // Cancel/Confirm footer
   Actions: ({
@@ -142,7 +176,7 @@ Modal.Footer = {
     confirmText = 'Confirmar',
     confirmVariant = 'primary',
     loading = false
-  }) => (
+  }: ModalFooterActionsProps) => (
     <>
       <Button variant="ghost" onClick={onCancel} disabled={loading}>
         {cancelText}
@@ -154,14 +188,19 @@ Modal.Footer = {
   ),
 
   // Single action footer
-  Single: ({ onAction, text = 'OK', variant = 'primary', loading = false }) => (
+  Single: ({
+    onAction,
+    text = 'OK',
+    variant = 'primary',
+    loading = false
+  }: ModalFooterSingleProps) => (
     <Button variant={variant} onClick={onAction} loading={loading}>
       {text}
     </Button>
   ),
 
   // Custom footer with multiple actions
-  Custom: ({ children }) => children
+  Custom: ({ children }: ModalFooterCustomProps) => children
 }
 
 export default Modal
