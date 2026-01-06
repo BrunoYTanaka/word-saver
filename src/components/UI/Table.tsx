@@ -157,12 +157,12 @@ function Table({ data, columns }: TableProps) {
                     {item.alerts}
                   </span>
                 </td>
-                <td className="p-4 py-5">
+                <td className="space-x-2 p-4 py-5">
                   <button
                     onClick={() => console.log('Editar', item.word)}
                     title="Editar Palavra"
                     type="button"
-                    className="cursor-pointer rounded-md border-none bg-transparent text-sm text-blue-600 hover:bg-blue-100 dark:text-blue-400"
+                    className="cursor-pointer rounded-md border-none bg-transparent p-1 text-sm text-blue-600 hover:bg-blue-200 dark:text-blue-400"
                   >
                     <Edit className="size-4" />
                   </button>
@@ -170,7 +170,7 @@ function Table({ data, columns }: TableProps) {
                     onClick={() => deleteWord(item.id)}
                     title="Remover Palavra"
                     type="button"
-                    className="cursor-pointer rounded-md border-none bg-transparent text-sm text-red-600 hover:bg-red-100 dark:text-red-400"
+                    className="cursor-pointer rounded-md border-none bg-transparent p-1 text-sm text-red-600 hover:bg-red-200"
                   >
                     <Trash2 className="size-4" />
                   </button>

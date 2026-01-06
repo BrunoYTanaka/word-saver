@@ -1,6 +1,7 @@
 dist
 dist-ssr
 *.local
+/dev-list
 
 # dependencies
 /node_modules
@@ -35,3 +36,4 @@ yarn-error.log*
 
 # vercel
 .vercel
+
