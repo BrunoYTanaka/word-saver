@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import Button from './Button'
 
@@ -83,7 +84,9 @@ function Modal({
 
   if (!isOpen) return null
 
-  return (
+  const modalRoot = document.getElementById('modal-root') || document.body
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Overlay */}
       <div
@@ -141,7 +144,8 @@ function Modal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    modalRoot
   )
 }
 
