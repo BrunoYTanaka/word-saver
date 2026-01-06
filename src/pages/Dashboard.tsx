@@ -25,6 +25,7 @@ const Dashboard = () => {
     toggleAddWordModal,
     toggleAddContextModal,
     toggleAddAlertModal,
+    toggleEditWordModal,
     deleteWord,
     deleteContext,
     deleteAlert
@@ -124,7 +125,7 @@ const Dashboard = () => {
       content: (
         <Table
           onDelete={deleteWord}
-          onEdit={() => console.log('edit word')}
+          onEdit={toggleEditWordModal}
           data={data}
           columns={[
             {

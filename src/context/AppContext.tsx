@@ -14,6 +14,7 @@ export interface AppState {
   contexts: FullContext[]
   alerts: FullAlert[]
   stats: Stats | null
+  editingWord: FullWord | null
 
   // UI State
   loading: boolean
@@ -27,6 +28,7 @@ export interface AppState {
 
   // Modals/Drawers
   showAddWordModal: boolean
+  showEditWordModal: boolean
   showAddContextModal: boolean
   showAddAlertModal: boolean
   showSettingsModal: boolean
@@ -41,6 +43,7 @@ const initialState: AppState = {
   contexts: [],
   alerts: [],
   stats: null,
+  editingWord: null,
 
   // UI State
   loading: false,
@@ -54,6 +57,7 @@ const initialState: AppState = {
 
   // Modals/Drawers
   showAddWordModal: false,
+  showEditWordModal: false,
   showAddContextModal: false,
   showAddAlertModal: false,
   showSettingsModal: false,
@@ -95,6 +99,7 @@ type AppAction =
   | { type: 'TOGGLE_SETTINGS_MODAL' }
   | { type: 'TOGGLE_EXPORT_MODAL' }
   | { type: 'TOGGLE_IMPORT_MODAL' }
+  | { type: 'TOGGLE_EDIT_WORD_MODAL'; payload: string }
 
 const ACTIONS = {
   // Initialization
@@ -131,7 +136,8 @@ const ACTIONS = {
   TOGGLE_ADD_ALERT_MODAL: 'TOGGLE_ADD_ALERT_MODAL' as const,
   TOGGLE_SETTINGS_MODAL: 'TOGGLE_SETTINGS_MODAL' as const,
   TOGGLE_EXPORT_MODAL: 'TOGGLE_EXPORT_MODAL' as const,
-  TOGGLE_IMPORT_MODAL: 'TOGGLE_IMPORT_MODAL' as const
+  TOGGLE_IMPORT_MODAL: 'TOGGLE_IMPORT_MODAL' as const,
+  TOGGLE_EDIT_WORD_MODAL: 'TOGGLE_EDIT_WORD_MODAL' as const
 }
 
 // Reducer function
@@ -236,6 +242,17 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case ACTIONS.TOGGLE_ADD_WORD_MODAL:
       return { ...state, showAddWordModal: !state.showAddWordModal }
 
+    case ACTIONS.TOGGLE_EDIT_WORD_MODAL: {
+      const wordId = action.payload
+      const editingWord = state.words.find((word) => word.id === wordId) || null
+
+      return {
+        ...state,
+        editingWord,
+        showEditWordModal: !state.showEditWordModal
+      }
+    }
+
     case ACTIONS.TOGGLE_ADD_CONTEXT_MODAL:
       return { ...state, showAddContextModal: !state.showAddContextModal }
 
@@ -260,6 +277,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
 interface AppContextType {
   // State
   words: FullWord[]
+  editingWord: FullWord | null
   contexts: FullContext[]
   alerts: FullAlert[]
   stats: Stats | null
@@ -270,6 +288,7 @@ interface AppContextType {
   searchQuery: string
   selectedContextId: string | null
   showAddWordModal: boolean
+  showEditWordModal: boolean
   showAddContextModal: boolean
   showAddAlertModal: boolean
   showSettingsModal: boolean
@@ -299,6 +318,7 @@ interface AppContextType {
 
   // Modal operations
   toggleAddWordModal: () => void
+  toggleEditWordModal: (wordId: string) => void
   toggleAddContextModal: () => void
   toggleAddAlertModal: () => void
   toggleSettingsModal: () => void
@@ -613,6 +633,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: ACTIONS.TOGGLE_SETTINGS_MODAL }),
     toggleExportModal: () => dispatch({ type: ACTIONS.TOGGLE_EXPORT_MODAL }),
     toggleImportModal: () => dispatch({ type: ACTIONS.TOGGLE_IMPORT_MODAL }),
+    toggleEditWordModal: (wordId: string) =>
+      dispatch({ type: ACTIONS.TOGGLE_EDIT_WORD_MODAL, payload: wordId }),
 
     // Utilities
     refreshStats,

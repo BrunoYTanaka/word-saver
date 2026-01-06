@@ -16,7 +16,7 @@ interface Column<T> {
 interface TableProps<T extends object> {
   data: Array<T & DataItem>
   columns: Array<Column<T>>
-  onEdit: (id: string) => Promise<void>
+  onEdit: (id: string) => void
   onDelete: (id: string) => Promise<void>
 }
 

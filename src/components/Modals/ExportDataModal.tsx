@@ -55,7 +55,7 @@ const ExportDataModal = () => {
     }
   }, [showExportModal])
 
-  const handleContextToggle = (contextId) => {
+  const handleContextToggle = (contextId: string) => {
     setSelectedContexts((prev) =>
       prev.includes(contextId)
         ? prev.filter((id) => id !== contextId)

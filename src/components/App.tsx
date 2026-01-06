@@ -1,4 +1,4 @@
-import { AppProvider } from '../context/AppContext'
+import { AppProvider, useApp } from '../context/AppContext'
 import { useTheme } from '../hooks/useTheme'
 import Layout from '../components/Layout/Layout'
 import Dashboard from '../pages/Dashboard'
@@ -10,6 +10,7 @@ import ExportDataModal from '../components/Modals/ExportDataModal'
 import PWAInstallPrompt from '../components/PWA/PWAInstallPrompt'
 import PWAStatus from '../components/PWA/PWAStatus'
 import { ThemeProvider } from '../context/ThemeContext'
+import EditWordModal from './Modals/EditWordModal'
 
 // Theme wrapper component
 function ThemeWrapper({ children }: { children: React.ReactNode }) {
@@ -42,6 +43,7 @@ function App() {
 
           {/* Modals */}
           <AddWordModal />
+          <EditWordModal />
           <AddContextModal />
           <SetAlertModal />
           <SettingsModal />
