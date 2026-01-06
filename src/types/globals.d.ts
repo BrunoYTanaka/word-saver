@@ -48,12 +48,8 @@ declare global {
      */
     prompt(): Promise<void>
   }
-}
 
-declare global {
   interface WindowEventMap {
     beforeinstallprompt: BeforeInstallPromptEvent
   }
 }
-
-export {}

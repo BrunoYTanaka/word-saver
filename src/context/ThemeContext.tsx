@@ -1,15 +1,8 @@
 import { useState, useEffect } from 'react'
 import { dbService } from '../services/db'
-import { ThemeContext } from '../hooks/useTheme'
+import { ThemeContext, THEMES, ThemeType } from '../hooks/useTheme'
 
 const THEME_KEY = 'theme'
-const THEMES = {
-  LIGHT: 'light',
-  DARK: 'dark',
-  AUTO: 'auto'
-} as const
-
-type ThemeType = (typeof THEMES)[keyof typeof THEMES]
 
 interface ThemeProviderProps {
   children: React.ReactNode
@@ -28,8 +21,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         const savedTheme = await dbService.settings.getSetting(THEME_KEY)
         const initialTheme = savedTheme || THEMES.AUTO
 
-        setTheme(initialTheme)
-        applyTheme(initialTheme)
+        setTheme(initialTheme as ThemeType)
+        applyTheme(initialTheme as ThemeType)
       } catch (error) {
         console.error('Error loading theme:', error)
         // Fallback to system preference
