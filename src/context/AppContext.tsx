@@ -2,9 +2,9 @@
 import { createContext, useContext, useReducer, useEffect } from 'react'
 import { dbService } from '../services/db'
 import notificationService from '../services/notification'
-import { FullWord } from '../types/word'
-import { FullContext } from '../types/context'
-import { FullAlert } from '../types/alert'
+import { FullWord, Word } from '../types/word'
+import { Context, FullContext } from '../types/context'
+import { Alert, FullAlert } from '../types/alert'
 import { Stats } from '../types/stats'
 
 // Type definitions
@@ -277,18 +277,18 @@ interface AppContextType {
   showImportModal: boolean
 
   // Word operations
-  addWord: (wordData: FullWord) => Promise<void>
+  addWord: (wordData: Word) => Promise<void>
   updateWord: (wordData: FullWord) => Promise<void>
   deleteWord: (wordId: string) => Promise<void>
   reviewWord: (wordId: string) => Promise<void>
 
   // Context operations
-  addContext: (contextData: FullContext) => Promise<void>
+  addContext: (contextData: Context) => Promise<void>
   updateContext: (contextData: FullContext) => Promise<void>
   deleteContext: (contextId: string) => Promise<void>
 
   // Alert operations
-  addAlert: (alertData: FullAlert) => Promise<void>
+  addAlert: (alertData: Alert) => Promise<void>
   updateAlert: (alertData: FullAlert) => Promise<void>
   deleteAlert: (alertId: string) => Promise<void>
 
@@ -387,7 +387,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Word operations
-  const addWord = async (wordData: FullWord) => {
+  const addWord = async (wordData: Word) => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.words.addWord(wordData)
@@ -442,7 +442,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Context operations
-  const addContext = async (contextData: FullContext) => {
+  const addContext = async (contextData: Context) => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.contexts.addContext(contextData)
@@ -492,13 +492,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Alert operations
-  const addAlert = async (alertData: FullAlert) => {
+  const addAlert = async (alertData: Alert) => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
-      await dbService.alerts.addAlert(alertData)
+      const alert = await dbService.alerts.addAlert(alertData)
 
       // Schedule the alert
-      await notificationService.scheduleAlert(alertData)
+      await notificationService.scheduleAlert(alert)
 
       await loadAllData()
       dispatch({ type: ACTIONS.TOGGLE_ADD_ALERT_MODAL })

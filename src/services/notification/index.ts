@@ -3,7 +3,8 @@ import { NotificationService } from './notification-service'
 import { AlertScheduler } from './alert-scheduler'
 import { NotificationHandlers } from './notification-handlers'
 import { NotificationTypes } from './notification-types'
-import type { Alert, NotificationOptions, PermissionStatus } from './types'
+import type { NotificationOptions, PermissionStatus } from './types'
+import { FullAlert } from '../../types/alert'
 
 class ComposedNotificationService {
   public readonly core: NotificationService
@@ -50,7 +51,7 @@ class ComposedNotificationService {
   }
 
   // Delegate scheduler methods
-  async scheduleAlert(alert: Alert): Promise<boolean> {
+  async scheduleAlert(alert: FullAlert): Promise<boolean> {
     return await this.scheduler.scheduleAlert(alert)
   }
 

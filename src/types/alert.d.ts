@@ -8,9 +8,7 @@ export interface Alert {
 
 export interface FullAlert extends Alert {
   id: string
-  message: string
   createdAt: string
-  updatedAt: string
   lastTriggered: string | null
   isActive: boolean
 }

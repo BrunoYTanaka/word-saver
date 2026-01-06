@@ -16,8 +16,14 @@ type ErrorTypes = {
 }
 
 function AddWordModal() {
-  const { showAddWordModal, toggleAddWordModal, addWord, contexts, loading } =
-    useApp()
+  const {
+    showAddWordModal,
+    toggleAddWordModal,
+    addWord,
+    contexts,
+    loading,
+    toggleAddContextModal
+  } = useApp()
 
   const [formData, setFormData] = useState<AddWordFormData>({
     word: '',
@@ -141,7 +147,7 @@ function AddWordModal() {
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Definição
-            <span className="ml-1 text-red-500">*</span>
+            <span className="ml-1 text-destructive">*</span>
           </label>
           <textarea
             value={formData.definition}
@@ -173,19 +179,17 @@ function AddWordModal() {
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Contexto
-            <span className="ml-1 text-red-500">*</span>
+            <span className="ml-1 text-destructive">*</span>
           </label>
           {contexts.length === 0 ? (
-            <div className="rounded-md bg-gray-50 py-4 text-center dark:bg-gray-700">
-              <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="rounded-md border border-border bg-background py-4 text-center">
+              <p className="mb-2 text-sm text-foreground">
                 Nenhum contexto disponível
               </p>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
-                  toggleAddWordModal()
-                }}
+                onClick={toggleAddContextModal}
                 disabled={loading}
               >
                 Criar Primeiro Contexto

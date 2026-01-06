@@ -1,5 +1,6 @@
+import { FullAlert } from '../../types/alert'
 import { dbService } from '../db'
-import type { IAlertScheduler, Alert, INotificationService } from './types'
+import type { IAlertScheduler, INotificationService } from './types'
 
 export class AlertScheduler implements IAlertScheduler {
   private scheduledAlerts: Map<string, number> = new Map()
@@ -11,7 +12,7 @@ export class AlertScheduler implements IAlertScheduler {
   }
 
   // Schedule alert for word review
-  async scheduleAlert(alert: Alert): Promise<boolean> {
+  async scheduleAlert(alert: FullAlert): Promise<boolean> {
     if (!this.notificationService.isEnabled()) return false
 
     try {
@@ -55,7 +56,7 @@ export class AlertScheduler implements IAlertScheduler {
   }
 
   // Trigger scheduled alert
-  async triggerAlert(alert: Alert): Promise<void> {
+  async triggerAlert(alert: FullAlert): Promise<void> {
     try {
       // Get words from selected contexts
       const wordsPromises = alert.contextIds.map((contextId) =>

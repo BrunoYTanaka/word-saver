@@ -12,14 +12,18 @@ class AlertAction extends BaseAction {
     return super.getAll<T>()
   }
 
-  async addAlert(alert: Alert): Promise<IDBValidKey> {
-    return this.add({
+  async addAlert(alert: Alert): Promise<FullAlert> {
+    const newAlert = {
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
       lastTriggered: null,
       isActive: true,
       ...alert
-    })
+    }
+
+    await this.add(newAlert)
+
+    return newAlert
   }
 
   async getActiveAlerts(): Promise<FullAlert[]> {

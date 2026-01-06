@@ -37,7 +37,7 @@ function Button({
     primary: 'bg-blue-600 text-white hover:bg-blue-700',
     secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
     outline:
-      'bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-50',
+      'bg-transparent text-foreground border border-solid border-gray-400 hover:bg-secondary',
     ghost: 'bg-transparent text-foreground hover:bg-secondary',
     danger: 'bg-red-600 text-white hover:bg-red-700',
     success: 'bg-emerald-600 text-white hover:bg-emerald-700'
