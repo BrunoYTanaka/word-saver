@@ -1,10 +1,51 @@
 // Main App Context for Word Saver PWA
 import { createContext, useContext, useReducer, useEffect } from 'react'
 import { dbService } from '../services/db'
-import notificationService from '../services/notifications.js'
+import notificationService from '../services/notification'
+import { FullWord } from '../types/Word'
+import { FullContext } from '../types/Context'
+import { FullAlert } from '../types/Alert'
+
+// Type definitions
+interface Stats {
+  totalWords: number
+  totalContexts: number
+  activeAlerts: number
+  reviewedWords: number
+  totalReviews: number
+  difficultyStats: Record<string, number>
+  recentWords: number
+  recentReviews: number
+  averageReviewsPerWord: number | string
+}
+export interface AppState {
+  // Data
+  words: FullWord[]
+  contexts: FullContext[]
+  alerts: FullAlert[]
+  stats: Stats | null
+
+  // UI State
+  loading: boolean
+  error: string | null
+  initialized: boolean
+
+  // View preferences
+  viewMode: 'grid' | 'list'
+  searchQuery: string
+  selectedContextId: string | null
+
+  // Modals/Drawers
+  showAddWordModal: boolean
+  showAddContextModal: boolean
+  showAddAlertModal: boolean
+  showSettingsModal: boolean
+  showExportModal: boolean
+  showImportModal: boolean
+}
 
 // Initial state
-const initialState = {
+const initialState: AppState = {
   // Data
   words: [],
   contexts: [],
@@ -31,46 +72,80 @@ const initialState = {
 }
 
 // Action types
-const ACTIONS = {
+type AppAction =
   // Initialization
-  SET_LOADING: 'SET_LOADING',
-  SET_ERROR: 'SET_ERROR',
-  SET_INITIALIZED: 'SET_INITIALIZED',
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'SET_INITIALIZED'; payload: boolean }
 
   // Data actions
-  SET_WORDS: 'SET_WORDS',
-  ADD_WORD: 'ADD_WORD',
-  UPDATE_WORD: 'UPDATE_WORD',
-  DELETE_WORD: 'DELETE_WORD',
-
-  SET_CONTEXTS: 'SET_CONTEXTS',
-  ADD_CONTEXT: 'ADD_CONTEXT',
-  UPDATE_CONTEXT: 'UPDATE_CONTEXT',
-  DELETE_CONTEXT: 'DELETE_CONTEXT',
-
-  SET_ALERTS: 'SET_ALERTS',
-  ADD_ALERT: 'ADD_ALERT',
-  UPDATE_ALERT: 'UPDATE_ALERT',
-  DELETE_ALERT: 'DELETE_ALERT',
-
-  SET_STATS: 'SET_STATS',
+  | { type: 'SET_WORDS'; payload: FullWord[] }
+  | { type: 'ADD_WORD'; payload: FullWord }
+  | { type: 'UPDATE_WORD'; payload: FullWord }
+  | { type: 'DELETE_WORD'; payload: string }
+  | { type: 'SET_CONTEXTS'; payload: FullContext[] }
+  | { type: 'ADD_CONTEXT'; payload: FullContext }
+  | { type: 'UPDATE_CONTEXT'; payload: FullContext }
+  | { type: 'DELETE_CONTEXT'; payload: string }
+  | { type: 'SET_ALERTS'; payload: FullAlert[] }
+  | { type: 'ADD_ALERT'; payload: FullAlert }
+  | { type: 'UPDATE_ALERT'; payload: FullAlert }
+  | { type: 'DELETE_ALERT'; payload: string }
+  | { type: 'SET_STATS'; payload: Stats }
 
   // UI actions
-  SET_VIEW_MODE: 'SET_VIEW_MODE',
-  SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
-  SET_SELECTED_CONTEXT: 'SET_SELECTED_CONTEXT',
+  | { type: 'SET_VIEW_MODE'; payload: 'grid' | 'list' }
+  | { type: 'SET_SEARCH_QUERY'; payload: string }
+  | { type: 'SET_SELECTED_CONTEXT'; payload: string | null }
 
   // Modal actions
-  TOGGLE_ADD_WORD_MODAL: 'TOGGLE_ADD_WORD_MODAL',
-  TOGGLE_ADD_CONTEXT_MODAL: 'TOGGLE_ADD_CONTEXT_MODAL',
-  TOGGLE_ADD_ALERT_MODAL: 'TOGGLE_ADD_ALERT_MODAL',
-  TOGGLE_SETTINGS_MODAL: 'TOGGLE_SETTINGS_MODAL',
-  TOGGLE_EXPORT_MODAL: 'TOGGLE_EXPORT_MODAL',
-  TOGGLE_IMPORT_MODAL: 'TOGGLE_IMPORT_MODAL'
+  | { type: 'TOGGLE_ADD_WORD_MODAL' }
+  | { type: 'TOGGLE_ADD_CONTEXT_MODAL' }
+  | { type: 'TOGGLE_ADD_ALERT_MODAL' }
+  | { type: 'TOGGLE_SETTINGS_MODAL' }
+  | { type: 'TOGGLE_EXPORT_MODAL' }
+  | { type: 'TOGGLE_IMPORT_MODAL' }
+
+const ACTIONS = {
+  // Initialization
+  SET_LOADING: 'SET_LOADING' as const,
+  SET_ERROR: 'SET_ERROR' as const,
+  SET_INITIALIZED: 'SET_INITIALIZED' as const,
+
+  // Data actions
+  SET_WORDS: 'SET_WORDS' as const,
+  ADD_WORD: 'ADD_WORD' as const,
+  UPDATE_WORD: 'UPDATE_WORD' as const,
+  DELETE_WORD: 'DELETE_WORD' as const,
+
+  SET_CONTEXTS: 'SET_CONTEXTS' as const,
+  ADD_CONTEXT: 'ADD_CONTEXT' as const,
+  UPDATE_CONTEXT: 'UPDATE_CONTEXT' as const,
+  DELETE_CONTEXT: 'DELETE_CONTEXT' as const,
+
+  SET_ALERTS: 'SET_ALERTS' as const,
+  ADD_ALERT: 'ADD_ALERT' as const,
+  UPDATE_ALERT: 'UPDATE_ALERT' as const,
+  DELETE_ALERT: 'DELETE_ALERT' as const,
+
+  SET_STATS: 'SET_STATS' as const,
+
+  // UI actions
+  SET_VIEW_MODE: 'SET_VIEW_MODE' as const,
+  SET_SEARCH_QUERY: 'SET_SEARCH_QUERY' as const,
+  SET_SELECTED_CONTEXT: 'SET_SELECTED_CONTEXT' as const,
+
+  // Modal actions
+  TOGGLE_ADD_WORD_MODAL: 'TOGGLE_ADD_WORD_MODAL' as const,
+  TOGGLE_ADD_CONTEXT_MODAL: 'TOGGLE_ADD_CONTEXT_MODAL' as const,
+  TOGGLE_ADD_ALERT_MODAL: 'TOGGLE_ADD_ALERT_MODAL' as const,
+  TOGGLE_SETTINGS_MODAL: 'TOGGLE_SETTINGS_MODAL' as const,
+  TOGGLE_EXPORT_MODAL: 'TOGGLE_EXPORT_MODAL' as const,
+  TOGGLE_IMPORT_MODAL: 'TOGGLE_IMPORT_MODAL' as const
 }
 
 // Reducer function
-function appReducer(state, action) {
+function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case ACTIONS.SET_LOADING:
       return { ...state, loading: action.payload }
@@ -194,16 +269,16 @@ function appReducer(state, action) {
 // Create context
 interface AppContextType {
   // State
-  words: Array<any>
-  contexts: Array<any>
-  alerts: Array<any>
-  stats: any
+  words: FullWord[]
+  contexts: FullContext[]
+  alerts: FullAlert[]
+  stats: Stats | null
   loading: boolean
   error: string | null
   initialized: boolean
   viewMode: 'grid' | 'list'
   searchQuery: string
-  selectedContextId: number | null
+  selectedContextId: string | null
   showAddWordModal: boolean
   showAddContextModal: boolean
   showAddAlertModal: boolean
@@ -212,25 +287,25 @@ interface AppContextType {
   showImportModal: boolean
 
   // Word operations
-  addWord: (wordData: any) => Promise<void>
-  updateWord: (wordData: any) => Promise<void>
+  addWord: (wordData: FullWord) => Promise<void>
+  updateWord: (wordData: FullWord) => Promise<void>
   deleteWord: (wordId: string) => Promise<void>
   reviewWord: (wordId: string) => Promise<void>
 
   // Context operations
-  addContext: (contextData: any) => Promise<void>
-  updateContext: (contextData: any) => Promise<void>
+  addContext: (contextData: FullContext) => Promise<void>
+  updateContext: (contextData: FullContext) => Promise<void>
   deleteContext: (contextId: string) => Promise<void>
 
   // Alert operations
-  addAlert: (alertData: any) => Promise<void>
-  updateAlert: (alertData: any) => Promise<void>
+  addAlert: (alertData: FullAlert) => Promise<void>
+  updateAlert: (alertData: FullAlert) => Promise<void>
   deleteAlert: (alertId: string) => Promise<void>
 
   // UI operations
   setViewMode: (mode: 'grid' | 'list') => void
   setSearchQuery: (query: string) => void
-  setSelectedContext: (contextId: number | null) => void
+  setSelectedContext: (contextId: string | null) => void
 
   // Modal operations
   toggleAddWordModal: () => void
@@ -306,9 +381,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const deleteAllData = async () => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
-      await dbService.words.deleteAll()
-      await dbService.contexts.deleteAll()
-      await dbService.alerts.deleteAll()
+      await dbService.words.clear()
+      await dbService.contexts.clear()
+      await dbService.alerts.clear()
       await loadAllData()
     } catch (error) {
       console.error('Error deleting all data:', error)
@@ -322,7 +397,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Word operations
-  const addWord = async (wordData) => {
+  const addWord = async (wordData: FullWord) => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.words.addWord(wordData)
@@ -339,7 +414,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const updateWord = async (wordData) => {
+  const updateWord = async (wordData: FullWord) => {
     try {
       await dbService.words.update(wordData)
       dispatch({ type: ACTIONS.UPDATE_WORD, payload: wordData })
@@ -353,7 +428,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const deleteWord = async (wordId) => {
+  const deleteWord = async (wordId: string) => {
     try {
       await dbService.words.delete(wordId)
       dispatch({ type: ACTIONS.DELETE_WORD, payload: wordId })
@@ -364,11 +439,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const reviewWord = async (wordId) => {
+  const reviewWord = async (wordId: string) => {
     try {
       await dbService.words.updateWordReview(wordId)
       const updatedWord = await dbService.words.get(wordId)
-      dispatch({ type: ACTIONS.UPDATE_WORD, payload: updatedWord })
+      dispatch({ type: ACTIONS.UPDATE_WORD, payload: updatedWord as FullWord })
       await refreshStats()
     } catch (error) {
       console.error('Error reviewing word:', error)
@@ -377,7 +452,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Context operations
-  const addContext = async (contextData) => {
+  const addContext = async (contextData: FullContext) => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.contexts.addContext(contextData)
@@ -394,7 +469,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const updateContext = async (contextData) => {
+  const updateContext = async (contextData: FullContext) => {
     try {
       await dbService.contexts.update(contextData)
       dispatch({ type: ACTIONS.UPDATE_CONTEXT, payload: contextData })
@@ -407,7 +482,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const deleteContext = async (contextId) => {
+  const deleteContext = async (contextId: string) => {
     try {
       // Delete all words in this context first
       const words = await dbService.words.getWordsByContext(contextId)
@@ -427,7 +502,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Alert operations
-  const addAlert = async (alertData) => {
+  const addAlert = async (alertData: FullAlert) => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.alerts.addAlert(alertData)
@@ -448,7 +523,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const updateAlert = async (alertData) => {
+  const updateAlert = async (alertData: FullAlert) => {
     try {
       await dbService.alerts.update(alertData)
 
@@ -465,7 +540,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const deleteAlert = async (alertId) => {
+  const deleteAlert = async (alertId: string) => {
     try {
       // Cancel scheduled notification
       notificationService.cancelAlert(alertId)
@@ -488,7 +563,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const searchWords = async (query) => {
+  const searchWords = async (query: string) => {
     try {
       if (!query.trim()) {
         await loadAllData()
@@ -529,13 +604,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     deleteAlert,
 
     // UI operations
-    setViewMode: (mode) =>
+    setViewMode: (mode: 'grid' | 'list') =>
       dispatch({ type: ACTIONS.SET_VIEW_MODE, payload: mode }),
-    setSearchQuery: (query) => {
+    setSearchQuery: (query: string) => {
       dispatch({ type: ACTIONS.SET_SEARCH_QUERY, payload: query })
       searchWords(query)
     },
-    setSelectedContext: (contextId) =>
+    setSelectedContext: (contextId: string | null) =>
       dispatch({ type: ACTIONS.SET_SELECTED_CONTEXT, payload: contextId }),
 
     // Modal operations
