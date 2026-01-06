@@ -1,4 +1,4 @@
-import { Settings } from 'http2'
+import { Settings } from '../../../types/settings'
 import { FullAlert } from '../../../types/alert'
 import { FullContext } from '../../../types/context'
 import { FullWord } from '../../../types/word'
@@ -143,7 +143,7 @@ class ExportAction {
     return { filename, recordCount: countRecords(data) }
   }
 
-  async quickExportWords(contextIds = null) {
+  async quickExportWords(contextIds: string[] | null = null) {
     const data = await this.exportWordsOnly(contextIds)
     const filename = generateFilename('words-only')
     downloadJSON(data, filename)

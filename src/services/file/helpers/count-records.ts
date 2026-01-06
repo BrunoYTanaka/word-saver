@@ -7,7 +7,7 @@ interface Data {
   words?: FullWord[]
   contexts?: FullContext[]
   alerts?: FullAlert[]
-  settings?: Settings[]
+  settings?: Settings
 }
 
 export function countRecords(data: Data): number {
@@ -15,6 +15,6 @@ export function countRecords(data: Data): number {
   if (data.words) count += data.words.length
   if (data.contexts) count += data.contexts.length
   if (data.alerts) count += data.alerts.length
-  if (data.settings) count += data.settings.length
+  if (data.settings) count += 1
   return count
 }

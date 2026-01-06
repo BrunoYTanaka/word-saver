@@ -1,11 +1,11 @@
 import { Plus, Settings, Moon, Sun } from 'lucide-react'
-import { useTheme } from '../../hooks/useTheme'
-import { useApp } from '../../context/AppContext'
+import { useTheme } from '../../context/ThemeContext'
 import Button from '../UI/Button'
+import { useModal } from '../../context/ModalContext'
 
 const Header = () => {
   const { toggleTheme, isDark } = useTheme()
-  const { toggleAddWordModal, toggleSettingsModal } = useApp()
+  const { openModal } = useModal()
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -27,7 +27,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={toggleAddWordModal}
+              onClick={() => openModal('ADD_WORD')}
               icon={<Plus />}
               className="hidden sm:flex"
             >
@@ -38,7 +38,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={toggleAddWordModal}
+              onClick={() => openModal('ADD_WORD')}
               icon={<Plus />}
               className="sm:hidden"
             />
@@ -56,7 +56,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={toggleSettingsModal}
+              onClick={() => openModal('SETTINGS')}
               icon={<Settings />}
               aria-label="Configurações"
             />

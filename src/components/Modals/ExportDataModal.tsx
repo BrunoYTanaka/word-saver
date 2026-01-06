@@ -4,12 +4,14 @@ import Modal from '../UI/Modal'
 import Button from '../UI/Button'
 import Card from '../UI/Card'
 import { fileService } from '../../services/file'
+import { useModal } from '../../context/ModalContext'
 
 const ExportDataModal = () => {
-  const { showExportModal, toggleExportModal, contexts, words } = useApp()
+  const { contexts, words } = useApp()
+  const { closeModal } = useModal()
 
   const [exportType, setExportType] = useState('full')
-  const [selectedContexts, setSelectedContexts] = useState([])
+  const [selectedContexts, setSelectedContexts] = useState<string[]>([])
   const [isExporting, setIsExporting] = useState(false)
   const [exportStats, setExportStats] = useState({
     totalWords: 0,
@@ -19,41 +21,30 @@ const ExportDataModal = () => {
 
   // Calculate stats when modal opens or selections change
   useEffect(() => {
-    if (showExportModal) {
-      const totalWords = words.length
-      const totalContexts = contexts.length
-      let selectedWords = 0
+    const totalWords = words.length
+    const totalContexts = contexts.length
+    let selectedWords = 0
 
-      if (exportType === 'context' && selectedContexts.length > 0) {
-        selectedWords = words.filter((word) =>
-          selectedContexts.includes(word.contextId)
-        ).length
-      } else if (exportType === 'words-only') {
-        selectedWords =
-          selectedContexts.length > 0
-            ? words.filter((word) => selectedContexts.includes(word.contextId))
-                .length
-            : totalWords
-      } else {
-        selectedWords = totalWords
-      }
-
-      setExportStats({
-        totalWords,
-        totalContexts,
-        selectedWords
-      })
+    if (exportType === 'context' && selectedContexts.length > 0) {
+      selectedWords = words.filter((word) =>
+        selectedContexts.includes(word.contextId)
+      ).length
+    } else if (exportType === 'words-only') {
+      selectedWords =
+        selectedContexts.length > 0
+          ? words.filter((word) => selectedContexts.includes(word.contextId))
+              .length
+          : totalWords
+    } else {
+      selectedWords = totalWords
     }
-  }, [showExportModal, exportType, selectedContexts, words, contexts])
 
-  // Reset state when modal opens
-  useEffect(() => {
-    if (showExportModal) {
-      setExportType('full')
-      setSelectedContexts([])
-      setIsExporting(false)
-    }
-  }, [showExportModal])
+    setExportStats({
+      totalWords,
+      totalContexts,
+      selectedWords
+    })
+  }, [exportType, selectedContexts, words, contexts])
 
   const handleContextToggle = (contextId: string) => {
     setSelectedContexts((prev) =>
@@ -87,7 +78,7 @@ const ExportDataModal = () => {
             const context = contexts.find((ctx) => ctx.id === contextId)
             result = await fileService.export.quickExportContext(
               contextId,
-              context?.name
+              context?.name || ''
             )
           } else {
             // Multiple contexts - export as words only
@@ -110,11 +101,15 @@ const ExportDataModal = () => {
 
       // Close modal after successful export
       setTimeout(() => {
-        toggleExportModal()
+        closeModal('EXPORT_DATA')
       }, 1000)
     } catch (error) {
       console.error('Erro na exportação:', error)
-      alert(`Erro ao exportar dados: ${error.message}`)
+      alert(
+        `Erro ao exportar dados: ${
+          error instanceof Error ? error.message : 'Erro desconhecido'
+        }`
+      )
     } finally {
       setIsExporting(false)
     }
@@ -145,8 +140,8 @@ const ExportDataModal = () => {
 
   return (
     <Modal
-      isOpen={showExportModal}
-      onClose={toggleExportModal}
+      isOpen={true}
+      onClose={() => closeModal('EXPORT_DATA')}
       title="Exportar Dados"
       className="max-w-2xl"
     >
@@ -336,7 +331,7 @@ const ExportDataModal = () => {
         <div className="flex justify-end space-x-3 border-t border-gray-200 pt-4 dark:border-gray-700">
           <Button
             variant="outline"
-            onClick={toggleExportModal}
+            onClick={() => closeModal('EXPORT_DATA')}
             disabled={isExporting}
           >
             Cancelar

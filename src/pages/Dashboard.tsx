@@ -14,6 +14,7 @@ import CountCard from '../components/UI/CountCard'
 import Table from '../components/UI/Table'
 import Tab from '../components/UI/Tab'
 import { formatDate } from '../utils/format-date'
+import { useModal } from '../context/ModalContext'
 
 const Dashboard = () => {
   const {
@@ -22,14 +23,12 @@ const Dashboard = () => {
     contexts,
     alerts,
     loading,
-    toggleAddWordModal,
-    toggleAddContextModal,
-    toggleAddAlertModal,
-    toggleEditWordModal,
     deleteWord,
     deleteContext,
     deleteAlert
   } = useApp()
+
+  const { openModal } = useModal()
 
   const data = useMemo(
     () =>
@@ -99,21 +98,21 @@ const Dashboard = () => {
       title: 'Adicionar Palavra',
       description: 'Criar uma nova palavra para estudar',
       icon: BookOpen,
-      action: toggleAddWordModal,
+      action: () => openModal('ADD_WORD'),
       color: 'primary'
     },
     {
       title: 'Criar Contexto',
       description: 'Organizar palavras por categoria',
       icon: Archive,
-      action: toggleAddContextModal,
+      action: () => openModal('ADD_CONTEXT'),
       color: 'secondary'
     },
     {
       title: 'Configurar Alerta',
       description: 'Lembrete para revisar palavras',
       icon: Bell,
-      action: toggleAddAlertModal,
+      action: () => openModal('SET_ALERT'),
       color: 'outline'
     }
   ]
@@ -125,7 +124,7 @@ const Dashboard = () => {
       content: (
         <Table
           onDelete={deleteWord}
-          onEdit={toggleEditWordModal}
+          onEdit={(wordId) => openModal('EDIT_WORD', { wordId })}
           data={data}
           columns={[
             {
@@ -325,7 +324,11 @@ const Dashboard = () => {
           <Card.Header>
             <div className="flex items-center justify-between">
               <Card.Title>Contextos Recentes</Card.Title>
-              <Button variant="ghost" size="sm" onClick={toggleAddContextModal}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => openModal('ADD_CONTEXT')}
+              >
                 Ver Todos
               </Button>
             </div>
@@ -340,7 +343,7 @@ const Dashboard = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={toggleAddContextModal}
+                  onClick={() => openModal('ADD_CONTEXT')}
                 >
                   Criar Primeiro Contexto
                 </Button>
@@ -391,7 +394,7 @@ const Dashboard = () => {
               Comece adicionando sua primeira palavra para começar a estudar de
               forma organizada.
             </p>
-            <Button variant="primary" onClick={toggleAddWordModal}>
+            <Button variant="primary" onClick={() => openModal('ADD_WORD')}>
               Adicionar Primeira Palavra
             </Button>
           </div>

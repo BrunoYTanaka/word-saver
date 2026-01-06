@@ -4,6 +4,7 @@ import Modal from '../UI/Modal'
 import Input from '../UI/Input'
 import Button from '../UI/Button'
 import { FullWord } from '../../types/word.d'
+import { useModal } from '../../context/ModalContext'
 
 interface EditWordFormData {
   word: string
@@ -16,16 +17,10 @@ type ErrorTypes = {
   [key in keyof EditWordFormData]?: string
 }
 
-function EditWordModal() {
-  const {
-    updateWord,
-    contexts,
-    loading,
-    toggleAddContextModal,
-    toggleEditWordModal,
-    editingWord,
-    showEditWordModal
-  } = useApp()
+function EditWordModal({ wordId }: { wordId: string }) {
+  const { updateWord, contexts, words, loading } = useApp()
+
+  const { openModal, closeModal } = useModal()
 
   const [formData, setFormData] = useState<EditWordFormData>({
     word: '',
@@ -36,10 +31,11 @@ function EditWordModal() {
 
   const [errors, setErrors] = useState<ErrorTypes>({})
   const [initialized, setInitialized] = useState(false)
+  const editingWord = words.find((word) => word.id === wordId)
 
   // Populate form when modal opens with word data
   useEffect(() => {
-    if (showEditWordModal && editingWord) {
+    if (editingWord) {
       setFormData({
         word: editingWord.word || '',
         definition: editingWord.definition || '',
@@ -48,10 +44,8 @@ function EditWordModal() {
       })
       setInitialized(true)
       setErrors({})
-    } else {
-      setInitialized(false)
     }
-  }, [showEditWordModal, editingWord])
+  }, [editingWord, words])
 
   // Handle input changes
   const handleChange = (field: keyof EditWordFormData, value: string) => {
@@ -103,7 +97,7 @@ function EditWordModal() {
 
     try {
       await updateWord(updatedWordData)
-      toggleEditWordModal('')
+      closeModal('EDIT_WORD')
     } catch (error) {
       console.error('Error updating word:', error)
     }
@@ -112,7 +106,7 @@ function EditWordModal() {
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      toggleEditWordModal('')
+      closeModal('EDIT_WORD')
     }
   }
 
@@ -197,7 +191,7 @@ function EditWordModal() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={toggleAddContextModal}
+                onClick={() => openModal('ADD_CONTEXT')}
                 disabled={loading}
               >
                 Criar Primeiro Contexto

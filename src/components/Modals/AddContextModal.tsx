@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
+import { useModal } from '../../context/ModalContext'
 
 interface AddContextFormData {
   name: string
@@ -14,8 +15,8 @@ type ErrorTypes = {
 }
 
 const AddContextModal = () => {
-  const { showAddContextModal, toggleAddContextModal, addContext, loading } =
-    useApp()
+  const { addContext, loading } = useApp()
+  const { closeModal } = useModal()
 
   const [formData, setFormData] = useState<AddContextFormData>({
     name: '',
@@ -63,18 +64,6 @@ const AddContextModal = () => {
     '📖'
   ]
 
-  // Reset form when modal opens
-  useEffect(() => {
-    if (showAddContextModal) {
-      setFormData({
-        name: '',
-        color: '#3B82F6',
-        icon: '📚'
-      })
-      setErrors({})
-    }
-  }, [showAddContextModal])
-
   // Handle input changes
   const handleChange = (field: keyof AddContextFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -120,7 +109,7 @@ const AddContextModal = () => {
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      toggleAddContextModal()
+      closeModal('ADD_CONTEXT')
     }
   }
 
@@ -137,7 +126,7 @@ const AddContextModal = () => {
 
   return (
     <Modal
-      isOpen={showAddContextModal}
+      isOpen={true}
       onClose={handleClose}
       title="Criar Novo Contexto"
       size="md"

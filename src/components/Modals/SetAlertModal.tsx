@@ -1,20 +1,28 @@
 import { Clock, Bell, Calendar, Repeat } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
 import Button from '../UI/Button'
+import { useModal } from '../../context/ModalContext'
+
+interface SetAlertFormData {
+  name: string
+  frequency: 'daily' | 'weekly'
+  time: string
+  contextIds: string[]
+  days: number[]
+}
+
+type ErrorTypes = {
+  [key in keyof SetAlertFormData]?: string
+}
 
 const SetAlertModal = () => {
-  const {
-    showAddAlertModal,
-    toggleAddAlertModal,
-    addAlert,
-    contexts,
-    loading
-  } = useApp()
+  const { addAlert, contexts, loading } = useApp()
+  const { closeModal } = useModal()
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SetAlertFormData>({
     name: '',
     frequency: 'daily', // 'daily' | 'weekly'
     time: '09:00',
@@ -22,7 +30,7 @@ const SetAlertModal = () => {
     days: [1, 2, 3, 4, 5] // Default weekdays for weekly alerts (Monday to Friday)
   })
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<ErrorTypes>({})
 
   // Days of week for weekly alerts
   const daysOfWeek = [
@@ -35,23 +43,8 @@ const SetAlertModal = () => {
     { id: 6, label: 'Sáb', name: 'Sábado' }
   ]
 
-  // Reset form when modal opens
-  useEffect(() => {
-    if (showAddAlertModal) {
-      setFormData({
-        name: '',
-        frequency: 'daily',
-        time: '09:00',
-        contextIds: contexts.length > 0 ? [contexts[0].id] : [],
-        days: [1, 2, 3, 4, 5], // Weekdays
-        isActive: true
-      })
-      setErrors({})
-    }
-  }, [showAddAlertModal, contexts])
-
   // Handle input changes
-  const handleChange = (field, value) => {
+  const handleChange = (field: keyof SetAlertFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -60,7 +53,7 @@ const SetAlertModal = () => {
   }
 
   // Handle context selection
-  const handleContextToggle = (contextId) => {
+  const handleContextToggle = (contextId: string) => {
     setFormData((prev) => {
       const isSelected = prev.contextIds.includes(contextId)
       const newContextIds = isSelected
@@ -77,7 +70,7 @@ const SetAlertModal = () => {
   }
 
   // Handle day selection for weekly alerts
-  const handleDayToggle = (dayId) => {
+  const handleDayToggle = (dayId: number) => {
     setFormData((prev) => {
       const isSelected = prev.days.includes(dayId)
       const newDays = isSelected
@@ -95,7 +88,7 @@ const SetAlertModal = () => {
 
   // Validate form
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: ErrorTypes = {}
 
     if (!formData.name.trim()) {
       newErrors.name = 'Nome do alerta é obrigatório'
@@ -118,7 +111,7 @@ const SetAlertModal = () => {
   }
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!validateForm()) {
@@ -136,13 +129,13 @@ const SetAlertModal = () => {
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      toggleAddAlertModal()
+      closeModal('SET_ALERT')
     }
   }
 
   return (
     <Modal
-      isOpen={showAddAlertModal}
+      isOpen={true}
       onClose={handleClose}
       title="Configurar Alerta"
       size="md"

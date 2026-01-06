@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
 import Button from '../UI/Button'
+import { useModal } from '../../context/ModalContext'
 
 interface AddWordFormData {
   word: string
@@ -16,14 +17,8 @@ type ErrorTypes = {
 }
 
 function AddWordModal() {
-  const {
-    showAddWordModal,
-    toggleAddWordModal,
-    addWord,
-    contexts,
-    loading,
-    toggleAddContextModal
-  } = useApp()
+  const { addWord, contexts, loading } = useApp()
+  const { openModal, closeModal } = useModal()
 
   const [formData, setFormData] = useState<AddWordFormData>({
     word: '',
@@ -33,19 +28,6 @@ function AddWordModal() {
   })
 
   const [errors, setErrors] = useState<ErrorTypes>({})
-
-  // Reset form when modal opens
-  useEffect(() => {
-    if (showAddWordModal) {
-      setFormData({
-        word: '',
-        definition: '',
-        contextId: contexts.length > 0 ? contexts[0].id : '',
-        tags: ''
-      })
-      setErrors({})
-    }
-  }, [showAddWordModal, contexts])
 
   // Handle input changes
   const handleChange = (field: keyof AddWordFormData, value: string) => {
@@ -104,7 +86,7 @@ function AddWordModal() {
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      toggleAddWordModal()
+      closeModal('ADD_WORD')
     }
   }
 
@@ -121,7 +103,7 @@ function AddWordModal() {
 
   return (
     <Modal
-      isOpen={showAddWordModal}
+      isOpen={true}
       onClose={handleClose}
       title="Adicionar Nova Palavra"
       size="md"
@@ -189,7 +171,7 @@ function AddWordModal() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={toggleAddContextModal}
+                onClick={() => openModal('ADD_CONTEXT')}
                 disabled={loading}
               >
                 Criar Primeiro Contexto

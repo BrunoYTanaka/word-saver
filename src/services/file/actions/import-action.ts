@@ -1,4 +1,4 @@
-import { Settings } from 'http2'
+import { Settings } from '../../../types/settings'
 import { FullAlert } from '../../../types/alert'
 import { FullContext } from '../../../types/context'
 import { FullWord } from '../../../types/word'

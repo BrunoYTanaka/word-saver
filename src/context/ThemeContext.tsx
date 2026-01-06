@@ -1,14 +1,36 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import { dbService } from '../services/db'
-import { ThemeContext, THEMES, ThemeType } from '../hooks/useTheme'
 
 const THEME_KEY = 'theme'
 
-interface ThemeProviderProps {
-  children: React.ReactNode
+const THEMES = {
+  LIGHT: 'light',
+  DARK: 'dark',
+  AUTO: 'auto'
+} as const
+
+type ThemeType = (typeof THEMES)[keyof typeof THEMES]
+interface ThemeContextType {
+  isDark: boolean
+  theme: ThemeType
+  themes: typeof THEMES
+  isLoading: boolean
+  toggleTheme: () => void
+  changeTheme: (newTheme: ThemeType) => void
+  cycleTheme: () => void
+  getThemeDisplayName: (themeValue?: ThemeType) => string
+  getThemeIcon: (themeValue?: ThemeType) => string
+  getEffectiveTheme: () => ThemeType
+  availableThemes: {
+    value: ThemeType
+    label: string
+    icon: string
+  }[]
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
+const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType)
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<ThemeType>(THEMES.AUTO)
   const [isDark, setIsDark] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -202,4 +224,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext)
+
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider')
+  }
+
+  return context
 }

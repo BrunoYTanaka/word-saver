@@ -53,3 +53,5 @@ declare global {
     beforeinstallprompt: BeforeInstallPromptEvent
   }
 }
+
+export {}

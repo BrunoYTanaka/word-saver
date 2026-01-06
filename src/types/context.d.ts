@@ -7,4 +7,5 @@ export interface Context {
 export interface FullContext extends Context {
   id: string
   createdAt: string
+  wordCount: number
 }
