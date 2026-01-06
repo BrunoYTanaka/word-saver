@@ -214,18 +214,18 @@ interface AppContextType {
   // Word operations
   addWord: (wordData: any) => Promise<void>
   updateWord: (wordData: any) => Promise<void>
-  deleteWord: (wordId: number) => Promise<void>
-  reviewWord: (wordId: number) => Promise<void>
+  deleteWord: (wordId: string) => Promise<void>
+  reviewWord: (wordId: string) => Promise<void>
 
   // Context operations
   addContext: (contextData: any) => Promise<void>
   updateContext: (contextData: any) => Promise<void>
-  deleteContext: (contextId: number) => Promise<void>
+  deleteContext: (contextId: string) => Promise<void>
 
   // Alert operations
   addAlert: (alertData: any) => Promise<void>
   updateAlert: (alertData: any) => Promise<void>
-  deleteAlert: (alertId: number) => Promise<void>
+  deleteAlert: (alertId: string) => Promise<void>
 
   // UI operations
   setViewMode: (mode: 'grid' | 'list') => void

@@ -12,16 +12,22 @@ import Card from '../components/UI/Card'
 import Button from '../components/UI/Button'
 import CountCard from '../components/UI/CountCard'
 import Table from '../components/UI/Table'
+import Tab from '../components/UI/Tab'
+import { formatDate } from '../utils/format-date'
 
 const Dashboard = () => {
   const {
     words,
     stats,
     contexts,
+    alerts,
     loading,
     toggleAddWordModal,
     toggleAddContextModal,
-    toggleAddAlertModal
+    toggleAddAlertModal,
+    deleteWord,
+    deleteContext,
+    deleteAlert
   } = useApp()
 
   const data = useMemo(
@@ -111,6 +117,109 @@ const Dashboard = () => {
     }
   ]
 
+  const tabs = [
+    {
+      id: 'words',
+      label: 'Palavras',
+      content: (
+        <Table
+          onDelete={deleteWord}
+          onEdit={() => console.log('edit word')}
+          data={data}
+          columns={[
+            {
+              title: 'Palavras',
+              field: 'word'
+            },
+            {
+              title: 'Definições',
+              field: 'definition'
+            },
+            {
+              title: 'Contextos',
+              field: 'context'
+            },
+            {
+              title: 'Alertas',
+              field: 'alerts'
+            },
+            {
+              title: 'Ações',
+              field: 'actions'
+            }
+          ]}
+        />
+      )
+    },
+    {
+      id: 'contexts',
+      label: 'Contextos',
+      content: (
+        <Table
+          onDelete={deleteContext}
+          onEdit={() => console.log('edit context')}
+          data={contexts.map((context) => ({
+            id: context.id,
+            name: context.name,
+            color: context.color,
+            wordCount: context.wordCount || 0
+          }))}
+          columns={[
+            { title: 'Nome', field: 'name' },
+            { title: 'Cor', field: 'color' },
+            { title: 'Número de Palavras', field: 'wordCount' },
+            { title: 'Ações', field: 'actions' }
+          ]}
+        />
+      )
+    },
+    {
+      id: 'alerts',
+      label: 'Alertas',
+      content: (
+        <Table
+          onDelete={deleteAlert}
+          onEdit={() => console.log('edit alert')}
+          data={alerts.map((alert) => ({
+            id: alert.id,
+            frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',
+            days: alert.days
+              .map((day: number) => {
+                switch (day) {
+                  case 0:
+                    return 'Dom'
+                  case 1:
+                    return 'Seg'
+                  case 2:
+                    return 'Ter'
+                  case 3:
+                    return 'Qua'
+                  case 4:
+                    return 'Qui'
+                  case 5:
+                    return 'Sex'
+                  case 6:
+                    return 'Sáb'
+                  default:
+                    return ''
+                }
+              })
+              .join(', '),
+            lastTriggered: formatDate(alert.lastTriggered),
+            createdAt: formatDate(alert.createdAt)
+          }))}
+          columns={[
+            { title: 'Frequência', field: 'frequency' },
+            { title: 'Dias', field: 'days' },
+            { title: 'Criado Em', field: 'createdAt' },
+            { title: 'Último Acionamento', field: 'lastTriggered' },
+            { title: 'Ações', field: 'actions' }
+          ]}
+        />
+      )
+    }
+  ]
+
   return (
     <div className="space-y-8 pb-20 md:pb-8">
       {/* Welcome Section */}
@@ -124,18 +233,11 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-3 rounded-lg bg-card shadow dark:border dark:border-border">
         {statCards.map((stat, index) => {
-          return (
-            <CountCard
-              key={index}
-              {...stat}
-              number={stat.value}
-              index={index}
-            />
-          )
+          return <CountCard key={index} {...stat} number={stat.value} />
         })}
       </div>
 
-      <Table data={data} />
+      <Tab tabs={tabs} defaultTab="words" variant="default" size="md" />
 
       {/* Quick Actions */}
       <div>
