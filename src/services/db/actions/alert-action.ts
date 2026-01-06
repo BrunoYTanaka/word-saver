@@ -1,4 +1,4 @@
-import { Alert, FullAlert } from '../../../types/Alert'
+import { Alert, FullAlert } from '../../../types/alert'
 import { STORES } from '../config/database'
 import BaseAction from '../core/base-action'
 import database from '../core/database'

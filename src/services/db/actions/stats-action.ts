@@ -1,18 +1,8 @@
+import { Stats } from '../../../types/stats'
 import AlertService from './alert-action'
 import ContextService from './context-action'
 import WordService from './word-action'
 
-interface Stats {
-  totalWords: number
-  totalContexts: number
-  activeAlerts: number
-  reviewedWords: number
-  totalReviews: number
-  difficultyStats: Record<string, number>
-  recentWords: number
-  recentReviews: number
-  averageReviewsPerWord: number | string
-}
 class StatsAction {
   async getStats(): Promise<Stats> {
     const [words, contexts, alerts] = await Promise.all([

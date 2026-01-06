@@ -1,5 +1,5 @@
-import { Context, FullContext } from '../../../types/Context'
-import { FullWord } from '../../../types/Word'
+import { Context, FullContext } from '../../../types/context'
+import { FullWord } from '../../../types/word'
 import { STORES } from '../config/database'
 import BaseAction from '../core/base-action'
 import WordService from './word-action'

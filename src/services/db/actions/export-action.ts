@@ -1,5 +1,5 @@
-import { FullContext } from '../../../types/Context'
-import { FullWord } from '../../../types/Word'
+import { FullContext } from '../../../types/context'
+import { FullWord } from '../../../types/word'
 import { DB_VERSION } from '../config/database'
 
 import AlertService from './alert-action'

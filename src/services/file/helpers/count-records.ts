@@ -1,7 +1,7 @@
-import { FullAlert } from '../../../types/Alert'
-import { FullContext } from '../../../types/Context'
-import { Settings } from '../../../types/Settings'
-import { FullWord } from '../../../types/Word'
+import { FullAlert } from '../../../types/alert'
+import { FullContext } from '../../../types/context'
+import { Settings } from '../../../types/settings'
+import { FullWord } from '../../../types/word'
 
 interface Data {
   words?: FullWord[]

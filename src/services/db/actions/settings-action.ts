@@ -1,4 +1,4 @@
-import { Settings } from '../../../types/Settings'
+import { Settings } from '../../../types/settings'
 import { STORES } from '../config/database'
 import BaseAction from '../core/base-action'
 

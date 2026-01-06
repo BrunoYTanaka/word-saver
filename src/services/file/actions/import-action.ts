@@ -1,7 +1,7 @@
 import { Settings } from 'http2'
-import { FullAlert } from '../../../types/Alert'
-import { FullContext } from '../../../types/Context'
-import { FullWord } from '../../../types/Word'
+import { FullAlert } from '../../../types/alert'
+import { FullContext } from '../../../types/context'
+import { FullWord } from '../../../types/word'
 import { dbService } from '../../db'
 import { validateImportData } from '../helpers/validate-import-data'
 

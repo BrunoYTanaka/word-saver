@@ -2,22 +2,12 @@
 import { createContext, useContext, useReducer, useEffect } from 'react'
 import { dbService } from '../services/db'
 import notificationService from '../services/notification'
-import { FullWord } from '../types/Word'
-import { FullContext } from '../types/Context'
-import { FullAlert } from '../types/Alert'
+import { FullWord } from '../types/word'
+import { FullContext } from '../types/context'
+import { FullAlert } from '../types/alert'
+import { Stats } from '../types/stats'
 
 // Type definitions
-interface Stats {
-  totalWords: number
-  totalContexts: number
-  activeAlerts: number
-  reviewedWords: number
-  totalReviews: number
-  difficultyStats: Record<string, number>
-  recentWords: number
-  recentReviews: number
-  averageReviewsPerWord: number | string
-}
 export interface AppState {
   // Data
   words: FullWord[]

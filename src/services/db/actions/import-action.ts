@@ -1,6 +1,6 @@
-import { FullAlert } from '../../../types/Alert'
-import { FullContext } from '../../../types/Context'
-import { FullWord } from '../../../types/Word'
+import { FullAlert } from '../../../types/alert'
+import { FullContext } from '../../../types/context'
+import { FullWord } from '../../../types/word'
 import { STORES } from '../config/database'
 import database from '../core/database'
 

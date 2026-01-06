@@ -1,4 +1,4 @@
-import { Word, FullWord } from '../../../types/Word'
+import { Word, FullWord } from '../../../types/word'
 import { STORES } from '../config/database'
 import BaseAction from '../core/base-action'
 import database from '../core/database'
