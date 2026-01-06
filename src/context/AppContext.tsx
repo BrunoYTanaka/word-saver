@@ -14,7 +14,6 @@ export interface AppState {
   contexts: FullContext[]
   alerts: FullAlert[]
   stats: Stats | null
-  editingWord: FullWord | null
 
   // UI State
   loading: boolean
@@ -25,15 +24,6 @@ export interface AppState {
   viewMode: 'grid' | 'list'
   searchQuery: string
   selectedContextId: string | null
-
-  // Modals/Drawers
-  showAddWordModal: boolean
-  showEditWordModal: boolean
-  showAddContextModal: boolean
-  showAddAlertModal: boolean
-  showSettingsModal: boolean
-  showExportModal: boolean
-  showImportModal: boolean
 }
 
 // Initial state
@@ -43,7 +33,6 @@ const initialState: AppState = {
   contexts: [],
   alerts: [],
   stats: null,
-  editingWord: null,
 
   // UI State
   loading: false,
@@ -53,16 +42,7 @@ const initialState: AppState = {
   // View preferences
   viewMode: 'grid', // 'grid' | 'list'
   searchQuery: '',
-  selectedContextId: null,
-
-  // Modals/Drawers
-  showAddWordModal: false,
-  showEditWordModal: false,
-  showAddContextModal: false,
-  showAddAlertModal: false,
-  showSettingsModal: false,
-  showExportModal: false,
-  showImportModal: false
+  selectedContextId: null
 }
 
 // Action types
@@ -92,15 +72,6 @@ type AppAction =
   | { type: 'SET_SEARCH_QUERY'; payload: string }
   | { type: 'SET_SELECTED_CONTEXT'; payload: string | null }
 
-  // Modal actions
-  | { type: 'TOGGLE_ADD_WORD_MODAL' }
-  | { type: 'TOGGLE_ADD_CONTEXT_MODAL' }
-  | { type: 'TOGGLE_ADD_ALERT_MODAL' }
-  | { type: 'TOGGLE_SETTINGS_MODAL' }
-  | { type: 'TOGGLE_EXPORT_MODAL' }
-  | { type: 'TOGGLE_IMPORT_MODAL' }
-  | { type: 'TOGGLE_EDIT_WORD_MODAL'; payload: string }
-
 const ACTIONS = {
   // Initialization
   SET_LOADING: 'SET_LOADING' as const,
@@ -128,16 +99,7 @@ const ACTIONS = {
   // UI actions
   SET_VIEW_MODE: 'SET_VIEW_MODE' as const,
   SET_SEARCH_QUERY: 'SET_SEARCH_QUERY' as const,
-  SET_SELECTED_CONTEXT: 'SET_SELECTED_CONTEXT' as const,
-
-  // Modal actions
-  TOGGLE_ADD_WORD_MODAL: 'TOGGLE_ADD_WORD_MODAL' as const,
-  TOGGLE_ADD_CONTEXT_MODAL: 'TOGGLE_ADD_CONTEXT_MODAL' as const,
-  TOGGLE_ADD_ALERT_MODAL: 'TOGGLE_ADD_ALERT_MODAL' as const,
-  TOGGLE_SETTINGS_MODAL: 'TOGGLE_SETTINGS_MODAL' as const,
-  TOGGLE_EXPORT_MODAL: 'TOGGLE_EXPORT_MODAL' as const,
-  TOGGLE_IMPORT_MODAL: 'TOGGLE_IMPORT_MODAL' as const,
-  TOGGLE_EDIT_WORD_MODAL: 'TOGGLE_EDIT_WORD_MODAL' as const
+  SET_SELECTED_CONTEXT: 'SET_SELECTED_CONTEXT' as const
 }
 
 // Reducer function
@@ -238,36 +200,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case ACTIONS.SET_SELECTED_CONTEXT:
       return { ...state, selectedContextId: action.payload }
 
-    // Modals
-    case ACTIONS.TOGGLE_ADD_WORD_MODAL:
-      return { ...state, showAddWordModal: !state.showAddWordModal }
-
-    case ACTIONS.TOGGLE_EDIT_WORD_MODAL: {
-      const wordId = action.payload
-      const editingWord = state.words.find((word) => word.id === wordId) || null
-
-      return {
-        ...state,
-        editingWord,
-        showEditWordModal: !state.showEditWordModal
-      }
-    }
-
-    case ACTIONS.TOGGLE_ADD_CONTEXT_MODAL:
-      return { ...state, showAddContextModal: !state.showAddContextModal }
-
-    case ACTIONS.TOGGLE_ADD_ALERT_MODAL:
-      return { ...state, showAddAlertModal: !state.showAddAlertModal }
-
-    case ACTIONS.TOGGLE_SETTINGS_MODAL:
-      return { ...state, showSettingsModal: !state.showSettingsModal }
-
-    case ACTIONS.TOGGLE_EXPORT_MODAL:
-      return { ...state, showExportModal: !state.showExportModal }
-
-    case ACTIONS.TOGGLE_IMPORT_MODAL:
-      return { ...state, showImportModal: !state.showImportModal }
-
     default:
       return state
   }
@@ -277,7 +209,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
 interface AppContextType {
   // State
   words: FullWord[]
-  editingWord: FullWord | null
   contexts: FullContext[]
   alerts: FullAlert[]
   stats: Stats | null
@@ -287,13 +218,6 @@ interface AppContextType {
   viewMode: 'grid' | 'list'
   searchQuery: string
   selectedContextId: string | null
-  showAddWordModal: boolean
-  showEditWordModal: boolean
-  showAddContextModal: boolean
-  showAddAlertModal: boolean
-  showSettingsModal: boolean
-  showExportModal: boolean
-  showImportModal: boolean
 
   // Word operations
   addWord: (wordData: Word) => Promise<void>
@@ -315,15 +239,6 @@ interface AppContextType {
   setViewMode: (mode: 'grid' | 'list') => void
   setSearchQuery: (query: string) => void
   setSelectedContext: (contextId: string | null) => void
-
-  // Modal operations
-  toggleAddWordModal: () => void
-  toggleEditWordModal: (wordId: string) => void
-  toggleAddContextModal: () => void
-  toggleAddAlertModal: () => void
-  toggleSettingsModal: () => void
-  toggleExportModal: () => void
-  toggleImportModal: () => void
 
   // Utilities
   refreshStats: () => Promise<void>
@@ -412,7 +327,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.words.addWord(wordData)
       await loadAllData() // Reload to get updated stats
-      dispatch({ type: ACTIONS.TOGGLE_ADD_WORD_MODAL })
     } catch (error) {
       console.error('Error adding word:', error)
       dispatch({
@@ -467,7 +381,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
       await dbService.contexts.addContext(contextData)
       await loadAllData()
-      dispatch({ type: ACTIONS.TOGGLE_ADD_CONTEXT_MODAL })
     } catch (error) {
       console.error('Error adding context:', error)
       dispatch({
@@ -521,7 +434,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       await notificationService.scheduleAlert(alert)
 
       await loadAllData()
-      dispatch({ type: ACTIONS.TOGGLE_ADD_ALERT_MODAL })
     } catch (error) {
       console.error('Error adding alert:', error)
       dispatch({
@@ -622,19 +534,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     },
     setSelectedContext: (contextId: string | null) =>
       dispatch({ type: ACTIONS.SET_SELECTED_CONTEXT, payload: contextId }),
-
-    // Modal operations
-    toggleAddWordModal: () => dispatch({ type: ACTIONS.TOGGLE_ADD_WORD_MODAL }),
-    toggleAddContextModal: () =>
-      dispatch({ type: ACTIONS.TOGGLE_ADD_CONTEXT_MODAL }),
-    toggleAddAlertModal: () =>
-      dispatch({ type: ACTIONS.TOGGLE_ADD_ALERT_MODAL }),
-    toggleSettingsModal: () =>
-      dispatch({ type: ACTIONS.TOGGLE_SETTINGS_MODAL }),
-    toggleExportModal: () => dispatch({ type: ACTIONS.TOGGLE_EXPORT_MODAL }),
-    toggleImportModal: () => dispatch({ type: ACTIONS.TOGGLE_IMPORT_MODAL }),
-    toggleEditWordModal: (wordId: string) =>
-      dispatch({ type: ACTIONS.TOGGLE_EDIT_WORD_MODAL, payload: wordId }),
 
     // Utilities
     refreshStats,
