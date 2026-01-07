@@ -18,7 +18,7 @@ type ErrorTypes = {
   [key in keyof SetAlertFormData]?: string
 }
 
-const SetAlertModal = () => {
+const AddAlertModal = () => {
   const { addAlert, contexts, loading } = useApp()
   const { closeModal } = useModal()
 
@@ -124,14 +124,14 @@ const SetAlertModal = () => {
     } catch (error) {
       console.error('Error creating alert:', error)
     } finally {
-      closeModal('SET_ALERT')
+      closeModal('ADD_ALERT')
     }
   }
 
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      closeModal('SET_ALERT')
+      closeModal('ADD_ALERT')
     }
   }
 
@@ -316,4 +316,4 @@ const SetAlertModal = () => {
   )
 }
 
-export default SetAlertModal
+export default AddAlertModal

@@ -112,7 +112,7 @@ const Dashboard = () => {
       title: 'Configurar Alerta',
       description: 'Lembrete para revisar palavras',
       icon: Bell,
-      action: () => openModal('SET_ALERT'),
+      action: () => openModal('ADD_ALERT'),
       color: 'outline'
     }
   ]

@@ -3,45 +3,46 @@ import AddWordModal from '../components/Modals/AddWordModal'
 import EditWordModal from '../components/Modals/EditWordModal'
 import AddContextModal from '../components/Modals/AddContextModal'
 import EditContextModal from '../components/Modals/EditContextModal'
-import SetAlertModal from '../components/Modals/SetAlertModal'
+import AddAlertModal from '../components/Modals/AddAlertModal'
 import EditAlertModal from '../components/Modals/EditAlertModal'
 import SettingsModal from '../components/Modals/SettingsModal'
 import ExportDataModal from '../components/Modals/ExportDataModal'
 
+type ModalPropsMap = {
+  ADD_WORD: undefined
+  EDIT_WORD: { wordId: string }
+  ADD_CONTEXT: undefined
+  EDIT_CONTEXT: { contextId: string }
+  ADD_ALERT: undefined
+  EDIT_ALERT: { alertId: string }
+  SETTINGS: undefined
+  EXPORT_DATA: undefined
+  IMPORT_DATA: undefined
+}
+
+type ModalType = keyof ModalPropsMap
 interface ModalContextType {
-  openModal: (key: ModalType, props?: any) => void
+  openModal: <T extends ModalType>(key: T, props?: ModalPropsMap[T]) => void
   closeModal: (key: ModalType) => void
   isOpen: (key: ModalType) => boolean
-  getProps: (key: ModalType) => any
+  getProps: <T extends ModalType>(key: T) => ModalPropsMap[T] | undefined
 }
 
 const ModalContext = createContext<ModalContextType>({} as ModalContextType)
 
-const ModalTypes = {
-  ADD_WORD: 'ADD_WORD',
-  EDIT_WORD: 'EDIT_WORD',
-  ADD_CONTEXT: 'ADD_CONTEXT',
-  EDIT_CONTEXT: 'EDIT_CONTEXT',
-  ADD_ALERT: 'ADD_ALERT',
-  SET_ALERT: 'SET_ALERT',
-  EDIT_ALERT: 'EDIT_ALERT',
-  SETTINGS: 'SETTINGS',
-  EXPORT_DATA: 'EXPORT_DATA',
-  IMPORT_DATA: 'IMPORT_DATA'
-} as const
-
-interface ModalState {
-  [key: string]: { open: boolean; props?: any }
+type ModalState = {
+  [K in ModalType]?: {
+    open: boolean
+    props?: ModalPropsMap[K]
+  }
 }
-
-type ModalType = keyof typeof ModalTypes
 
 export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [modals, setModals] = useState<ModalState>({})
 
-  const openModal = (key: ModalType, props?: any) => {
+  const openModal = <T extends ModalType>(key: T, props?: ModalPropsMap[T]) => {
     setModals((prev) => ({ ...prev, [key]: { open: true, props } }))
   }
 
@@ -50,60 +51,22 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   const isOpen = (key: ModalType) => !!modals[key]?.open
-  const getProps = (key: ModalType) => modals[key]?.props
+  const getProps = <T extends ModalType>(key: T) => modals[key]?.props
 
   return (
     <ModalContext.Provider value={{ openModal, closeModal, isOpen, getProps }}>
       {children}
 
-      {isOpen('ADD_WORD') && (
-        <AddWordModal
-          {...getProps('ADD_WORD')}
-          onClose={() => closeModal('ADD_WORD')}
-        />
-      )}
-      {isOpen('EDIT_WORD') && (
-        <EditWordModal
-          {...getProps('EDIT_WORD')}
-          onClose={() => closeModal('EDIT_WORD')}
-        />
-      )}
-      {isOpen('ADD_CONTEXT') && (
-        <AddContextModal
-          {...getProps('ADD_CONTEXT')}
-          onClose={() => closeModal('ADD_CONTEXT')}
-        />
-      )}
+      {isOpen('ADD_WORD') && <AddWordModal />}
+      {isOpen('EDIT_WORD') && <EditWordModal {...getProps('EDIT_WORD')!} />}
+      {isOpen('ADD_CONTEXT') && <AddContextModal />}
       {isOpen('EDIT_CONTEXT') && (
-        <EditContextModal
-          {...getProps('EDIT_CONTEXT')}
-          onClose={() => closeModal('EDIT_CONTEXT')}
-        />
+        <EditContextModal {...getProps('EDIT_CONTEXT')!} />
       )}
-      {isOpen('SET_ALERT') && (
-        <SetAlertModal
-          {...getProps('SET_ALERT')}
-          onClose={() => closeModal('SET_ALERT')}
-        />
-      )}
-      {isOpen('EDIT_ALERT') && (
-        <EditAlertModal
-          {...getProps('EDIT_ALERT')}
-          onClose={() => closeModal('EDIT_ALERT')}
-        />
-      )}
-      {isOpen('SETTINGS') && (
-        <SettingsModal
-          {...getProps('SETTINGS')}
-          onClose={() => closeModal('SETTINGS')}
-        />
-      )}
-      {isOpen('EXPORT_DATA') && (
-        <ExportDataModal
-          {...getProps('EXPORT_DATA')}
-          onClose={() => closeModal('EXPORT_DATA')}
-        />
-      )}
+      {isOpen('ADD_ALERT') && <AddAlertModal />}
+      {isOpen('EDIT_ALERT') && <EditAlertModal {...getProps('EDIT_ALERT')!} />}
+      {isOpen('SETTINGS') && <SettingsModal />}
+      {isOpen('EXPORT_DATA') && <ExportDataModal />}
     </ModalContext.Provider>
   )
 }
