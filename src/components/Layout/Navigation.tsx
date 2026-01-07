@@ -25,7 +25,7 @@ const Navigation = () => {
   ]
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 border-t border-gray-200 bg-white md:hidden dark:border-gray-700 dark:bg-gray-800">
+    <nav className="fixed inset-x-0 bottom-0 border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 md:hidden">
       <div className="flex items-center justify-around py-2">
         {navItems.map((item, index) => {
           const Icon = item.icon

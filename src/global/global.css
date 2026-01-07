@@ -68,6 +68,7 @@
 html,
 body {
   height: 100%;
+  @apply bg-background text-foreground transition-colors duration-200 ease-out;
 }
 /*
   Typographic tweaks!
@@ -75,7 +76,7 @@ body {
   5. Improve text rendering
 */
 body {
-  @apply bg-background text-foreground antialiased leading-6;
+  @apply antialiased leading-6;
   font-family: 'Roboto', sans-serif;
 }
 /*
@@ -116,15 +117,6 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
-}
-
-@keyframes glow {
-  from {
-    stroke-dashoffset: initial;
-  }
-  to {
-    stroke-dashoffset: -100px;
-  }
 }
 
 /* PWA Animations */

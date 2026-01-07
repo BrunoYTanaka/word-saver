@@ -39,7 +39,7 @@ function Tab({
   const getTabButtonClasses = (tabId: string) => {
     const isActive = activeTab === tabId
     const baseClasses = cn(
-      'flex w-full cursor-pointer items-center justify-center border-0 px-4 py-2 transition-all duration-200',
+      'flex w-full cursor-pointer items-center justify-center border-0 px-4 py-2',
       sizeClasses[size]
     )
 
@@ -66,7 +66,7 @@ function Tab({
     if (variant === 'underlined') {
       return cn(
         baseClasses,
-        'rounded-none border-b-2 transition-colors',
+        'rounded-none border-b-2',
         isActive
           ? 'border-primary text-primary'
           : 'border-transparent text-muted-foreground hover:text-foreground'
