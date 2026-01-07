@@ -23,6 +23,7 @@ const Dashboard = () => {
     contexts,
     alerts,
     loading,
+    initialized,
     deleteWord,
     deleteContext,
     deleteAlert
@@ -36,7 +37,7 @@ const Dashboard = () => {
     const reviewParam = urlParams.get('review')
     const alertParam = urlParams.get('alert')
 
-    if (reviewParam && alertParam) {
+    if (reviewParam && initialized) {
       console.log(
         'Opening from notification - Review contexts:',
         reviewParam,
@@ -47,18 +48,17 @@ const Dashboard = () => {
       // Encontrar o alerta correspondente
       const alert = alerts.find((a) => a.id === alertParam)
       if (alert) {
-        // Aqui você pode abrir um modal específico para revisão ou navegar para uma seção
-        // Por exemplo, filtrar por contextos específicos
-        console.log('Found alert for review:', alert)
-
-        // Opcional: mostrar notificação ou toast de que veio de notificação
-        // Opcional: filtrar automaticamente os contextos especificados
+        // Abrir modal de revisão com os contextos
+        const contextIds = reviewParam.split(',').filter(Boolean)
+        openModal('REVIEW_WORD', {
+          contextIds
+        })
       }
 
       // Limpar parâmetros da URL para não reprocessar
       window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [alerts]) // Dependência de alerts para garantir que estão carregados
+  }, [alerts, openModal, initialized]) // Dependência de alerts para garantir que estão carregados
 
   const data = useMemo(
     () =>

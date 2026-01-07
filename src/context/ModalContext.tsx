@@ -7,6 +7,7 @@ import AddAlertModal from '../components/Modals/AddAlertModal'
 import EditAlertModal from '../components/Modals/EditAlertModal'
 import SettingsModal from '../components/Modals/SettingsModal'
 import ExportDataModal from '../components/Modals/ExportDataModal'
+import ReviewWordModal from '../components/Modals/ReviewWordModal'
 
 type ModalPropsMap = {
   ADD_WORD: undefined
@@ -18,6 +19,7 @@ type ModalPropsMap = {
   SETTINGS: undefined
   EXPORT_DATA: undefined
   IMPORT_DATA: undefined
+  REVIEW_WORD: { contextIds: string[]; alertId?: string }
 }
 
 type ModalType = keyof ModalPropsMap
@@ -67,6 +69,9 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
       {isOpen('EDIT_ALERT') && <EditAlertModal {...getProps('EDIT_ALERT')!} />}
       {isOpen('SETTINGS') && <SettingsModal />}
       {isOpen('EXPORT_DATA') && <ExportDataModal />}
+      {isOpen('REVIEW_WORD') && (
+        <ReviewWordModal {...getProps('REVIEW_WORD')!} />
+      )}
     </ModalContext.Provider>
   )
 }

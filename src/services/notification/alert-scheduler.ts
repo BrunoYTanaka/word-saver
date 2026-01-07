@@ -89,7 +89,7 @@ export class AlertScheduler {
             type: 'word-review',
             alertId: alert.id,
             contextIds: alert.contextIds,
-            wordCount: allWords.length
+            words: allWords
           },
           actions: [
             {
