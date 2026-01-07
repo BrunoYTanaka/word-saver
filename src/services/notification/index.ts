@@ -10,13 +10,11 @@ class ComposedNotificationService {
   public readonly core: NotificationService
   public readonly scheduler: AlertScheduler
   public readonly types: NotificationTypes
-  public readonly handlers = NotificationHandlers
 
   constructor() {
     this.core = new NotificationService()
     this.scheduler = new AlertScheduler(this.core)
     this.types = new NotificationTypes(this.core)
-    this.handlers = NotificationHandlers
   }
 
   // Initialize all services

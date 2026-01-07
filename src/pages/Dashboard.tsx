@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import {
   BookOpen,
   Archive,
@@ -29,6 +29,36 @@ const Dashboard = () => {
   } = useApp()
 
   const { openModal } = useModal()
+
+  // Processar parâmetros da URL quando vindo de notificação
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const reviewParam = urlParams.get('review')
+    const alertParam = urlParams.get('alert')
+
+    if (reviewParam && alertParam) {
+      console.log(
+        'Opening from notification - Review contexts:',
+        reviewParam,
+        'Alert:',
+        alertParam
+      )
+
+      // Encontrar o alerta correspondente
+      const alert = alerts.find((a) => a.id === alertParam)
+      if (alert) {
+        // Aqui você pode abrir um modal específico para revisão ou navegar para uma seção
+        // Por exemplo, filtrar por contextos específicos
+        console.log('Found alert for review:', alert)
+
+        // Opcional: mostrar notificação ou toast de que veio de notificação
+        // Opcional: filtrar automaticamente os contextos especificados
+      }
+
+      // Limpar parâmetros da URL para não reprocessar
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [alerts]) // Dependência de alerts para garantir que estão carregados
 
   const data = useMemo(
     () =>

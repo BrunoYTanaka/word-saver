@@ -70,6 +70,50 @@ export class NotificationService implements INotificationService {
         setTimeout(() => notification.close(), 5000)
       }
 
+      notification.onclick = (e: Event) => {
+        e.preventDefault()
+        notification.close()
+
+        // Obter dados da notificação do defaultOptions
+        const data = defaultOptions.data || {}
+
+        console.log('Notification clicked with data:', data)
+
+        if (data.type === 'word-review') {
+          // Redirecionar para página de revisão
+          const reviewParams = data.contextIds ? data.contextIds.join(',') : ''
+          const alertId = data.alertId || ''
+          const reviewUrl = `${window.location.origin}/?review=${reviewParams}&alert=${alertId}`
+
+          console.log('Navigating to:', reviewUrl)
+
+          // Focar na janela atual
+          if (window.focus) {
+            window.focus()
+          }
+
+          // Navegar para a URL de revisão
+          window.location.href = reviewUrl
+        } else if (data.type === 'review-reminder') {
+          // Para reminder, apenas focar na janela atual
+          if (window.focus) {
+            window.focus()
+          }
+          // Opcional: navegar para uma página específica
+          window.location.href = window.location.origin
+        } else if (data.type === 'congratulations') {
+          // Para parabéns, apenas focar na janela
+          if (window.focus) {
+            window.focus()
+          }
+        } else {
+          // Fallback: apenas focar na aplicação
+          if (window.focus) {
+            window.focus()
+          }
+        }
+      }
+
       return notification
     } catch (error) {
       console.error('Error showing notification:', error)
