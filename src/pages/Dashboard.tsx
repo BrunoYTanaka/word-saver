@@ -157,7 +157,7 @@ const Dashboard = () => {
       content: (
         <Table
           onDelete={deleteContext}
-          onEdit={() => console.log('edit context')}
+          onEdit={(contextId) => openModal('EDIT_CONTEXT', { contextId })}
           data={contexts.map((context) => ({
             id: context.id,
             name: context.name,
@@ -179,7 +179,7 @@ const Dashboard = () => {
       content: (
         <Table
           onDelete={deleteAlert}
-          onEdit={() => console.log('edit alert')}
+          onEdit={(alertId) => openModal('EDIT_ALERT', { alertId })}
           data={alerts.map((alert) => ({
             id: alert.id,
             frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',

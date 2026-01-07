@@ -1,34 +1,52 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
 import { useModal } from '../../context/ModalContext'
+import { FullContext } from '../../types/context'
 import { colors, icons } from '../../constants/context'
 
-interface AddContextFormData {
+interface EditContextFormData {
   name: string
   color: string
   icon: string
 }
 
 type ErrorTypes = {
-  [key in keyof AddContextFormData]?: string
+  [key in keyof EditContextFormData]?: string
 }
 
-const AddContextModal = () => {
-  const { addContext, loading } = useApp()
+interface EditContextModalProps {
+  contextId: string
+  onClose?: () => void
+}
+
+const EditContextModal = ({ contextId }: EditContextModalProps) => {
+  const { contexts, updateContext, loading } = useApp()
   const { closeModal } = useModal()
 
-  const [formData, setFormData] = useState<AddContextFormData>({
-    name: '',
-    color: '#3B82F6',
-    icon: '📚'
+  const context = contexts.find((ctx) => ctx.id === contextId)
+  const [formData, setFormData] = useState<EditContextFormData>({
+    name: context?.name || '',
+    color: context?.color || '',
+    icon: context?.icon || ''
   })
 
   const [errors, setErrors] = useState<ErrorTypes>({})
 
+  // Update form data when context changes
+  useEffect(() => {
+    if (!context) return
+    setFormData({
+      name: context.name,
+      color: context.color,
+      icon: context.icon
+    })
+    setErrors({})
+  }, [context])
+
   // Handle input changes
-  const handleChange = (field: keyof AddContextFormData, value: string) => {
+  const handleChange = (field: keyof EditContextFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -54,27 +72,28 @@ const AddContextModal = () => {
   ) => {
     e.preventDefault()
 
-    if (!validateForm()) return
+    if (!validateForm() || !context) return
 
-    const contextData = {
+    const updatedContextData: FullContext = {
+      ...context,
       name: formData.name.trim(),
       color: formData.color,
       icon: formData.icon
     }
 
     try {
-      await addContext(contextData)
+      await updateContext(updatedContextData)
     } catch (error) {
-      console.error('Error adding context:', error)
+      console.error('Error updating context:', error)
     } finally {
-      closeModal('ADD_CONTEXT')
+      closeModal('EDIT_CONTEXT')
     }
   }
 
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      closeModal('ADD_CONTEXT')
+      closeModal('EDIT_CONTEXT')
     }
   }
 
@@ -83,7 +102,7 @@ const AddContextModal = () => {
       onCancel={handleClose}
       onConfirm={handleSubmit}
       cancelText="Cancelar"
-      confirmText="Criar Contexto"
+      confirmText="Salvar Alterações"
       confirmVariant="primary"
       loading={loading}
     />
@@ -93,7 +112,7 @@ const AddContextModal = () => {
     <Modal
       isOpen={true}
       onClose={handleClose}
-      title="Criar Novo Contexto"
+      title="Editar Contexto"
       size="md"
       footer={modalFooter}
       closeOnOverlayClick={!loading}
@@ -192,4 +211,4 @@ const AddContextModal = () => {
   )
 }
 
-export default AddContextModal
+export default EditContextModal

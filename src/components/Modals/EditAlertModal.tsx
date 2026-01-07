@@ -1,12 +1,13 @@
 import { Clock, Bell, Calendar, Repeat } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
 import Button from '../UI/Button'
 import { useModal } from '../../context/ModalContext'
+import { FullAlert } from '../../types/alert'
 
-interface SetAlertFormData {
+interface EditAlertFormData {
   name: string
   frequency: 'daily' | 'weekly'
   time: string
@@ -15,19 +16,25 @@ interface SetAlertFormData {
 }
 
 type ErrorTypes = {
-  [key in keyof SetAlertFormData]?: string
+  [key in keyof EditAlertFormData]?: string
 }
 
-const SetAlertModal = () => {
-  const { addAlert, contexts, loading } = useApp()
+interface EditAlertModalProps {
+  alertId: string
+  onClose?: () => void
+}
+
+const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
+  const { alerts, updateAlert, contexts, loading } = useApp()
   const { closeModal } = useModal()
 
-  const [formData, setFormData] = useState<SetAlertFormData>({
-    name: '',
-    frequency: 'daily', // 'daily' | 'weekly'
-    time: '09:00',
-    contextIds: [],
-    days: [1, 2, 3, 4, 5] // Default weekdays for weekly alerts (Monday to Friday)
+  const alert = alerts.find((a) => a.id === alertId)
+  const [formData, setFormData] = useState<EditAlertFormData>({
+    name: alert?.name || '',
+    frequency: alert?.frequency || 'daily',
+    time: alert?.time || '',
+    contextIds: alert?.contextIds || [],
+    days: alert?.days || []
   })
 
   const [errors, setErrors] = useState<ErrorTypes>({})
@@ -43,8 +50,21 @@ const SetAlertModal = () => {
     { id: 6, label: 'Sáb', name: 'Sábado' }
   ]
 
+  // Update form data when alert changes
+  useEffect(() => {
+    if (!alert) return
+    setFormData({
+      name: alert.name,
+      frequency: alert.frequency,
+      time: alert.time,
+      contextIds: alert.contextIds,
+      days: alert.days
+    })
+    setErrors({})
+  }, [alert])
+
   // Handle input changes
-  const handleChange = (field: keyof SetAlertFormData, value: string) => {
+  const handleChange = (field: keyof EditAlertFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -114,24 +134,34 @@ const SetAlertModal = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!validateForm()) {
+    if (!validateForm() || !alert) {
       return
     }
 
+    const updatedAlertData: FullAlert = {
+      ...alert,
+      name: formData.name.trim(),
+      frequency: formData.frequency,
+      time: formData.time,
+      contextIds: formData.contextIds,
+      days: formData.days
+    }
+
     try {
-      await addAlert(formData)
-      // Modal will be closed by the context action
+      await updateAlert(updatedAlertData)
+      // Close modal after successful update
+      handleClose()
     } catch (error) {
-      console.error('Error creating alert:', error)
+      console.error('Error updating alert:', error)
     } finally {
-      closeModal('SET_ALERT')
+      closeModal('EDIT_ALERT')
     }
   }
 
   // Handle modal close
   const handleClose = () => {
     if (!loading) {
-      closeModal('SET_ALERT')
+      closeModal('EDIT_ALERT')
     }
   }
 
@@ -139,7 +169,7 @@ const SetAlertModal = () => {
     <Modal
       isOpen={true}
       onClose={handleClose}
-      title="Configurar Alerta"
+      title="Editar Alerta"
       size="md"
       className="max-h-[90vh] overflow-y-auto"
     >
@@ -308,7 +338,7 @@ const SetAlertModal = () => {
             disabled={loading || contexts.length === 0}
             className="flex-1"
           >
-            {loading ? 'Salvando...' : 'Criar Alerta'}
+            {loading ? 'Salvando...' : 'Salvar Alterações'}
           </Button>
         </div>
       </form>
@@ -316,4 +346,4 @@ const SetAlertModal = () => {
   )
 }
 
-export default SetAlertModal
+export default EditAlertModal

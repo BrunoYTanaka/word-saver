@@ -112,6 +112,7 @@ const ExportDataModal = () => {
       )
     } finally {
       setIsExporting(false)
+      closeModal('EXPORT_DATA')
     }
   }
 

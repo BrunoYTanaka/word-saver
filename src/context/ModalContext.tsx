@@ -2,7 +2,9 @@ import { createContext, useContext, useState } from 'react'
 import AddWordModal from '../components/Modals/AddWordModal'
 import EditWordModal from '../components/Modals/EditWordModal'
 import AddContextModal from '../components/Modals/AddContextModal'
+import EditContextModal from '../components/Modals/EditContextModal'
 import SetAlertModal from '../components/Modals/SetAlertModal'
+import EditAlertModal from '../components/Modals/EditAlertModal'
 import SettingsModal from '../components/Modals/SettingsModal'
 import ExportDataModal from '../components/Modals/ExportDataModal'
 
@@ -19,8 +21,10 @@ const ModalTypes = {
   ADD_WORD: 'ADD_WORD',
   EDIT_WORD: 'EDIT_WORD',
   ADD_CONTEXT: 'ADD_CONTEXT',
+  EDIT_CONTEXT: 'EDIT_CONTEXT',
   ADD_ALERT: 'ADD_ALERT',
   SET_ALERT: 'SET_ALERT',
+  EDIT_ALERT: 'EDIT_ALERT',
   SETTINGS: 'SETTINGS',
   EXPORT_DATA: 'EXPORT_DATA',
   IMPORT_DATA: 'IMPORT_DATA'
@@ -70,10 +74,22 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
           onClose={() => closeModal('ADD_CONTEXT')}
         />
       )}
+      {isOpen('EDIT_CONTEXT') && (
+        <EditContextModal
+          {...getProps('EDIT_CONTEXT')}
+          onClose={() => closeModal('EDIT_CONTEXT')}
+        />
+      )}
       {isOpen('SET_ALERT') && (
         <SetAlertModal
           {...getProps('SET_ALERT')}
           onClose={() => closeModal('SET_ALERT')}
+        />
+      )}
+      {isOpen('EDIT_ALERT') && (
+        <EditAlertModal
+          {...getProps('EDIT_ALERT')}
+          onClose={() => closeModal('EDIT_ALERT')}
         />
       )}
       {isOpen('SETTINGS') && (

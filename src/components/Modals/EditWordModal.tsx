@@ -19,33 +19,28 @@ type ErrorTypes = {
 
 function EditWordModal({ wordId }: { wordId: string }) {
   const { updateWord, contexts, words, loading } = useApp()
-
   const { openModal, closeModal } = useModal()
 
+  const word = words.find((w) => w.id === wordId)
   const [formData, setFormData] = useState<EditWordFormData>({
-    word: '',
-    definition: '',
-    contextId: '',
-    tags: ''
+    word: word?.word || '',
+    definition: word?.definition || '',
+    contextId: word?.contextId || '',
+    tags: word?.tags?.join(', ') || ''
   })
-
   const [errors, setErrors] = useState<ErrorTypes>({})
-  const [initialized, setInitialized] = useState(false)
-  const editingWord = words.find((word) => word.id === wordId)
 
   // Populate form when modal opens with word data
   useEffect(() => {
-    if (editingWord) {
-      setFormData({
-        word: editingWord.word || '',
-        definition: editingWord.definition || '',
-        contextId: editingWord.contextId || '',
-        tags: editingWord.tags?.join(', ') || ''
-      })
-      setInitialized(true)
-      setErrors({})
-    }
-  }, [editingWord, words])
+    if (!word) return
+    setFormData({
+      word: word.word || '',
+      definition: word.definition || '',
+      contextId: word.contextId || '',
+      tags: word.tags?.join(', ') || ''
+    })
+    setErrors({})
+  }, [word])
 
   // Handle input changes
   const handleChange = (field: keyof EditWordFormData, value: string) => {
@@ -82,10 +77,10 @@ function EditWordModal({ wordId }: { wordId: string }) {
   ) => {
     e.preventDefault()
 
-    if (!validateForm() || !editingWord) return
+    if (!validateForm() || !word) return
 
     const updatedWordData: FullWord = {
-      ...editingWord,
+      ...word,
       word: formData.word.trim(),
       definition: formData.definition.trim(),
       contextId: formData.contextId,
@@ -123,7 +118,7 @@ function EditWordModal({ wordId }: { wordId: string }) {
 
   return (
     <Modal
-      isOpen={initialized}
+      isOpen={true}
       onClose={handleClose}
       title="Editar Palavra"
       size="md"

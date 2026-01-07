@@ -80,6 +80,8 @@ function AddWordModal() {
       await addWord(wordData)
     } catch (error) {
       console.error('Error adding word:', error)
+    } finally {
+      closeModal('ADD_WORD')
     }
   }
 
