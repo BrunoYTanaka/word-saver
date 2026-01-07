@@ -1,20 +1,15 @@
-// Main Notification Service - Composed Service
-import { NotificationService } from './notification-service'
+import { CoreNotificationService } from './core-notification-service'
 import { AlertScheduler } from './alert-scheduler'
-import { NotificationHandlers } from './notification-handlers'
-import { NotificationTypes } from './notification-types'
 import type { NotificationOptions, PermissionStatus } from './types'
 import { FullAlert } from '../../types/alert'
 
-class ComposedNotificationService {
-  public readonly core: NotificationService
-  public readonly scheduler: AlertScheduler
-  public readonly types: NotificationTypes
+class NotificationService {
+  private core: CoreNotificationService
+  private scheduler: AlertScheduler
 
   constructor() {
-    this.core = new NotificationService()
+    this.core = new CoreNotificationService()
     this.scheduler = new AlertScheduler(this.core)
-    this.types = new NotificationTypes(this.core)
   }
 
   // Initialize all services
@@ -33,11 +28,11 @@ class ComposedNotificationService {
     return await this.core.requestPermission()
   }
 
-  showNotification(
+  async showNotification(
     title: string,
     options: NotificationOptions = {}
-  ): Notification | null {
-    return this.core.showNotification(title, options)
+  ): Promise<void> {
+    return await this.core.showNotification(title, options)
   }
 
   isEnabled(): boolean {
@@ -62,24 +57,18 @@ class ComposedNotificationService {
   }
 
   // Delegate notification type methods
-  showWordReviewReminder(
+  async showWordReviewReminder(
     wordCount: number,
     contexts: string
-  ): Notification | null {
-    return this.types.showWordReviewReminder(wordCount, contexts)
+  ): Promise<void> {
+    return await this.core.showWordReviewReminder(wordCount, contexts)
   }
 
-  showCongratsNotification(milestone: string): Notification | null {
-    return this.types.showCongratsNotification(milestone)
-  }
-
-  // Static method for service worker
-  static handleNotificationClick(event: NotificationEvent): void {
-    return NotificationHandlers.handleNotificationClick(event)
+  async showCongratsNotification(milestone: string): Promise<void> {
+    return await this.core.showCongratsNotification(milestone)
   }
 }
 
 // Create singleton instance
-const notificationService = new ComposedNotificationService()
-
+const notificationService = new NotificationService()
 export default notificationService
