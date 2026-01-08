@@ -1,5 +1,11 @@
 // Main App Context for Word Saver PWA
-import { createContext, useContext, useReducer, useEffect } from 'react'
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useState
+} from 'react'
 import { dbService } from '../services/db'
 import notificationService from '../services/notification'
 import { FullWord, Word } from '../types/word'
@@ -218,6 +224,7 @@ interface AppContextType {
   viewMode: 'grid' | 'list'
   searchQuery: string
   selectedContextId: string | null
+  isNotificationEnabled: boolean
 
   // Word operations
   addWord: (wordData: Word) => Promise<void>
@@ -252,6 +259,8 @@ const AppContext = createContext<AppContextType>({} as AppContextType)
 // Context provider component
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState)
+  const [isNotificationEnabled, setIsNotificationEnabled] =
+    useState<boolean>(false)
 
   // Initialize app
   useEffect(() => {
@@ -263,12 +272,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         await dbService.init()
 
         // Initialize notifications
-        await notificationService.init()
+        const isNotificationEnabled = await notificationService.init()
 
         // Load initial data
         await loadAllData()
 
         dispatch({ type: ACTIONS.SET_INITIALIZED, payload: true })
+        setIsNotificationEnabled(isNotificationEnabled)
       } catch (error) {
         console.error('Error initializing app:', error)
         dispatch({
@@ -508,6 +518,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const value = {
     // State
     ...state,
+    isNotificationEnabled,
 
     // Word operations
     addWord,

@@ -7,9 +7,11 @@ import Card from '../UI/Card'
 import { useTheme } from '../../context/ThemeContext'
 import pckInfo from '../../../package.json'
 import { useModal } from '../../context/ModalContext'
+import { cn } from '../../utils/cn'
 
 const SettingsModal = () => {
-  const { words, contexts, alerts, deleteAllData } = useApp()
+  const { words, contexts, alerts, deleteAllData, isNotificationEnabled } =
+    useApp()
   const { closeModal, openModal } = useModal()
 
   const { isDark, toggleTheme } = useTheme()
@@ -71,36 +73,36 @@ const SettingsModal = () => {
       <div className="space-y-6">
         {/* App Statistics */}
         <div>
-          <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="mb-4 font-semibold text-foreground">
             Estatísticas da Aplicação
           </h3>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {/* Words Count */}
             <Card className="text-center">
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+              <div className="text-3xl font-bold text-primary">
                 {words.length}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-muted-foreground">
                 Palavra{words.length !== 1 ? 's' : ''}
               </div>
             </Card>
 
             {/* Contexts Count */}
             <Card className="text-center">
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+              <div className="text-success text-3xl font-bold">
                 {contexts.length}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-muted-foreground">
                 Contexto{contexts.length !== 1 ? 's' : ''}
               </div>
             </Card>
 
             {/* Alerts Count */}
             <Card className="text-center">
-              <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
+              <div className="text-warning text-3xl font-bold">
                 {alerts.length}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-muted-foreground">
                 Alerta{alerts.length !== 1 ? 's' : ''}
               </div>
             </Card>
@@ -109,30 +111,35 @@ const SettingsModal = () => {
 
         {/* App Preferences */}
         <div>
-          <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">
-            Preferências
-          </h3>
+          <h3 className="mb-4 font-semibold text-foreground">Preferências</h3>
 
           <Card>
             <div className="space-y-4">
               {/* Theme Toggle */}
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-gray-100">
+                  <div className="font-medium text-foreground">
                     Tema da Aplicação
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-muted-foreground">
                     {isDark ? 'Tema escuro ativo' : 'Tema claro ativo'}
                   </div>
                 </div>
                 <button
                   onClick={toggleTheme}
-                  className="relative inline-flex h-6 w-11 items-center rounded-full border-0 bg-surface-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+                  role="switch"
+                  aria-checked={isDark}
+                  aria-label="Alternar tema da aplicação"
+                  className={cn(
+                    'relative inline-flex h-6 w-11 items-center rounded-full border-0 transition-colors focus:outline-none focus:ring-2 focus:ring-primary',
+                    isDark ? 'bg-primary' : 'bg-muted hover:bg-surface-muted'
+                  )}
                 >
                   <span
-                    className={`${
+                    className={`${cn(
+                      'inline-block size-4 rounded-full bg-white transition-transform',
                       isDark ? 'translate-x-6' : 'translate-x-1'
-                    } inline-block size-4 rounded-full bg-white transition-transform`}
+                    )}`}
                   />
                 </button>
               </div>
@@ -140,15 +147,30 @@ const SettingsModal = () => {
               {/* Notifications */}
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-gray-100">
+                  <div className="font-medium text-foreground">
                     Notificações
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-muted-foreground">
                     Receber lembretes de revisão
                   </div>
                 </div>
-                <button className="relative inline-flex h-6 w-11 items-center rounded-full border-0 bg-blue-600 transition-colors">
-                  <span className="inline-block size-4 translate-x-6 rounded-full bg-white transition-transform" />
+                <button
+                  role="switch"
+                  aria-checked={isNotificationEnabled}
+                  aria-label="Alternar notificações"
+                  className={cn(
+                    'relative inline-flex h-6 w-11 items-center rounded-full border-0 transition-colors focus:outline-none focus:ring-2 focus:ring-primary',
+                    isNotificationEnabled
+                      ? 'bg-primary'
+                      : 'bg-muted hover:bg-surface-muted'
+                  )}
+                >
+                  <span
+                    className={`${cn(
+                      'inline-block size-4 rounded-full bg-white transition-transform',
+                      isNotificationEnabled ? 'translate-x-6' : 'translate-x-1'
+                    )}`}
+                  />
                 </button>
               </div>
             </div>
@@ -157,7 +179,7 @@ const SettingsModal = () => {
 
         {/* Data Management */}
         <div>
-          <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="mb-4 font-semibold text-foreground">
             Gerenciar Dados
           </h3>
 
@@ -165,7 +187,7 @@ const SettingsModal = () => {
             <div className="space-y-4">
               {/* Export/Import Section */}
               <div>
-                <div className="mb-3 font-medium text-gray-900 dark:text-gray-100">
+                <div className="mb-3 font-medium text-foreground">
                   Backup e Restauração
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row">
@@ -186,24 +208,24 @@ const SettingsModal = () => {
                     <span>Importar Dados</span>
                   </Button>
                 </div>
-                <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                <div className="mt-2 text-sm text-muted-foreground">
                   Faça backup dos seus dados ou importe de outro dispositivo
                 </div>
               </div>
 
               {/* Storage Info */}
-              <div className="border-t border-gray-200 pt-4 dark:border-gray-700">
+              <div className="border-t border-border pt-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-gray-100">
+                    <div className="font-medium text-foreground">
                       Uso de Armazenamento
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-muted-foreground">
                       Dados armazenados localmente
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-mono text-sm text-gray-900 dark:text-gray-100">
+                    <div className="font-mono text-sm text-foreground">
                       {appInfo.totalStorage}
                     </div>
                   </div>
@@ -215,26 +237,22 @@ const SettingsModal = () => {
 
         {/* About Section */}
         <div>
-          <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="mb-4 font-semibold text-foreground">
             Sobre a Aplicação
           </h3>
 
           <Card>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">
-                  Versão:
-                </span>
+                <span className="text-muted-foreground">Versão:</span>
                 <span className="font-mono text-sm">{appInfo.version}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Build:</span>
+                <span className="text-muted-foreground">Build:</span>
                 <span className="font-mono text-sm">{appInfo.buildDate}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">
-                  Plataforma:
-                </span>
+                <span className="text-muted-foreground">Plataforma:</span>
                 <span className="font-mono text-sm">Web PWA</span>
               </div>
             </div>
@@ -243,17 +261,17 @@ const SettingsModal = () => {
 
         {/* Danger Zone */}
         <div>
-          <h3 className="mb-4 font-semibold text-red-600 dark:text-red-400">
+          <h3 className="mb-4 font-semibold text-destructive">
             ⚠️ Zona de Perigo
           </h3>
 
-          <Card className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20">
+          <Card className="bg-destructive-soft border-destructive">
             <div className="space-y-3">
               <div>
-                <div className="font-medium text-red-900 dark:text-red-100">
+                <div className="font-medium text-destructive">
                   Limpar Todos os Dados
                 </div>
-                <div className="text-sm text-red-700 dark:text-red-300">
+                <div className="text-sm text-destructive opacity-70">
                   Remove permanentemente todas as palavras, contextos, alertas e
                   configurações. Esta ação não pode ser desfeita!
                 </div>
@@ -261,7 +279,7 @@ const SettingsModal = () => {
               <Button
                 variant="outline"
                 onClick={clearAllData}
-                className="border-solid border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/30"
+                className="border-solid border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
               >
                 Limpar Todos os Dados
               </Button>
@@ -270,7 +288,7 @@ const SettingsModal = () => {
         </div>
 
         {/* Close Button */}
-        <div className="flex justify-end border-t border-gray-200 pt-4 dark:border-gray-700">
+        <div className="flex justify-end border-t border-border pt-4">
           <Button onClick={() => closeModal('SETTINGS')}>Fechar</Button>
         </div>
       </div>

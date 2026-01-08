@@ -266,7 +266,7 @@ const ExportDataModal = () => {
                   return (
                     <label
                       key={context.id}
-                      className="flex cursor-pointer items-center justify-between rounded-lg bg-surface-muted p-3 transition-colors"
+                      className="bg-surface-muted flex cursor-pointer items-center justify-between rounded-lg p-3 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
                         <input
@@ -299,7 +299,6 @@ const ExportDataModal = () => {
         )}
 
         {/* Export Stats */}
-        {/* <Card className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20"> */}
         <Card className="border-primary">
           <div className="flex items-center space-x-4">
             <div className="text-primary">

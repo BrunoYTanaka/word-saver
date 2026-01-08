@@ -43,11 +43,13 @@ export default {
         destructive: {
           DEFAULT: 'var(--destructive)',
           hover: 'var(--destructive-hover)',
-          foreground: 'var(--destructive-foreground)'
+          foreground: 'var(--destructive-foreground)',
+          soft: 'var(--destructive-soft)'
         },
 
         success: {
           DEFAULT: 'var(--success)',
+          hover: 'var(--success-hover)',
           foreground: 'var(--success-foreground)',
           soft: 'var(--success-soft)'
         },

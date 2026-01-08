@@ -60,7 +60,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
     return (
       <Modal isOpen={true} onClose={handleClose} title="📚 Revisão de Palavras">
         <div className="py-8 text-center">
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Nenhuma palavra encontrada nos contextos selecionados.
           </p>
           <Button onClick={handleClose} className="mt-4">
@@ -86,9 +86,9 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
     >
       <div className="space-y-6">
         {/* Context info */}
-        <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <div className="text-center text-sm text-muted-foreground">
           Revisando palavras de:{' '}
-          <span className="font-medium">{contextNames}</span>
+          <span className="font-medium text-foreground">{contextNames}</span>
           {reviewedCount > 0 && (
             <span className="mt-1 block">
               Palavras revisadas: {reviewedCount}
@@ -97,7 +97,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
         </div>
 
         {/* Word card */}
-        <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 text-center dark:border-blue-800 dark:from-blue-900/20 dark:to-indigo-900/20">
+        <Card className="bg-primary-soft border-border p-6 text-center">
           <div className="space-y-4">
             {/* Word */}
             <div>
@@ -105,16 +105,14 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
                 {currentWord.word}
               </h3>
               {currentWord.tags && (
-                <div className="text-sm text-blue-600 dark:text-blue-400">
-                  {currentWord.tags}
-                </div>
+                <div className="text-sm text-primary">{currentWord.tags}</div>
               )}
             </div>
 
             {/* Definition (shown after click) */}
             {showDefinition && currentWord.definition && (
-              <div className="border-t border-blue-200 pt-4 dark:border-blue-700">
-                <p className="leading-relaxed text-gray-700 dark:text-gray-300">
+              <div className="border-t border-border pt-4">
+                <p className="leading-relaxed text-foreground">
                   {currentWord.definition}
                 </p>
               </div>
@@ -125,7 +123,8 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
               {!showDefinition ? (
                 <Button
                   onClick={handleShowDefinition}
-                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hover"
+                  variant="primary"
+                  className="flex-1"
                 >
                   🤔 Ver Definição
                 </Button>
@@ -133,7 +132,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
                 <>
                   <Button
                     onClick={handleNextWord}
-                    className="flex-1 bg-success text-success-foreground hover:bg-success-hover"
+                    className="bg-success text-success-foreground hover:bg-success-hover flex-1"
                   >
                     ✅ Próxima Palavra
                   </Button>
@@ -151,7 +150,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
         </Card>
 
         {/* Stats */}
-        <div className="text-center text-xs text-gray-500 dark:text-gray-400">
+        <div className="text-center text-xs text-muted-foreground">
           💡 Dica: Tente lembrar da definição antes de clicar para ver!
         </div>
       </div>

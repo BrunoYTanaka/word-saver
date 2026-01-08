@@ -3,7 +3,7 @@ import { cn } from '../../utils/cn'
 
 interface ButtonProps {
   children?: React.ReactNode
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'accent'
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
   size?: 'sm' | 'md' | 'lg' | 'xl'
   disabled?: boolean
   loading?: boolean
@@ -76,7 +76,6 @@ function Button({
     >
       {loading ? (
         <div className="flex items-center gap-2">
-          {/* <LoadingSpinner /> */}
           <LoaderCircle className="size-4 animate-spin" />
           {children && <span>Carregando...</span>}
         </div>

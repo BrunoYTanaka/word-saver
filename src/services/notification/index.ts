@@ -21,6 +21,10 @@ class NotificationService {
     return initialized
   }
 
+  async isEnabled(): Promise<boolean> {
+    return this.core.isEnabled()
+  }
+
   async scheduleAlert(alert: FullAlert): Promise<boolean> {
     return await this.scheduler.scheduleAlert(alert)
   }
