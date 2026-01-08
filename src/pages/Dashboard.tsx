@@ -80,10 +80,7 @@ const Dashboard = () => {
           <div className="bg-surface-muted mb-6 h-8 w-1/3 rounded"></div>
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-32 rounded-lg bg-surface-muted"
-              ></div>
+              <div key={i} className="bg-surface-muted h-32 rounded-lg"></div>
             ))}
           </div>
         </div>
