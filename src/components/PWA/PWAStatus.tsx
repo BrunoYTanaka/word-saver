@@ -49,7 +49,7 @@ export const PWAStatus: React.FC = () => {
               size="sm"
               variant="secondary"
               onClick={updateApp}
-              className="bg-white text-blue-600 hover:bg-gray-100"
+              className="bg-surface text-primary hover:bg-surface-hover"
             >
               Atualizar
             </Button>

@@ -77,12 +77,12 @@ const Dashboard = () => {
     return (
       <div className="space-y-6">
         <div className="animate-pulse">
-          <div className="mb-6 h-8 w-1/3 rounded bg-gray-200 dark:bg-gray-700"></div>
+          <div className="bg-surface-muted mb-6 h-8 w-1/3 rounded"></div>
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-32 rounded-lg bg-gray-200 dark:bg-gray-700"
+                className="h-32 rounded-lg bg-surface-muted"
               ></div>
             ))}
           </div>

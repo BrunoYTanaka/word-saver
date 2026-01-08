@@ -13,7 +13,7 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="border-primary-200 border-t-primary-600 mx-auto mb-4 size-8 animate-spin rounded-full border-4"></div>
           <p className="text-gray-600 dark:text-gray-400">

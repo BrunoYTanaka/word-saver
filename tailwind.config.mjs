@@ -31,36 +31,29 @@ export default {
 
         secondary: {
           DEFAULT: 'var(--secondary)',
-          hover: 'var(--secondary-hover)',
-          foreground: 'var(--secondary-foreground)',
-          soft: 'var(--secondary-soft)'
+          foreground: 'var(--secondary-foreground)'
         },
 
         accent: {
           DEFAULT: 'var(--accent)',
-          hover: 'var(--accent-hover)',
-          foreground: 'var(--accent-foreground)',
-          soft: 'var(--accent-soft)'
+          foreground: 'var(--accent-foreground)'
         },
 
         /* Status Colors */
         destructive: {
           DEFAULT: 'var(--destructive)',
           hover: 'var(--destructive-hover)',
-          foreground: 'var(--destructive-foreground)',
-          soft: 'var(--destructive-soft)'
+          foreground: 'var(--destructive-foreground)'
         },
 
         success: {
           DEFAULT: 'var(--success)',
-          hover: 'var(--success-hover)',
           foreground: 'var(--success-foreground)',
           soft: 'var(--success-soft)'
         },
 
         warning: {
           DEFAULT: 'var(--warning)',
-          hover: 'var(--warning-hover)',
           foreground: 'var(--warning-foreground)',
           soft: 'var(--warning-soft)'
         },

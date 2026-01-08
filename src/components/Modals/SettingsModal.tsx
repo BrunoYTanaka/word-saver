@@ -127,7 +127,7 @@ const SettingsModal = () => {
                 </div>
                 <button
                   onClick={toggleTheme}
-                  className="relative inline-flex h-6 w-11 items-center rounded-full border-0 bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                  className="relative inline-flex h-6 w-11 items-center rounded-full border-0 bg-surface-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <span
                     className={`${
