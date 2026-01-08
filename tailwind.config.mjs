@@ -1,46 +1,54 @@
 /** @type {import('tailwindcss').Config} */
-
 export default {
-  content: ['./src/**/*.{mjs,js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mjs}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        background: 'var(--color-background)',
-        foreground: 'var(--color-foreground)',
-        card: {
-          DEFAULT: 'var(--color-card)',
-          foreground: 'var(--color-card-foreground)'
+        background: 'var(--bg-primary)',
+        foreground: 'var(--text-foreground)',
+        muted: {
+          DEFAULT: 'var(--bg-muted)',
+          foreground: 'var(--text-muted-foreground)'
         },
-        popover: {
-          DEFAULT: 'var(--color-popover)',
-          foreground: 'var(--color-popover-foreground)'
+        card: {
+          DEFAULT: 'var(--bg-card)',
+          hover: 'var(--bg-card-hover)',
+          foreground: 'var(--text-foreground)'
         },
         primary: {
-          DEFAULT: 'var(--color-primary)',
-          foreground: 'var(--color-primary-foreground)'
+          DEFAULT: 'var(--primary)',
+          hover: 'var(--primary-hover)',
+          light: 'var(--primary-light)',
+          disabled: 'var(--primary-disabled)'
         },
         secondary: {
-          DEFAULT: 'var(--color-secondary)',
-          foreground: 'var(--color-secondary-foreground)'
-        },
-        muted: {
-          DEFAULT: 'var(--color-muted)',
-          foreground: 'var(--color-muted-foreground)'
-        },
-        accent: {
-          DEFAULT: 'var(--color-accent)',
-          foreground: 'var(--color-accent-foreground)'
+          DEFAULT: 'var(--secondary)',
+          hover: 'var(--secondary-hover)'
         },
         destructive: {
-          DEFAULT: 'var(--color-destructive)',
-          foreground: 'var(--color-destructive-foreground)'
+          DEFAULT: 'var(--destructive)',
+          hover: 'var(--destructive-hover)'
         },
-        border: 'var(--color-border)',
-        input: 'var(--color-input)',
-        ring: 'var(--color-ring)'
+        success: {
+          DEFAULT: 'var(--success)',
+          hover: 'var(--success-hover)'
+        },
+        ghost: {
+          hover: 'var(--ghost-hover)'
+        },
+        outline: {
+          hover: 'var(--outline-hover)'
+        },
+        border: 'var(--border)',
+        ring: 'var(--ring)'
       }
+    },
+
+    animation: {
+      'fade-in': 'fadeIn 0.5s ease-in-out',
+      'slide-up': 'slideUp 0.3s ease-out'
     }
   },
-  darkMode: 'class',
   plugins: []
 }

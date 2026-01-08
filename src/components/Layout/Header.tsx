@@ -16,9 +16,7 @@ const Header = () => {
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
               <span className="text-lg font-bold text-white">W</span>
             </div>
-            <h1 className="hidden text-xl font-bold text-gray-900 dark:text-gray-100 sm:block">
-              Word Saver
-            </h1>
+            <h1 className="hidden text-xl font-bold sm:block">Word Saver</h1>
           </div>
 
           {/* Actions */}

@@ -115,9 +115,7 @@ const AddContextModal = () => {
 
         {/* Color Selection */}
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Cor do Contexto
-          </label>
+          <label className="block text-sm font-medium ">Cor do Contexto</label>
           <div className="grid grid-cols-5 gap-3">
             {colors.map((color) => (
               <button
@@ -125,12 +123,13 @@ const AddContextModal = () => {
                 type="button"
                 onClick={() => handleChange('color', color)}
                 disabled={loading}
+                title={`Cor ${color}`}
                 className={`
                   size-10 rounded-lg border-2 transition-all
                   ${
                     formData.color === color
-                      ? 'scale-110 border-gray-900 dark:border-gray-100'
-                      : 'border-gray-300 hover:scale-105 dark:border-gray-600'
+                      ? 'scale-110 border-foreground'
+                      : 'border-border hover:scale-105'
                   }
                   disabled:cursor-not-allowed disabled:opacity-50
                 `}
@@ -143,7 +142,7 @@ const AddContextModal = () => {
 
         {/* Icon Selection */}
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium ">
             Ícone do Contexto
           </label>
           <div className="grid grid-cols-10 gap-2">
@@ -157,8 +156,8 @@ const AddContextModal = () => {
                   size-8 rounded border text-lg transition-all
                   ${
                     formData.icon === icon
-                      ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                      : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
+                      ? 'bg-primary/10 dark:bg-primary/20 border-primary'
+                      : 'border-border transition-colors hover:bg-muted'
                   }
                   disabled:cursor-not-allowed disabled:opacity-50
                 `}
@@ -172,17 +171,15 @@ const AddContextModal = () => {
 
         {/* Preview */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Visualização
-          </label>
-          <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800">
+          <label className="block text-sm font-medium ">Visualização</label>
+          <div className="flex items-center gap-3 rounded-lg border border-border bg-muted p-3">
             <div
               className="flex size-6 items-center justify-center rounded text-sm"
               style={{ backgroundColor: formData.color }}
             >
               {formData.icon}
             </div>
-            <span className="font-medium text-gray-900 dark:text-gray-100">
+            <span className="font-medium ">
               {formData.name || 'Nome do Contexto'}
             </span>
           </div>

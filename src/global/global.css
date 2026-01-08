@@ -3,51 +3,85 @@
 @tailwind utilities;
 
 :root {
-  /* Light theme colors */
-  --color-background: #ffffff;
-  --color-foreground: #111827;
-  --color-card: #ffffff;
-  --color-card-foreground: #111827;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #111827;
-  --color-primary: #2563eb;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f3f4f6;
-  --color-secondary-foreground: #1f2937;
-  --color-muted: #f9fafb;
-  --color-muted-foreground: #6b7280;
-  --color-accent: #f3f4f6;
-  --color-accent-foreground: #1f2937;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
-  --color-border: #e5e7eb;
-  --color-input: #e5e7eb;
-  --color-ring: #2563eb;
-}
+  /* Backgrounds */
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --bg-muted: #f1f5f9;
 
+  /* Text */
+  --text-foreground: #0f172a;
+  --text-muted-foreground: #64748b;
+
+  /* Primary */
+  --primary: #6366f1;
+  --primary-hover: #544ec5;
+  --primary-light: #4338ca;
+  --primary-disabled: #a5b4fc;
+
+  /* Secondary */
+  --secondary: #22c55e;
+  --secondary-hover: #16a34a;
+
+  /* Destructive */
+  --destructive: #dc2626;
+  --destructive-hover: #b91c1c;
+
+  /* Success */
+  --success: #22c55e;
+  --success-hover: #16a34a;
+
+  /* Card */
+  --bg-card: var(--bg-secondary);
+  --bg-card-hover: #f3f4f6;
+
+  /* Ghost / Outline */
+  --ghost-hover: rgba(15, 23, 42, 0.12);
+  --outline-hover: rgba(15, 23, 42, 0.12);
+
+  /* Border / Ring */
+  --border: #e2e8f0;
+  --ring: #6366f1;
+}
 .dark {
-  /* Dark theme colors */
-  --color-background: #0f172a;
-  --color-foreground: #f1f5f9;
-  --color-card: #1e293b;
-  --color-card-foreground: #f1f5f9;
-  --color-popover: #1e293b;
-  --color-popover-foreground: #f1f5f9;
-  --color-primary: #3b82f6;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #334155;
-  --color-secondary-foreground: #f1f5f9;
-  --color-muted: #1e293b;
-  --color-muted-foreground: #94a3b8;
-  --color-accent: #334155;
-  --color-accent-foreground: #f1f5f9;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
-  --color-border: #334155;
-  --color-input: #334155;
-  --color-ring: #3b82f6;
-}
+  /* Backgrounds */
+  --bg-primary: #0b1220;
+  --bg-secondary: #0f172a;
+  --bg-muted: #020617;
 
+  /* Text */
+  --text-foreground: #e5e7eb;
+  --text-muted-foreground: #64748b;
+
+  /* Primary */
+  --primary: #818cf8;
+  --primary-hover: #6366f1;
+  --primary-light: #4f46e5;
+  --primary-disabled: #a5b4fc;
+
+  /* Secondary */
+  --secondary: #22c55e;
+  --secondary-hover: #16a34a;
+
+  /* Destructive */
+  --destructive: #ef4444;
+  --destructive-hover: #dc2626;
+
+  /* Success */
+  --success: #22c55e;
+  --success-hover: #16a34a;
+
+  /* Card */
+  --bg-card: var(--bg-secondary);
+  --bg-card-hover: #374151;
+
+  /* Ghost / Outline */
+  --ghost-hover: rgba(255, 255, 255, 0.12);
+  --outline-hover: rgba(255, 255, 255, 0.12);
+
+  /* Border / Ring */
+  --border: #1e293b;
+  --ring: #818cf8;
+}
 /*
   1. Use a more-intuitive box-sizing model.
 */
@@ -79,6 +113,11 @@ body {
   @apply antialiased leading-6;
   font-family: 'Roboto', sans-serif;
 }
+
+label {
+  @apply text-muted-foreground;
+}
+
 /*
   6. Improve media defaults
 */
@@ -119,7 +158,26 @@ h6 {
   isolation: isolate;
 }
 
-/* PWA Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes fade-in-out {
   0% {
     opacity: 0;
@@ -141,4 +199,12 @@ h6 {
 
 .animate-fade-in-out {
   animation: fade-in-out 3s ease-in-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }

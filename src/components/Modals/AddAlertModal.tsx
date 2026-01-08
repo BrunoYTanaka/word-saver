@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Input from '../UI/Input'
-import Button from '../UI/Button'
 import { useModal } from '../../context/ModalContext'
 
 interface SetAlertFormData {
@@ -111,7 +110,9 @@ const AddAlertModal = () => {
   }
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent
+  ) => {
     e.preventDefault()
 
     if (!validateForm()) {
@@ -135,22 +136,33 @@ const AddAlertModal = () => {
     }
   }
 
+  const modalFooter = (
+    <Modal.Footer.Actions
+      onCancel={handleClose}
+      onConfirm={handleSubmit}
+      cancelText="Cancelar"
+      confirmText="Adicionar Palavra"
+      confirmVariant="primary"
+      loading={loading}
+    />
+  )
+
   return (
     <Modal
       isOpen={true}
       onClose={handleClose}
       title="Configurar Alerta"
       size="md"
-      className="max-h-[90vh] overflow-y-auto"
+      footer={modalFooter}
+      closeOnOverlayClick={!loading}
+      closeOnEscape={!loading}
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Alert Name */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <Bell className="size-4 text-gray-500" />
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Nome do Alerta
-            </label>
+            <Bell className="size-4" />
+            <label className="block text-sm font-medium">Nome do Alerta</label>
           </div>
           <Input
             type="text"
@@ -165,10 +177,8 @@ const AddAlertModal = () => {
         {/* Frequency Selection */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <Repeat className="size-4 text-gray-500" />
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Frequência
-            </label>
+            <Repeat className="size-4" />
+            <label className="block text-sm font-medium">Frequência</label>
           </div>
           <div className="flex gap-3">
             <label className="flex items-center">
@@ -181,9 +191,7 @@ const AddAlertModal = () => {
                 className="mr-2"
                 disabled={loading}
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                Diário
-              </span>
+              <span className="text-sm">Diário</span>
             </label>
             <label className="flex items-center">
               <input
@@ -195,9 +203,7 @@ const AddAlertModal = () => {
                 className="mr-2"
                 disabled={loading}
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                Semanal
-              </span>
+              <span className="text-sm">Semanal</span>
             </label>
           </div>
         </div>
@@ -206,8 +212,8 @@ const AddAlertModal = () => {
         {formData.frequency === 'weekly' && (
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <Calendar className="size-4 text-gray-500" />
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <Calendar className="size-4" />
+              <label className="block text-sm font-medium">
                 Dias da Semana
               </label>
             </div>
@@ -220,8 +226,8 @@ const AddAlertModal = () => {
                   disabled={loading}
                   className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                     formData.days.includes(day.id)
-                      ? 'border-blue-500 bg-blue-500 text-white'
-                      : 'border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'rounded-full border border-border bg-card p-2 text-foreground transition-colors hover:bg-muted'
                   } ${
                     loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
                   }`}
@@ -231,7 +237,7 @@ const AddAlertModal = () => {
               ))}
             </div>
             {errors.days && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="mt-1 text-sm text-destructive-foreground">
                 {errors.days}
               </p>
             )}
@@ -241,10 +247,8 @@ const AddAlertModal = () => {
         {/* Time Selection */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <Clock className="size-4 text-gray-500" />
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Horário
-            </label>
+            <Clock className="size-4" />
+            <label className="block text-sm font-medium">Horário</label>
           </div>
           <Input
             type="time"
@@ -257,10 +261,10 @@ const AddAlertModal = () => {
 
         {/* Context Selection */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="mb-2 block text-sm font-medium">
             Contextos para Revisão
           </label>
-          <div className="max-h-32 space-y-2 overflow-y-auto rounded-lg border bg-gray-50 p-3 dark:bg-gray-800">
+          <div className="max-h-32 space-y-2 overflow-y-auto rounded-lg border bg-muted p-3">
             {contexts.length > 0 ? (
               contexts.map((context) => (
                 <label key={context.id} className="flex items-center">
@@ -271,45 +275,21 @@ const AddAlertModal = () => {
                     className="mr-2"
                     disabled={loading}
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {context.name}
-                  </span>
-                  <span className="ml-2 text-xs text-gray-500">
+                  <span className="text-sm">{context.name}</span>
+                  <span className="ml-2 text-xs text-muted-foreground">
                     ({context.wordCount || 0} palavras)
                   </span>
                 </label>
               ))
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Nenhum contexto disponível
               </p>
             )}
           </div>
           {errors.contextIds && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {errors.contextIds}
-            </p>
+            <p className="mt-1 text-sm text-destructive">{errors.contextIds}</p>
           )}
-        </div>
-
-        {/* Form Actions */}
-        <div className="flex gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleClose}
-            disabled={loading}
-            className="flex-1"
-          >
-            Cancelar
-          </Button>
-          <Button
-            type="submit"
-            disabled={loading || contexts.length === 0}
-            className="flex-1"
-          >
-            {loading ? 'Salvando...' : 'Criar Alerta'}
-          </Button>
         </div>
       </form>
     </Modal>

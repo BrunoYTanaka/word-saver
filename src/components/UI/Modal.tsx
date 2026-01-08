@@ -101,8 +101,8 @@ function Modal({
         ref={modalRef}
         className={`
           relative w-full ${sizeClasses[size]} animate-slide-up max-h-[90vh] overflow-hidden
-          rounded-lg bg-white shadow-xl focus:outline-none
-          dark:bg-gray-800 ${className}
+          rounded-lg bg-card shadow-xl
+          focus:outline-none ${className}
         `}
         role="dialog"
         aria-modal="true"
@@ -110,11 +110,11 @@ function Modal({
         tabIndex={-1}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
+        <div className="flex items-center justify-between border-b border-border p-6">
           {title && (
             <h2
               id="modal-title"
-              className="text-lg font-semibold text-gray-900 dark:text-gray-100"
+              className="text-lg font-semibold text-foreground"
             >
               {title}
             </h2>
@@ -139,7 +139,7 @@ function Modal({
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 border-t border-gray-200 bg-inherit p-6 dark:border-gray-700">
+          <div className="flex items-center justify-end gap-3 border-t border-border bg-inherit p-6">
             {footer}
           </div>
         )}
@@ -159,6 +159,7 @@ interface ModalFooterActionsProps {
   confirmText?: string
   confirmVariant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'ghost'
   loading?: boolean
+  confirmDisabled?: boolean
 }
 
 interface ModalFooterSingleProps {
@@ -179,13 +180,19 @@ Modal.Footer = {
     cancelText = 'Cancelar',
     confirmText = 'Confirmar',
     confirmVariant = 'primary',
-    loading = false
+    loading = false,
+    confirmDisabled = false
   }: ModalFooterActionsProps) => (
     <>
       <Button variant="ghost" onClick={onCancel} disabled={loading}>
         {cancelText}
       </Button>
-      <Button variant={confirmVariant} onClick={onConfirm} loading={loading}>
+      <Button
+        variant={confirmVariant}
+        onClick={onConfirm}
+        loading={loading}
+        disabled={confirmDisabled}
+      >
         {confirmText}
       </Button>
     </>

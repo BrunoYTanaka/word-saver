@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
 import Button from '../UI/Button'
@@ -19,7 +19,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
   const [reviewedCount, setReviewedCount] = useState(0)
 
   // Get random word from selected contexts
-  const getRandomWord = () => {
+  const getRandomWord = useCallback(() => {
     if (!contextIds) return null
 
     // Get words from all selected contexts
@@ -32,14 +32,14 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
     // Get random word
     const randomIndex = Math.floor(Math.random() * availableWords.length)
     return availableWords[randomIndex]
-  }
+  }, [contextIds, words])
 
   // Load random word on mount or when getting next word
   useEffect(() => {
     const word = getRandomWord()
     setCurrentWord(word)
     setShowDefinition(false)
-  }, [])
+  }, [getRandomWord])
 
   const handleShowDefinition = () => {
     setShowDefinition(true)

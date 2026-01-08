@@ -28,23 +28,23 @@ function Table<T extends object>({
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="flex w-full items-center justify-center rounded-lg bg-card bg-clip-border p-10 text-sm text-muted-foreground shadow-md dark:border-border">
+      <div className="flex w-full items-center justify-center rounded-lg border-border bg-card p-10 text-sm text-muted-foreground shadow-md">
         Nenhum dado disponível.
       </div>
     )
   }
 
   return (
-    <div className="relative flex size-full flex-col overflow-auto rounded-lg bg-card bg-clip-border shadow-md dark:border-border">
+    <div className="relative flex w-full flex-col overflow-auto rounded-lg border-border bg-card shadow-md">
       <table className="w-full min-w-max table-auto border-collapse text-left">
         <thead>
           <tr>
             {columns.map((column) => (
               <th
                 key={String(column.field)}
-                className="border-primary-300 border-b p-4 dark:border-secondary"
+                className="border-b border-border p-4"
               >
-                <p className="block text-sm font-normal leading-none text-muted-foreground">
+                <p className="text-sm font-normal leading-none text-muted-foreground">
                   {column.title}
                 </p>
               </th>
@@ -56,19 +56,19 @@ function Table<T extends object>({
           {data.map((item, index) => (
             <tr
               key={item.id}
-              className={`hover:bg-secondary ${
-                data.length - 1 > index ? 'border-b border-secondary' : ''
+              className={`transition-colors hover:bg-muted ${
+                data.length - 1 > index ? 'border-b border-border' : ''
               }`}
             >
               {columns.map((column) => {
                 if (column.field === 'actions') {
                   return (
-                    <td key="actions" className="space-x-2 p-4 py-5">
+                    <td key="actions" className="p-4 py-5">
                       <button
                         onClick={() => onEdit(item.id)}
                         title="Editar"
                         type="button"
-                        className="rounded-md p-1 text-blue-600 hover:bg-blue-200 dark:text-blue-400"
+                        className="hover:bg-primary-hover rounded-md p-1 text-primary transition-colors hover:text-primary-foreground"
                       >
                         <Edit className="size-4" />
                       </button>
@@ -76,7 +76,7 @@ function Table<T extends object>({
                         onClick={() => onDelete(item.id)}
                         title="Remover"
                         type="button"
-                        className="rounded-md p-1 text-red-600 hover:bg-red-200"
+                        className="hover:bg-destructive-hover rounded-md p-1 text-destructive transition-colors hover:text-destructive-foreground"
                       >
                         <Trash2 className="size-4" />
                       </button>
@@ -91,10 +91,10 @@ function Table<T extends object>({
                         <span
                           className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
                             item.alerts === 0
-                              ? 'bg-green-100 text-green-500'
+                              ? 'bg-success text-success-foreground'
                               : item.alerts <= 2
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-red-100 text-red-800'
+                                ? 'bg-accent text-accent-foreground'
+                                : 'bg-destructive text-destructive-foreground'
                           }`}
                         >
                           {item.alerts}
@@ -113,7 +113,7 @@ function Table<T extends object>({
                           style={{ backgroundColor: item.color }}
                           title={`Cor ${item.color}`}
                         />
-                        <p className="block max-w-xs truncate text-sm text-secondary-foreground">
+                        <p className="max-w-xs truncate text-sm text-foreground">
                           {item.color}
                         </p>
                       </div>
@@ -123,7 +123,7 @@ function Table<T extends object>({
 
                 return (
                   <td key={String(column.field)} className="p-4 py-5">
-                    <p className="block max-w-xs truncate text-sm text-secondary-foreground">
+                    <p className="max-w-xs truncate text-sm text-foreground">
                       {String(item[column.field])}
                     </p>
                   </td>

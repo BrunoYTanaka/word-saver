@@ -97,7 +97,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={cn('relative flex flex-col', className)}>
         {label && (
-          <label className="mb-1.5 block text-sm font-medium text-foreground">
+          <label className="mb-1.5 block text-sm font-medium">
             {label}
             {required && <span className="ml-1 text-destructive">*</span>}
           </label>

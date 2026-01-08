@@ -99,7 +99,7 @@ const Dashboard = () => {
       icon: BookOpen,
       color: 'text-blue-600 dark:text-blue-400',
       bgColor: 'bg-blue-100 dark:bg-blue-900-20',
-      textColor: 'text-green-500',
+      textColor: 'text-success',
       text: '+5% desde ontem'
     },
     {
@@ -254,7 +254,7 @@ const Dashboard = () => {
     <div className="space-y-8 pb-20 md:pb-8">
       {/* Welcome Section */}
       <div className="text-left sm:text-center">
-        <h1 className="mb-2 text-3xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
           Acompanhe seu progresso na memorização de palavras
         </p>
@@ -267,13 +267,11 @@ const Dashboard = () => {
         })}
       </div>
 
-      <Tab tabs={tabs} defaultTab="words" variant="default" size="md" />
+      <Tab tabs={tabs} defaultTab="words" variant="underlined" size="md" />
 
       {/* Quick Actions */}
       <div>
-        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
-          Ações Rápidas
-        </h2>
+        <h2 className="mb-4 text-xl font-semibold">Ações Rápidas</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {quickActions.map((action, index) => {
             const Icon = action.icon
@@ -282,7 +280,7 @@ const Dashboard = () => {
                 key={index}
                 onClick={action.action}
                 clickable
-                className="hover:bg-secondary"
+                className="hover:bg-card-hover"
               >
                 <div className="text-center">
                   <div className="bg-primary-100 dark:bg-primary-900-20 mb-4 inline-flex size-12 items-center justify-center rounded-lg">

@@ -25,7 +25,7 @@ function Tab({
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id || '')
 
   const variantClasses = {
-    default: 'bg-secondary rounded-lg p-1',
+    default: 'bg-card rounded-lg p-1 border border-border',
     pills: 'bg-transparent',
     underlined: 'bg-transparent border-b border-border'
   }
@@ -38,42 +38,43 @@ function Tab({
 
   const getTabButtonClasses = (tabId: string) => {
     const isActive = activeTab === tabId
+
     const baseClasses = cn(
-      'flex w-full cursor-pointer items-center justify-center border-0 px-4 py-2',
+      'flex w-full cursor-pointer items-center justify-center border-0 px-4 py-2 transition-colors',
       sizeClasses[size]
     )
 
-    if (variant === 'default') {
-      return cn(
-        baseClasses,
-        'rounded-md',
-        isActive
-          ? 'bg-background text-foreground shadow-sm'
-          : 'bg-transparent text-muted-foreground hover:bg-muted'
-      )
-    }
+    switch (variant) {
+      case 'default':
+        return cn(
+          baseClasses,
+          'rounded-md',
+          isActive
+            ? 'bg-primary text-primary-foreground shadow-sm'
+            : 'bg-transparent text-muted-foreground hover:bg-muted'
+        )
 
-    if (variant === 'pills') {
-      return cn(
-        baseClasses,
-        'rounded-full mx-1',
-        isActive
-          ? 'bg-primary text-primary-foreground'
-          : 'bg-transparent text-muted-foreground hover:bg-muted'
-      )
-    }
+      case 'pills':
+        return cn(
+          baseClasses,
+          'rounded-full mx-1 transition-colors',
+          isActive
+            ? 'bg-primary text-primary-foreground shadow-sm'
+            : 'bg-transparent text-muted-foreground hover:bg-muted'
+        )
 
-    if (variant === 'underlined') {
-      return cn(
-        baseClasses,
-        'rounded-none border-b-2',
-        isActive
-          ? 'border-primary text-primary'
-          : 'border-transparent text-muted-foreground hover:text-foreground'
-      )
-    }
+      case 'underlined':
+        return cn(
+          baseClasses,
+          'rounded-none border-b-2 transition-colors',
+          isActive
+            ? 'border-primary text-primary'
+            : 'border-transparent text-muted-foreground hover:text-foreground'
+        )
 
-    return baseClasses
+      default:
+        return baseClasses
+    }
   }
 
   return (

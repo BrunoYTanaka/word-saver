@@ -1,8 +1,9 @@
+import { LoaderCircle } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
 interface ButtonProps {
   children?: React.ReactNode
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success'
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'accent'
   size?: 'sm' | 'md' | 'lg' | 'xl'
   disabled?: boolean
   loading?: boolean
@@ -34,40 +35,17 @@ function Button({
   }
 
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+    primary:
+      'bg-primary text-primary-foreground hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed',
+    secondary:
+      'bg-secondary text-secondary-foreground hover:bg-secondary-hover disabled:opacity-50 disabled:cursor-not-allowed',
+    danger:
+      'bg-destructive text-destructive-foreground hover:bg-destructive-hover disabled:opacity-50 disabled:cursor-not-allowed',
+    ghost:
+      'bg-transparent text-foreground hover:bg-ghost-hover active:bg-ghost-hover disabled:opacity-50 disabled:cursor-not-allowed',
     outline:
-      'bg-transparent text-foreground border border-solid border-gray-400 hover:bg-secondary',
-    ghost: 'bg-transparent text-foreground hover:bg-secondary',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
-    success: 'bg-emerald-600 text-white hover:bg-emerald-700'
+      'bg-transparent text-foreground border border-border hover:bg-outline-hover active:bg-outline-hover disabled:opacity-50 disabled:cursor-not-allowed'
   }
-
-  const LoadingSpinner = () => (
-    <svg
-      className="animate-spin"
-      style={{
-        width: size === 'sm' ? '16px' : '16px',
-        height: size === 'sm' ? '16px' : '16px'
-      }}
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        style={{ opacity: '0.25' }}
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        style={{ opacity: '0.75' }}
-        fill="currentColor"
-        d="m4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
-  )
 
   const iconSizes = {
     sm: 'w-4 h-4',
@@ -98,7 +76,8 @@ function Button({
     >
       {loading ? (
         <div className="flex items-center gap-2">
-          <LoadingSpinner />
+          {/* <LoadingSpinner /> */}
+          <LoaderCircle className="size-4 animate-spin" />
           {children && <span>Carregando...</span>}
         </div>
       ) : (
