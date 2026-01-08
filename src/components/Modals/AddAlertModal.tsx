@@ -276,13 +276,15 @@ const AddAlertModal = () => {
                     disabled={loading}
                   />
                   <span className="text-sm">{context.name}</span>
-                  <span className="ml-2 text-xs text-muted">
+                  <span className="ml-2 text-xs text-muted-foreground">
                     ({context.wordCount || 0} palavras)
                   </span>
                 </label>
               ))
             ) : (
-              <p className="text-sm text-muted">Nenhum contexto disponível</p>
+              <p className="text-sm text-muted-foreground">
+                Nenhum contexto disponível
+              </p>
             )}
           </div>
           {errors.contextIds && (

@@ -13,7 +13,7 @@
 
   /* Text */
   --foreground: #0f172a;
-  --foreground-muted: #64748b;
+  --foreground-muted: #334155;
 
   /* Interactive Colors */
   --primary: #6366f1;
@@ -68,7 +68,7 @@
 
   /* Text */
   --foreground: #f1f5f9;
-  --foreground-muted: #94a3b8;
+  --foreground-muted: #e2e8f0;
 
   /* Interactive Colors */
   --primary: #818cf8;

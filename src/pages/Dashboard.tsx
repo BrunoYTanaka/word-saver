@@ -117,7 +117,7 @@ const Dashboard = () => {
       icon: Bell,
       color: 'text-warning',
       bgColor: 'bg-warning-soft',
-      textColor: 'text-muted',
+      textColor: 'text-muted-foreground',
       text: '0% desde ontem'
     }
   ]
@@ -255,7 +255,7 @@ const Dashboard = () => {
       {/* Welcome Section */}
       <div className="text-left sm:text-center">
         <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted">
+        <p className="text-muted-foreground">
           Acompanhe seu progresso na memorização de palavras
         </p>
       </div>
@@ -289,7 +289,9 @@ const Dashboard = () => {
                   <h3 className="mb-2 font-medium text-foreground">
                     {action.title}
                   </h3>
-                  <p className="text-sm text-muted">{action.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {action.description}
+                  </p>
                 </div>
               </Card>
             )
@@ -309,7 +311,7 @@ const Dashboard = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="text-success size-4" />
-                  <span className="text-sm text-muted">
+                  <span className="text-sm text-muted-foreground">
                     Palavras Adicionadas
                   </span>
                 </div>
@@ -321,7 +323,9 @@ const Dashboard = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Target className="size-4 text-primary" />
-                  <span className="text-sm text-muted">Palavras Revisadas</span>
+                  <span className="text-sm text-muted-foreground">
+                    Palavras Revisadas
+                  </span>
                 </div>
                 <span className="font-medium text-foreground">
                   {stats?.recentReviews || 0}
@@ -331,7 +335,9 @@ const Dashboard = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Calendar className="size-4 text-accent" />
-                  <span className="text-sm text-muted">Média de Revisões</span>
+                  <span className="text-sm text-muted-foreground">
+                    Média de Revisões
+                  </span>
                 </div>
                 <span className="font-medium text-foreground">
                   {stats?.averageReviewsPerWord || 0}
@@ -388,7 +394,7 @@ const Dashboard = () => {
                         {context.name}
                       </span>
                     </div>
-                    <span className="text-sm text-muted">
+                    <span className="text-sm text-muted-foreground">
                       {context.wordCount || 0} palavras
                     </span>
                   </div>

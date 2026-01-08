@@ -28,7 +28,7 @@ function Table<T extends object>({
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="bg-surface flex w-full items-center justify-center rounded-lg border-border p-10 text-sm text-muted shadow-md">
+      <div className="bg-surface flex w-full items-center justify-center rounded-lg border-border p-10 text-sm text-muted-foreground shadow-md">
         Nenhum dado disponível.
       </div>
     )
@@ -44,7 +44,7 @@ function Table<T extends object>({
                 key={String(column.field)}
                 className="border-b border-border p-4"
               >
-                <p className="text-sm font-normal leading-none text-muted">
+                <p className="text-sm font-normal leading-none text-muted-foreground">
                   {column.title}
                 </p>
               </th>

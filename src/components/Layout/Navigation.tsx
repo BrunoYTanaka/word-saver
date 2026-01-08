@@ -37,7 +37,7 @@ const Navigation = () => {
                 ${
                   item.active
                     ? 'text-primary'
-                    : 'text-muted hover:text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                 }
                 transition-colors
               `}

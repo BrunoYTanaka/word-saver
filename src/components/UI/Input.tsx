@@ -107,7 +107,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {icon && (
             <span
               className={cn(
-                'absolute top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none z-10',
+                'absolute top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none z-10',
                 iconPosition === 'left' ? 'left-3' : 'right-3'
               )}
             >
@@ -135,7 +135,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <span
             className={cn(
               'text-xs mt-1',
-              error ? 'text-destructive' : 'text-muted'
+              error ? 'text-destructive' : 'text-muted-foreground'
             )}
           >
             {error || helperText}

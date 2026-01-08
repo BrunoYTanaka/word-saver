@@ -296,7 +296,9 @@ const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
                 </label>
               ))
             ) : (
-              <p className="text-sm text-muted">Nenhum contexto disponível</p>
+              <p className="text-sm text-muted-foreground">
+                Nenhum contexto disponível
+              </p>
             )}
           </div>
           {errors.contextIds && (

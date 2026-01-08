@@ -198,7 +198,7 @@ const ExportDataModal = () => {
                 <div className="font-medium text-foreground">
                   Contextos Específicos
                 </div>
-                <div className="text-sm text-muted">
+                <div className="text-sm text-muted-foreground">
                   {getExportDescription()}
                 </div>
               </div>
@@ -218,7 +218,7 @@ const ExportDataModal = () => {
                 <div className="font-medium text-foreground">
                   Apenas Palavras
                 </div>
-                <div className="text-sm text-muted">
+                <div className="text-sm text-muted-foreground">
                   {getExportDescription()}
                 </div>
               </div>
@@ -247,7 +247,7 @@ const ExportDataModal = () => {
                   <button
                     type="button"
                     onClick={handleClearSelection}
-                    className="text-sm text-muted hover:text-foreground"
+                    className="text-sm text-muted-foreground hover:text-foreground"
                   >
                     Limpar
                   </button>
@@ -278,7 +278,7 @@ const ExportDataModal = () => {
                           <div className="font-medium text-foreground">
                             {context.name}
                           </div>
-                          <div className="text-sm text-muted">
+                          <div className="text-sm text-muted-foreground">
                             {wordCount} palavra{wordCount !== 1 ? 's' : ''}
                           </div>
                         </div>
@@ -314,7 +314,7 @@ const ExportDataModal = () => {
                   }`}
                 {exportType === 'words-only' && 'Apenas Palavras'}
               </div>
-              <div className="text-sm text-muted">
+              <div className="text-sm text-muted-foreground">
                 {exportStats.selectedWords} palavra
                 {exportStats.selectedWords !== 1 ? 's' : ''}
                 {exportType === 'full' &&
