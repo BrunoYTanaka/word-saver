@@ -101,7 +101,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
           <div className="space-y-4">
             {/* Word */}
             <div>
-              <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+              <h3 className="mb-2 text-2xl font-bold text-foreground">
                 {currentWord.word}
               </h3>
               {currentWord.tags && (
@@ -125,7 +125,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
               {!showDefinition ? (
                 <Button
                   onClick={handleShowDefinition}
-                  className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
+                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hover"
                 >
                   🤔 Ver Definição
                 </Button>
@@ -133,7 +133,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
                 <>
                   <Button
                     onClick={handleNextWord}
-                    className="flex-1 bg-green-600 text-white hover:bg-green-700"
+                    className="flex-1 bg-success text-success-foreground hover:bg-success-hover"
                   >
                     ✅ Próxima Palavra
                   </Button>

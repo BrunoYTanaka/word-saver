@@ -198,7 +198,7 @@ const ExportDataModal = () => {
                 <div className="font-medium text-foreground">
                   Contextos Específicos
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted">
                   {getExportDescription()}
                 </div>
               </div>
@@ -218,7 +218,7 @@ const ExportDataModal = () => {
                 <div className="font-medium text-foreground">
                   Apenas Palavras
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted">
                   {getExportDescription()}
                 </div>
               </div>
@@ -247,7 +247,7 @@ const ExportDataModal = () => {
                   <button
                     type="button"
                     onClick={handleClearSelection}
-                    className="text-sm text-muted-foreground hover:text-foreground"
+                    className="text-sm text-muted hover:text-foreground"
                   >
                     Limpar
                   </button>
@@ -266,7 +266,7 @@ const ExportDataModal = () => {
                   return (
                     <label
                       key={context.id}
-                      className="flex cursor-pointer items-center justify-between rounded-lg bg-muted p-3 transition-colors"
+                      className="flex cursor-pointer items-center justify-between rounded-lg bg-surface-muted p-3 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
                         <input
@@ -278,7 +278,7 @@ const ExportDataModal = () => {
                           <div className="font-medium text-foreground">
                             {context.name}
                           </div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-muted">
                             {wordCount} palavra{wordCount !== 1 ? 's' : ''}
                           </div>
                         </div>
@@ -314,7 +314,7 @@ const ExportDataModal = () => {
                   }`}
                 {exportType === 'words-only' && 'Apenas Palavras'}
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-muted">
                 {exportStats.selectedWords} palavra
                 {exportStats.selectedWords !== 1 ? 's' : ''}
                 {exportType === 'full' &&

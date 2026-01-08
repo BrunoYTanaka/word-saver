@@ -176,7 +176,7 @@ const EditContextModal = ({ contextId }: EditContextModalProps) => {
                   ${
                     formData.icon === icon
                       ? 'bg-primary/10 dark:bg-primary/20 border-primary'
-                      : 'border-border transition-colors hover:bg-muted'
+                      : 'border-border transition-colors hover:bg-surface-muted'
                   }
                   disabled:cursor-not-allowed disabled:opacity-50
                 `}
@@ -191,7 +191,7 @@ const EditContextModal = ({ contextId }: EditContextModalProps) => {
         {/* Preview */}
         <div className="space-y-2">
           <label className="block text-sm font-medium ">Visualização</label>
-          <div className="flex items-center gap-3 rounded-lg border border-border bg-muted p-3">
+          <div className="flex items-center gap-3 rounded-lg border border-border bg-surface-muted p-3">
             <div
               className="flex size-6 items-center justify-center rounded text-sm"
               style={{ backgroundColor: formData.color }}

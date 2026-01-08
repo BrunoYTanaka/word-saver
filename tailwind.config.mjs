@@ -5,43 +5,83 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'var(--bg-primary)',
-        foreground: 'var(--text-foreground)',
+        /* Core Colors */
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+
+        /* Surfaces */
+        surface: {
+          DEFAULT: 'var(--surface)',
+          muted: 'var(--surface-muted)',
+          hover: 'var(--surface-hover)'
+        },
+
         muted: {
-          DEFAULT: 'var(--bg-muted)',
-          foreground: 'var(--text-muted-foreground)'
+          DEFAULT: 'var(--surface-muted)',
+          foreground: 'var(--foreground-muted)'
         },
-        card: {
-          DEFAULT: 'var(--bg-card)',
-          hover: 'var(--bg-card-hover)',
-          foreground: 'var(--text-foreground)'
-        },
+
+        /* Interactive Colors */
         primary: {
           DEFAULT: 'var(--primary)',
           hover: 'var(--primary-hover)',
-          light: 'var(--primary-light)',
-          disabled: 'var(--primary-disabled)'
+          foreground: 'var(--primary-foreground)',
+          soft: 'var(--primary-soft)'
         },
+
         secondary: {
           DEFAULT: 'var(--secondary)',
-          hover: 'var(--secondary-hover)'
+          hover: 'var(--secondary-hover)',
+          foreground: 'var(--secondary-foreground)',
+          soft: 'var(--secondary-soft)'
         },
+
+        accent: {
+          DEFAULT: 'var(--accent)',
+          hover: 'var(--accent-hover)',
+          foreground: 'var(--accent-foreground)',
+          soft: 'var(--accent-soft)'
+        },
+
+        /* Status Colors */
         destructive: {
           DEFAULT: 'var(--destructive)',
-          hover: 'var(--destructive-hover)'
+          hover: 'var(--destructive-hover)',
+          foreground: 'var(--destructive-foreground)',
+          soft: 'var(--destructive-soft)'
         },
+
         success: {
           DEFAULT: 'var(--success)',
-          hover: 'var(--success-hover)'
+          hover: 'var(--success-hover)',
+          foreground: 'var(--success-foreground)',
+          soft: 'var(--success-soft)'
         },
+
+        warning: {
+          DEFAULT: 'var(--warning)',
+          hover: 'var(--warning-hover)',
+          foreground: 'var(--warning-foreground)',
+          soft: 'var(--warning-soft)'
+        },
+
+        /* Interactive States */
         ghost: {
           hover: 'var(--ghost-hover)'
         },
+
         outline: {
           hover: 'var(--outline-hover)'
         },
-        border: 'var(--border)',
-        ring: 'var(--ring)'
+
+        /* Interface Elements */
+        border: {
+          DEFAULT: 'var(--border)',
+          focus: 'var(--border-focus)',
+          error: 'var(--border-error)'
+        },
+
+        ring: 'var(--border-focus)'
       }
     },
 

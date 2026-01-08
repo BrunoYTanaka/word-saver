@@ -3,84 +3,114 @@
 @tailwind utilities;
 
 :root {
+  /* Core Color System - Simplified tokens */
+
   /* Backgrounds */
-  --bg-primary: #f9fafb;
-  --bg-secondary: #ffffff;
-  --bg-muted: #f1f5f9;
+  --background: #f9fafb;
+  --surface: #ffffff;
+  --surface-muted: #f1f5f9;
+  --surface-hover: #f3f4f6;
 
   /* Text */
-  --text-foreground: #0f172a;
-  --text-muted-foreground: #64748b;
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
 
-  /* Primary */
+  /* Interactive Colors */
   --primary: #6366f1;
-  --primary-hover: #544ec5;
-  --primary-light: #4338ca;
-  --primary-disabled: #a5b4fc;
+  --primary-hover: #5b5bd6;
+  --primary-foreground: #ffffff;
 
-  /* Secondary */
   --secondary: #22c55e;
   --secondary-hover: #16a34a;
+  --secondary-foreground: #ffffff;
 
-  /* Destructive */
+  --accent: #06b6d4;
+  --accent-hover: #0891b2;
+  --accent-foreground: #ffffff;
+
+  /* Status Colors */
   --destructive: #dc2626;
   --destructive-hover: #b91c1c;
+  --destructive-foreground: #ffffff;
 
-  /* Success */
   --success: #22c55e;
   --success-hover: #16a34a;
+  --success-foreground: #ffffff;
 
-  /* Card */
-  --bg-card: var(--bg-secondary);
-  --bg-card-hover: #f3f4f6;
+  --warning: #f59e0b;
+  --warning-hover: #d97706;
+  --warning-foreground: #ffffff;
 
-  /* Ghost / Outline */
-  --ghost-hover: rgba(15, 23, 42, 0.12);
-  --outline-hover: rgba(15, 23, 42, 0.12);
+  /* Soft/Muted Colors */
+  --primary-soft: rgba(99, 102, 241, 0.1);
+  --secondary-soft: rgba(34, 197, 94, 0.1);
+  --accent-soft: rgba(6, 182, 212, 0.1);
+  --destructive-soft: rgba(220, 38, 38, 0.1);
+  --success-soft: rgba(34, 197, 94, 0.1);
+  --warning-soft: rgba(245, 158, 11, 0.1);
 
-  /* Border / Ring */
+  /* Interface Elements */
   --border: #e2e8f0;
-  --ring: #6366f1;
+  --border-focus: var(--primary);
+  --border-error: var(--destructive);
+
+  --ghost-hover: rgba(15, 23, 42, 0.05);
+  --outline-hover: rgba(15, 23, 42, 0.08);
 }
 .dark {
+  /* Core Color System - Dark theme */
+
   /* Backgrounds */
-  --bg-primary: #0b1220;
-  --bg-secondary: #0f172a;
-  --bg-muted: #020617;
+  --background: #0b1220;
+  --surface: #0f172a;
+  --surface-muted: #1e293b;
+  --surface-hover: #334155;
 
   /* Text */
-  --text-foreground: #e5e7eb;
-  --text-muted-foreground: #64748b;
+  --foreground: #f1f5f9;
+  --foreground-muted: #94a3b8;
 
-  /* Primary */
+  /* Interactive Colors */
   --primary: #818cf8;
   --primary-hover: #6366f1;
-  --primary-light: #4f46e5;
-  --primary-disabled: #a5b4fc;
+  --primary-foreground: #0f172a;
 
-  /* Secondary */
-  --secondary: #22c55e;
-  --secondary-hover: #16a34a;
+  --secondary: #4ade80;
+  --secondary-hover: #22c55e;
+  --secondary-foreground: #0f172a;
 
-  /* Destructive */
-  --destructive: #ef4444;
-  --destructive-hover: #dc2626;
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --accent-foreground: #0f172a;
 
-  /* Success */
-  --success: #22c55e;
-  --success-hover: #16a34a;
+  /* Status Colors */
+  --destructive: #f87171;
+  --destructive-hover: #ef4444;
+  --destructive-foreground: #0f172a;
 
-  /* Card */
-  --bg-card: var(--bg-secondary);
-  --bg-card-hover: #374151;
+  --success: #4ade80;
+  --success-hover: #22c55e;
+  --success-foreground: #0f172a;
 
-  /* Ghost / Outline */
-  --ghost-hover: rgba(255, 255, 255, 0.12);
-  --outline-hover: rgba(255, 255, 255, 0.12);
+  --warning: #fbbf24;
+  --warning-hover: #f59e0b;
+  --warning-foreground: #0f172a;
 
-  /* Border / Ring */
-  --border: #1e293b;
-  --ring: #818cf8;
+  /* Soft/Muted Colors */
+  --primary-soft: rgba(129, 140, 248, 0.1);
+  --secondary-soft: rgba(74, 222, 128, 0.1);
+  --accent-soft: rgba(56, 189, 248, 0.1);
+  --destructive-soft: rgba(248, 113, 113, 0.1);
+  --success-soft: rgba(74, 222, 128, 0.1);
+  --warning-soft: rgba(251, 191, 36, 0.1);
+
+  /* Interface Elements */
+  --border: #334155;
+  --border-focus: var(--primary);
+  --border-error: var(--destructive);
+
+  --ghost-hover: rgba(255, 255, 255, 0.05);
+  --outline-hover: rgba(255, 255, 255, 0.08);
 }
 /*
   1. Use a more-intuitive box-sizing model.
@@ -112,6 +142,36 @@ body {
 body {
   @apply antialiased leading-6;
   font-family: 'Roboto', sans-serif;
+}
+
+/* Form Control Styling */
+input[type='checkbox'],
+input[type='radio'],
+select {
+  accent-color: var(--primary);
+}
+
+input[type='checkbox']:checked,
+input[type='radio']:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+input[type='checkbox']:focus,
+input[type='radio']:focus,
+select:focus {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+select {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+select:focus {
+  border-color: var(--border-focus);
 }
 
 label {

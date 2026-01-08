@@ -25,7 +25,7 @@ function Tab({
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id || '')
 
   const variantClasses = {
-    default: 'bg-card rounded-lg p-1 border border-border',
+    default: 'bg-surface rounded-lg p-1 border border-border',
     pills: 'bg-transparent',
     underlined: 'bg-transparent border-b border-border'
   }
@@ -51,7 +51,7 @@ function Tab({
           'rounded-md',
           isActive
             ? 'bg-primary text-primary-foreground shadow-sm'
-            : 'bg-transparent text-muted-foreground hover:bg-muted'
+            : 'bg-transparent text-muted hover:bg-surface-muted'
         )
 
       case 'pills':
@@ -60,7 +60,7 @@ function Tab({
           'rounded-full mx-1 transition-colors',
           isActive
             ? 'bg-primary text-primary-foreground shadow-sm'
-            : 'bg-transparent text-muted-foreground hover:bg-muted'
+            : 'bg-transparent text-muted hover:bg-surface-muted'
         )
 
       case 'underlined':
@@ -69,7 +69,7 @@ function Tab({
           'rounded-none border-b-2 transition-colors',
           isActive
             ? 'border-primary text-primary'
-            : 'border-transparent text-muted-foreground hover:text-foreground'
+            : 'border-transparent text-muted hover:text-foreground'
         )
 
       default:

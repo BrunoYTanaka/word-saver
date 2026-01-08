@@ -25,7 +25,7 @@ const Navigation = () => {
   ]
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 border-t-2 border-border bg-card md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 border-t-2 border-border bg-surface md:hidden">
       <div className="flex items-center justify-around py-2">
         {navItems.map((item, index) => {
           const Icon = item.icon
@@ -37,7 +37,7 @@ const Navigation = () => {
                 ${
                   item.active
                     ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                    : 'text-muted hover:text-foreground'
                 }
                 transition-colors
               `}

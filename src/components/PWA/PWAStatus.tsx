@@ -29,7 +29,7 @@ export const PWAStatus: React.FC = () => {
     <div className="fixed right-4 top-4 z-50 space-y-2">
       {/* Offline Status */}
       {!isOnline && (
-        <div className="flex items-center gap-2 rounded-lg bg-yellow-500 px-4 py-2 text-white shadow-lg">
+        <div className="flex items-center gap-2 rounded-lg bg-warning px-4 py-2 text-warning-foreground shadow-lg">
           <span className="size-2 animate-pulse rounded-full bg-white"></span>
           <span className="text-sm font-medium">Modo Offline</span>
         </div>
@@ -37,7 +37,7 @@ export const PWAStatus: React.FC = () => {
 
       {/* Update Available */}
       {isUpdateAvailable && updateApp && (
-        <div className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow-lg">
+        <div className="rounded-lg bg-primary px-4 py-2 text-primary-foreground shadow-lg">
           <div className="flex items-center gap-3">
             <div>
               <p className="text-sm font-medium">Atualização disponível!</p>
@@ -59,7 +59,7 @@ export const PWAStatus: React.FC = () => {
 
       {/* Online Status (only show briefly when coming back online) */}
       {showOnlineStatus && (
-        <div className="animate-fade-in-out rounded-lg bg-green-500 px-4 py-2 text-white shadow-lg">
+        <div className="animate-fade-in-out rounded-lg bg-success px-4 py-2 text-success-foreground shadow-lg">
           <div className="flex items-center gap-2">
             <span className="size-2 rounded-full bg-white"></span>
             <span className="text-sm font-medium">Conectado</span>

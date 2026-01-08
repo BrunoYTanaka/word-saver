@@ -97,8 +97,8 @@ const Dashboard = () => {
       title: 'Total de Palavras',
       value: stats?.totalWords || 10,
       icon: BookOpen,
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-100 dark:bg-blue-900-20',
+      color: 'text-primary',
+      bgColor: 'bg-primary-soft',
       textColor: 'text-success',
       text: '+5% desde ontem'
     },
@@ -106,8 +106,8 @@ const Dashboard = () => {
       title: 'Contextos',
       value: stats?.totalContexts || 20,
       icon: Archive,
-      color: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-100 dark:bg-green-900-20',
+      color: 'text-success',
+      bgColor: 'bg-success-soft',
       textColor: 'text-destructive',
       text: '-3% desde ontem'
     },
@@ -115,9 +115,9 @@ const Dashboard = () => {
       title: 'Alertas Ativos',
       value: stats?.activeAlerts || 30,
       icon: Bell,
-      color: 'text-orange-600 dark:text-orange-400',
-      bgColor: 'bg-orange-100 dark:bg-orange-900-20',
-      textColor: 'text-gray-500',
+      color: 'text-warning',
+      bgColor: 'bg-warning-soft',
+      textColor: 'text-muted',
       text: '0% desde ontem'
     }
   ]
@@ -255,13 +255,13 @@ const Dashboard = () => {
       {/* Welcome Section */}
       <div className="text-left sm:text-center">
         <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted">
           Acompanhe seu progresso na memorização de palavras
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-3 rounded-lg bg-card shadow dark:border dark:border-border">
+      <div className="bg-surface grid grid-cols-3 rounded-lg shadow dark:border dark:border-border">
         {statCards.map((stat, index) => {
           return <CountCard key={index} {...stat} number={stat.value} />
         })}
@@ -280,18 +280,16 @@ const Dashboard = () => {
                 key={index}
                 onClick={action.action}
                 clickable
-                className="hover:bg-card-hover"
+                className="hover:bg-surface-hover"
               >
                 <div className="text-center">
-                  <div className="bg-primary-100 dark:bg-primary-900-20 mb-4 inline-flex size-12 items-center justify-center rounded-lg">
-                    <Icon className="text-primary-600 dark:text-primary-400 size-6" />
+                  <div className="bg-surface-muted mb-4 inline-flex size-12 items-center justify-center rounded-lg">
+                    <Icon className="size-6 text-primary" />
                   </div>
-                  <h3 className="mb-2 font-medium text-gray-900 dark:text-gray-100">
+                  <h3 className="mb-2 font-medium text-foreground">
                     {action.title}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {action.description}
-                  </p>
+                  <p className="text-sm text-muted">{action.description}</p>
                 </div>
               </Card>
             )
@@ -310,36 +308,32 @@ const Dashboard = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="size-4 text-green-600" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <TrendingUp className="text-success size-4" />
+                  <span className="text-sm text-muted">
                     Palavras Adicionadas
                   </span>
                 </div>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="font-medium text-foreground">
                   {stats?.recentWords || 0}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Target className="size-4 text-blue-600" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Palavras Revisadas
-                  </span>
+                  <Target className="size-4 text-primary" />
+                  <span className="text-sm text-muted">Palavras Revisadas</span>
                 </div>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="font-medium text-foreground">
                   {stats?.recentReviews || 0}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Calendar className="size-4 text-purple-600" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Média de Revisões
-                  </span>
+                  <Calendar className="size-4 text-accent" />
+                  <span className="text-sm text-muted">Média de Revisões</span>
                 </div>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="font-medium text-foreground">
                   {stats?.averageReviewsPerWord || 0}
                 </span>
               </div>
@@ -386,13 +380,15 @@ const Dashboard = () => {
                     <div className="flex items-center gap-3">
                       <div
                         className="size-4 rounded-full"
-                        style={{ backgroundColor: context.color || '#3B82F6' }}
+                        style={{
+                          backgroundColor: context.color || 'var(--primary)'
+                        }}
                       />
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                      <span className="font-medium text-foreground">
                         {context.name}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-muted">
                       {context.wordCount || 0} palavras
                     </span>
                   </div>

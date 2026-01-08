@@ -32,7 +32,7 @@ function CountCard({
         <Icon className={cn('w-8 h-8 sm:w-12 sm:h-12', color)} />
       </div>
       <div className="flex flex-col gap-1 text-center sm:items-start">
-        <span className="text-xs font-medium leading-tight text-muted-foreground sm:text-sm">
+        <span className="text-xs font-medium leading-tight text-muted sm:text-sm">
           {title}
         </span>
         <span className="text-2xl font-bold leading-none text-foreground sm:text-2xl lg:text-3xl">

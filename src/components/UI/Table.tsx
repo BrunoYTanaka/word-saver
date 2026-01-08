@@ -28,14 +28,14 @@ function Table<T extends object>({
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="flex w-full items-center justify-center rounded-lg border-border bg-card p-10 text-sm text-muted-foreground shadow-md">
+      <div className="bg-surface flex w-full items-center justify-center rounded-lg border-border p-10 text-sm text-muted shadow-md">
         Nenhum dado disponível.
       </div>
     )
   }
 
   return (
-    <div className="relative flex w-full flex-col overflow-auto rounded-lg border-border bg-card shadow-md">
+    <div className="bg-surface relative flex w-full flex-col overflow-auto rounded-lg border-border shadow-md">
       <table className="w-full min-w-max table-auto border-collapse text-left">
         <thead>
           <tr>
@@ -44,7 +44,7 @@ function Table<T extends object>({
                 key={String(column.field)}
                 className="border-b border-border p-4"
               >
-                <p className="text-sm font-normal leading-none text-muted-foreground">
+                <p className="text-sm font-normal leading-none text-muted">
                   {column.title}
                 </p>
               </th>
@@ -56,7 +56,7 @@ function Table<T extends object>({
           {data.map((item, index) => (
             <tr
               key={item.id}
-              className={`transition-colors hover:bg-muted ${
+              className={`hover:bg-surface-muted transition-colors ${
                 data.length - 1 > index ? 'border-b border-border' : ''
               }`}
             >

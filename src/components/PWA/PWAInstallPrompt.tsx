@@ -85,7 +85,7 @@ export const PWAInstallPrompt: React.FC = () => {
   }
 
   return (
-    <div className="fixed inset-x-4 bottom-4 z-50 rounded-lg border bg-card p-4 shadow-lg md:left-auto md:right-4 md:w-80">
+    <div className="fixed inset-x-4 bottom-4 z-50 rounded-lg border bg-surface p-4 shadow-lg md:left-auto md:right-4 md:w-80">
       <div className="flex items-start gap-3">
         <div className="shrink-0">
           <img
@@ -98,7 +98,7 @@ export const PWAInstallPrompt: React.FC = () => {
           <h3 className="text-sm font-semibold text-foreground">
             Instalar Word Saver
           </h3>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs text-muted">
             Instale o app para acesso rápido e funcionamento offline
           </p>
           <div className="mt-3 flex gap-2">

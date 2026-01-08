@@ -243,7 +243,7 @@ const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
                   className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                     formData.days.includes(day.id)
                       ? 'border-primary bg-primary text-primary-foreground'
-                      : 'rounded-full border border-border bg-card p-2 text-foreground transition-colors hover:bg-muted'
+                      : 'rounded-full border border-border bg-surface p-2 text-foreground transition-colors hover:bg-surface-muted'
                   } ${
                     loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
                   }`}
@@ -278,7 +278,7 @@ const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
           <label className="mb-2 block text-sm font-medium ">
             Contextos para Revisão
           </label>
-          <div className="max-h-32 space-y-2 overflow-y-auto rounded-lg border bg-muted p-3">
+          <div className="max-h-32 space-y-2 overflow-y-auto rounded-lg border bg-surface-muted p-3">
             {contexts.length > 0 ? (
               contexts.map((context) => (
                 <label key={context.id} className="flex items-center">
@@ -296,9 +296,7 @@ const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
                 </label>
               ))
             ) : (
-              <p className="text-sm text-muted-foreground">
-                Nenhum contexto disponível
-              </p>
+              <p className="text-sm text-muted">Nenhum contexto disponível</p>
             )}
           </div>
           {errors.contextIds && (

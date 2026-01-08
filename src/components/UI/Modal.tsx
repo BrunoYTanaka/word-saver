@@ -101,7 +101,7 @@ function Modal({
         ref={modalRef}
         className={`
           relative w-full ${sizeClasses[size]} animate-slide-up max-h-[90vh] overflow-hidden
-          rounded-lg bg-card shadow-xl
+          rounded-lg bg-surface shadow-xl
           focus:outline-none ${className}
         `}
         role="dialog"
