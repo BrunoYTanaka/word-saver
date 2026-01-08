@@ -91,7 +91,7 @@ function Modal({
       {/* Overlay */}
       <div
         ref={overlayRef}
-        className="animate-fade-in fixed inset-0 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 animate-fade-in bg-black/50 backdrop-blur-sm"
         onClick={handleOverlayClick}
         aria-hidden="true"
       />
@@ -100,7 +100,7 @@ function Modal({
       <div
         ref={modalRef}
         className={`
-          relative w-full ${sizeClasses[size]} animate-slide-up max-h-[90vh] overflow-hidden
+          relative w-full ${sizeClasses[size]} max-h-[90vh] animate-slide-up overflow-hidden
           rounded-lg bg-surface shadow-xl
           focus:outline-none ${className}
         `}

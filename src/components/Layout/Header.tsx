@@ -8,7 +8,7 @@ const Header = () => {
   const { openModal } = useModal()
 
   return (
-    <header className="bg-surface sticky top-0 z-40 border-b border-border">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface">
       <div className="container mx-auto max-w-7xl">
         <div className="flex items-center justify-between gap-4 p-2">
           {/* Logo/Title */}

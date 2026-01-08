@@ -97,7 +97,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
         </div>
 
         {/* Word card */}
-        <Card className="bg-primary-soft border-border p-6 text-center">
+        <Card className="border-border bg-primary-soft p-6 text-center">
           <div className="space-y-4">
             {/* Word */}
             <div>
@@ -132,7 +132,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
                 <>
                   <Button
                     onClick={handleNextWord}
-                    className="bg-success text-success-foreground hover:bg-success-hover flex-1"
+                    className="flex-1 bg-success text-success-foreground hover:bg-success-hover"
                   >
                     ✅ Próxima Palavra
                   </Button>

@@ -89,7 +89,7 @@ const SettingsModal = () => {
 
             {/* Contexts Count */}
             <Card className="text-center">
-              <div className="text-success text-3xl font-bold">
+              <div className="text-3xl font-bold text-success">
                 {contexts.length}
               </div>
               <div className="text-sm text-muted-foreground">
@@ -99,7 +99,7 @@ const SettingsModal = () => {
 
             {/* Alerts Count */}
             <Card className="text-center">
-              <div className="text-warning text-3xl font-bold">
+              <div className="text-3xl font-bold text-warning">
                 {alerts.length}
               </div>
               <div className="text-sm text-muted-foreground">
@@ -265,7 +265,7 @@ const SettingsModal = () => {
             ⚠️ Zona de Perigo
           </h3>
 
-          <Card className="bg-destructive-soft border-destructive">
+          <Card className="border-destructive bg-destructive-soft">
             <div className="space-y-3">
               <div>
                 <div className="font-medium text-destructive">

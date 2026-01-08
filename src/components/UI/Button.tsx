@@ -76,7 +76,7 @@ function Button({
     >
       {loading ? (
         <div className="flex items-center gap-2">
-          <LoaderCircle className="size-4 animate-spin" />
+          <LoaderCircle className="animate-spin size-4" />
           {children && <span>Carregando...</span>}
         </div>
       ) : (

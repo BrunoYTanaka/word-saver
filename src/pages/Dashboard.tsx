@@ -77,10 +77,10 @@ const Dashboard = () => {
     return (
       <div className="space-y-6">
         <div className="animate-pulse">
-          <div className="bg-surface-muted mb-6 h-8 w-1/3 rounded"></div>
+          <div className="mb-6 h-8 w-1/3 rounded bg-surface-muted"></div>
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-surface-muted h-32 rounded-lg"></div>
+              <div key={i} className="h-32 rounded-lg bg-surface-muted"></div>
             ))}
           </div>
         </div>
@@ -258,7 +258,7 @@ const Dashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="bg-surface grid grid-cols-3 rounded-lg shadow dark:border dark:border-border">
+      <div className="grid grid-cols-3 rounded-lg bg-surface shadow dark:border dark:border-border">
         {statCards.map((stat, index) => {
           return <CountCard key={index} {...stat} number={stat.value} />
         })}
@@ -280,7 +280,7 @@ const Dashboard = () => {
                 className="hover:bg-surface-hover"
               >
                 <div className="text-center">
-                  <div className="bg-surface-muted mb-4 inline-flex size-12 items-center justify-center rounded-lg">
+                  <div className="mb-4 inline-flex size-12 items-center justify-center rounded-lg bg-surface-muted">
                     <Icon className="size-6 text-primary" />
                   </div>
                   <h3 className="mb-2 font-medium text-foreground">
@@ -307,7 +307,7 @@ const Dashboard = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="text-success size-4" />
+                  <TrendingUp className="size-4 text-success" />
                   <span className="text-sm text-muted-foreground">
                     Palavras Adicionadas
                   </span>

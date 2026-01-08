@@ -239,7 +239,7 @@ const ExportDataModal = () => {
                   <button
                     type="button"
                     onClick={handleSelectAllContexts}
-                    className="hover:text-primary-hover text-sm text-primary"
+                    className="text-sm text-primary hover:text-primary-hover"
                   >
                     Todos
                   </button>
@@ -266,7 +266,7 @@ const ExportDataModal = () => {
                   return (
                     <label
                       key={context.id}
-                      className="bg-surface-muted flex cursor-pointer items-center justify-between rounded-lg p-3 transition-colors"
+                      className="flex cursor-pointer items-center justify-between rounded-lg bg-surface-muted p-3 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
                         <input

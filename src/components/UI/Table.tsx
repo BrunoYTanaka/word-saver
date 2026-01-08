@@ -28,14 +28,14 @@ function Table<T extends object>({
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="bg-surface flex w-full items-center justify-center rounded-lg border-border p-10 text-sm text-muted-foreground shadow-md">
+      <div className="flex w-full items-center justify-center rounded-lg border-border bg-surface p-10 text-sm text-muted-foreground shadow-md">
         Nenhum dado disponível.
       </div>
     )
   }
 
   return (
-    <div className="bg-surface relative flex w-full flex-col overflow-auto rounded-lg border-border shadow-md">
+    <div className="relative flex w-full flex-col overflow-auto rounded-lg border-border bg-surface shadow-md">
       <table className="w-full min-w-max table-auto border-collapse text-left">
         <thead>
           <tr>
@@ -56,7 +56,7 @@ function Table<T extends object>({
           {data.map((item, index) => (
             <tr
               key={item.id}
-              className={`hover:bg-surface-muted transition-colors ${
+              className={`transition-colors hover:bg-surface-muted ${
                 data.length - 1 > index ? 'border-b border-border' : ''
               }`}
             >
@@ -68,7 +68,7 @@ function Table<T extends object>({
                         onClick={() => onEdit(item.id)}
                         title="Editar"
                         type="button"
-                        className="hover:bg-primary-hover rounded-md p-1 text-primary transition-colors hover:text-primary-foreground"
+                        className="rounded-md p-1 text-primary transition-colors hover:bg-primary-hover hover:text-primary-foreground"
                       >
                         <Edit className="size-4" />
                       </button>
@@ -76,7 +76,7 @@ function Table<T extends object>({
                         onClick={() => onDelete(item.id)}
                         title="Remover"
                         type="button"
-                        className="hover:bg-destructive-hover rounded-md p-1 text-destructive transition-colors hover:text-destructive-foreground"
+                        className="rounded-md p-1 text-destructive transition-colors hover:bg-destructive-hover hover:text-destructive-foreground"
                       >
                         <Trash2 className="size-4" />
                       </button>

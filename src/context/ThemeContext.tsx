@@ -1,4 +1,10 @@
-import { useState, useEffect, useContext, createContext } from 'react'
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  useCallback
+} from 'react'
 import { dbService } from '../services/db'
 
 const THEME_KEY = 'theme'
@@ -35,6 +41,28 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDark, setIsDark] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  // Apply theme logic
+  const applyTheme = useCallback((newTheme: ThemeType) => {
+    let shouldBeDark = false
+
+    switch (newTheme) {
+      case THEMES.DARK:
+        shouldBeDark = true
+        break
+      case THEMES.LIGHT:
+        shouldBeDark = false
+        break
+      case THEMES.AUTO:
+        shouldBeDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        break
+      default:
+        shouldBeDark = false
+    }
+
+    setIsDark(shouldBeDark)
+    applyThemeToDOM(shouldBeDark)
+  }, [])
+
   // Initialize theme from database
   useEffect(() => {
     const initTheme = async () => {
@@ -59,7 +87,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
 
     initTheme()
-  }, [])
+  }, [applyTheme])
 
   // Listen for system theme changes
   useEffect(() => {
@@ -82,28 +110,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [theme])
-
-  // Apply theme logic
-  const applyTheme = (newTheme: ThemeType) => {
-    let shouldBeDark = false
-
-    switch (newTheme) {
-      case THEMES.DARK:
-        shouldBeDark = true
-        break
-      case THEMES.LIGHT:
-        shouldBeDark = false
-        break
-      case THEMES.AUTO:
-        shouldBeDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        break
-      default:
-        shouldBeDark = false
-    }
-
-    setIsDark(shouldBeDark)
-    applyThemeToDOM(shouldBeDark)
-  }
 
   // Apply theme to DOM
   const applyThemeToDOM = (dark: boolean) => {
