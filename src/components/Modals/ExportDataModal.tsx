@@ -1,7 +1,7 @@
+import { FileText } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useApp } from '../../context/AppContext'
 import Modal from '../UI/Modal'
-import Button from '../UI/Button'
 import Card from '../UI/Card'
 import { fileService } from '../../services/file'
 import { useModal } from '../../context/ModalContext'
@@ -139,19 +139,32 @@ const ExportDataModal = () => {
     return false
   }
 
+  const modalFooter = (
+    <Modal.Footer.Actions
+      onCancel={() => closeModal('EXPORT_DATA')}
+      onConfirm={handleExport}
+      cancelText="Cancelar"
+      confirmText="Exportar"
+      confirmVariant="primary"
+      loading={isExporting}
+      confirmDisabled={!canExport() || isExporting}
+    />
+  )
+
   return (
     <Modal
       isOpen={true}
       onClose={() => closeModal('EXPORT_DATA')}
       title="Exportar Dados"
       className="max-w-2xl"
+      footer={modalFooter}
+      closeOnOverlayClick={!isExporting}
+      closeOnEscape={!isExporting}
     >
       <div className="space-y-6">
         {/* Export Type Selection */}
         <div>
-          <h3 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">
-            Tipo de Exportação
-          </h3>
+          <h3 className="mb-3 font-semibold">Tipo de Exportação</h3>
           <div className="space-y-3">
             {/* Full Export */}
             <label className="flex cursor-pointer items-start space-x-3">
@@ -161,15 +174,13 @@ const ExportDataModal = () => {
                 value="full"
                 checked={exportType === 'full'}
                 onChange={(e) => setExportType(e.target.value)}
-                className="mt-1 text-blue-600"
+                className="mt-1"
               />
               <div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="font-medium text-foreground">
                   Backup Completo
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {getExportDescription()}
-                </div>
+                <div className="text-sm">{getExportDescription()}</div>
               </div>
             </label>
 
@@ -181,13 +192,13 @@ const ExportDataModal = () => {
                 value="context"
                 checked={exportType === 'context'}
                 onChange={(e) => setExportType(e.target.value)}
-                className="mt-1 text-blue-600"
+                className="mt-1"
               />
               <div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="font-medium text-foreground">
                   Contextos Específicos
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   {getExportDescription()}
                 </div>
               </div>
@@ -201,13 +212,13 @@ const ExportDataModal = () => {
                 value="words-only"
                 checked={exportType === 'words-only'}
                 onChange={(e) => setExportType(e.target.value)}
-                className="mt-1 text-blue-600"
+                className="mt-1"
               />
               <div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="font-medium text-foreground">
                   Apenas Palavras
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   {getExportDescription()}
                 </div>
               </div>
@@ -219,7 +230,7 @@ const ExportDataModal = () => {
         {(exportType === 'context' || exportType === 'words-only') && (
           <div>
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+              <h3 className="font-semibold">
                 Selecionar Contextos
                 {exportType === 'words-only' && ' (opcional)'}
               </h3>
@@ -228,7 +239,7 @@ const ExportDataModal = () => {
                   <button
                     type="button"
                     onClick={handleSelectAllContexts}
-                    className="text-sm text-blue-600 hover:text-blue-700"
+                    className="text-sm text-primary hover:text-primary-hover"
                   >
                     Todos
                   </button>
@@ -236,7 +247,7 @@ const ExportDataModal = () => {
                   <button
                     type="button"
                     onClick={handleClearSelection}
-                    className="text-sm text-gray-600 hover:text-gray-700"
+                    className="text-sm text-muted-foreground hover:text-foreground"
                   >
                     Limpar
                   </button>
@@ -245,9 +256,7 @@ const ExportDataModal = () => {
             </div>
 
             {contexts.length === 0 ? (
-              <div className="py-4 text-center text-gray-500 dark:text-gray-400">
-                Nenhum contexto disponível
-              </div>
+              <div className="py-4 text-center">Nenhum contexto disponível</div>
             ) : (
               <div className="max-h-40 space-y-2 overflow-y-auto">
                 {contexts.map((context) => {
@@ -257,28 +266,28 @@ const ExportDataModal = () => {
                   return (
                     <label
                       key={context.id}
-                      className="flex cursor-pointer items-center justify-between rounded-lg bg-gray-50 p-3 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
+                      className="flex cursor-pointer items-center justify-between rounded-lg bg-surface-muted p-3 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
                         <input
                           type="checkbox"
                           checked={selectedContexts.includes(context.id)}
                           onChange={() => handleContextToggle(context.id)}
-                          className="text-blue-600"
                         />
                         <div>
-                          <div className="font-medium text-gray-900 dark:text-gray-100">
+                          <div className="font-medium text-foreground">
                             {context.name}
                           </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             {wordCount} palavra{wordCount !== 1 ? 's' : ''}
                           </div>
                         </div>
                       </div>
                       {context.color && (
                         <div
-                          className="size-4 rounded-full border-2 border-white shadow-sm"
+                          className="size-4 rounded-full border-2 border-border shadow-sm"
                           style={{ backgroundColor: context.color }}
+                          title="Cor do contexto"
                         />
                       )}
                     </label>
@@ -290,25 +299,13 @@ const ExportDataModal = () => {
         )}
 
         {/* Export Stats */}
-        <Card className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20">
+        <Card className="border-primary">
           <div className="flex items-center space-x-4">
-            <div className="text-blue-600 dark:text-blue-400">
-              <svg
-                className="size-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
+            <div className="text-primary">
+              <FileText className="size-6" />
             </div>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-gray-100">
+              <div className="font-semibold">
                 {exportType === 'full' && 'Backup Completo'}
                 {exportType === 'context' &&
                   `${selectedContexts.length} Contexto${
@@ -316,7 +313,7 @@ const ExportDataModal = () => {
                   }`}
                 {exportType === 'words-only' && 'Apenas Palavras'}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">
+              <div className="text-sm text-muted-foreground">
                 {exportStats.selectedWords} palavra
                 {exportStats.selectedWords !== 1 ? 's' : ''}
                 {exportType === 'full' &&
@@ -327,46 +324,6 @@ const ExportDataModal = () => {
             </div>
           </div>
         </Card>
-
-        {/* Action Buttons */}
-        <div className="flex justify-end space-x-3 border-t border-gray-200 pt-4 dark:border-gray-700">
-          <Button
-            variant="outline"
-            onClick={() => closeModal('EXPORT_DATA')}
-            disabled={isExporting}
-          >
-            Cancelar
-          </Button>
-          <Button
-            onClick={handleExport}
-            disabled={!canExport() || isExporting}
-            className="min-w-30"
-          >
-            {isExporting ? (
-              <div className="flex items-center space-x-2">
-                <svg className="size-4 animate-spin" viewBox="0 0 24 24">
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                <span>Exportando...</span>
-              </div>
-            ) : (
-              'Exportar'
-            )}
-          </Button>
-        </div>
       </div>
     </Modal>
   )

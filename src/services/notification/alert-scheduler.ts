@@ -1,14 +1,15 @@
+// Alert Scheduler Service
 import { FullAlert } from '../../types/alert'
 import { dbService } from '../db'
-import type { IAlertScheduler, INotificationService } from './types'
+import { CoreNotificationService } from './core-notification-service'
 
-export class AlertScheduler implements IAlertScheduler {
-  private scheduledAlerts: Map<string, number> = new Map()
-  private notificationService: INotificationService
+export class AlertScheduler {
+  private scheduledAlerts: Map<string, ReturnType<typeof setTimeout>> =
+    new Map()
+  private notificationService: CoreNotificationService
 
-  constructor(notificationService: INotificationService) {
+  constructor(notificationService: CoreNotificationService) {
     this.notificationService = notificationService
-    this.scheduledAlerts = new Map()
   }
 
   // Schedule alert for word review
@@ -56,7 +57,7 @@ export class AlertScheduler implements IAlertScheduler {
   }
 
   // Trigger scheduled alert
-  async triggerAlert(alert: FullAlert): Promise<void> {
+  private async triggerAlert(alert: FullAlert): Promise<void> {
     try {
       // Get words from selected contexts
       const wordsPromises = alert.contextIds.map((contextId) =>
@@ -80,7 +81,7 @@ export class AlertScheduler implements IAlertScheduler {
         .join(', ')
 
       // Show notification
-      this.notificationService.showNotification(
+      await this.notificationService.showNotification(
         `🧠 Hora de revisar palavras!`,
         {
           body: `${allWords.length} palavras de ${contextNames} aguardando revisão`,
@@ -88,7 +89,7 @@ export class AlertScheduler implements IAlertScheduler {
             type: 'word-review',
             alertId: alert.id,
             contextIds: alert.contextIds,
-            wordCount: allWords.length
+            words: allWords
           },
           actions: [
             {
@@ -144,7 +145,7 @@ export class AlertScheduler implements IAlertScheduler {
     }
   }
 
-  // Reschedule all alerts (useful after settings change)
+  // Reschedule all alerts
   async rescheduleAlerts(): Promise<void> {
     // Cancel all existing schedules
     this.scheduledAlerts.forEach((timeoutId) => clearTimeout(timeoutId))

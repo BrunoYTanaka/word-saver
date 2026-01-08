@@ -37,7 +37,7 @@ function Card({
   }
 
   const cardStyles = cn(
-    'bg-card text-card-foreground rounded-lg',
+    'bg-surface text-foreground rounded-lg',
     border && 'border border-border',
     paddingClasses[padding],
     shadowClasses[shadow],

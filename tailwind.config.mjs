@@ -1,46 +1,89 @@
 /** @type {import('tailwindcss').Config} */
-
 export default {
-  content: ['./src/**/*.{mjs,js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mjs}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        background: 'var(--color-background)',
-        foreground: 'var(--color-foreground)',
-        card: {
-          DEFAULT: 'var(--color-card)',
-          foreground: 'var(--color-card-foreground)'
+        /* Core Colors */
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+
+        /* Surfaces */
+        surface: {
+          DEFAULT: 'var(--surface)',
+          muted: 'var(--surface-muted)',
+          hover: 'var(--surface-hover)'
         },
-        popover: {
-          DEFAULT: 'var(--color-popover)',
-          foreground: 'var(--color-popover-foreground)'
-        },
-        primary: {
-          DEFAULT: 'var(--color-primary)',
-          foreground: 'var(--color-primary-foreground)'
-        },
-        secondary: {
-          DEFAULT: 'var(--color-secondary)',
-          foreground: 'var(--color-secondary-foreground)'
-        },
+
         muted: {
-          DEFAULT: 'var(--color-muted)',
-          foreground: 'var(--color-muted-foreground)'
+          DEFAULT: 'var(--surface-muted)',
+          foreground: 'var(--foreground-muted)'
         },
+
+        /* Interactive Colors */
+        primary: {
+          DEFAULT: 'var(--primary)',
+          hover: 'var(--primary-hover)',
+          foreground: 'var(--primary-foreground)',
+          soft: 'var(--primary-soft)'
+        },
+
+        secondary: {
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)'
+        },
+
         accent: {
-          DEFAULT: 'var(--color-accent)',
-          foreground: 'var(--color-accent-foreground)'
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)'
         },
+
+        /* Status Colors */
         destructive: {
-          DEFAULT: 'var(--color-destructive)',
-          foreground: 'var(--color-destructive-foreground)'
+          DEFAULT: 'var(--destructive)',
+          hover: 'var(--destructive-hover)',
+          foreground: 'var(--destructive-foreground)',
+          soft: 'var(--destructive-soft)'
         },
-        border: 'var(--color-border)',
-        input: 'var(--color-input)',
-        ring: 'var(--color-ring)'
+
+        success: {
+          DEFAULT: 'var(--success)',
+          hover: 'var(--success-hover)',
+          foreground: 'var(--success-foreground)',
+          soft: 'var(--success-soft)'
+        },
+
+        warning: {
+          DEFAULT: 'var(--warning)',
+          foreground: 'var(--warning-foreground)',
+          soft: 'var(--warning-soft)'
+        },
+
+        /* Interactive States */
+        ghost: {
+          hover: 'var(--ghost-hover)'
+        },
+
+        outline: {
+          hover: 'var(--outline-hover)'
+        },
+
+        /* Interface Elements */
+        border: {
+          DEFAULT: 'var(--border)',
+          focus: 'var(--border-focus)',
+          error: 'var(--border-error)'
+        },
+
+        ring: 'var(--border-focus)'
       }
+    },
+
+    animation: {
+      'fade-in': 'fadeIn 0.5s ease-in-out',
+      'slide-up': 'slideUp 0.3s ease-out'
     }
   },
-  darkMode: 'class',
   plugins: []
 }

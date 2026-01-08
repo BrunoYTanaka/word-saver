@@ -142,7 +142,7 @@ function EditWordModal({ wordId }: { wordId: string }) {
 
         {/* Definition Field */}
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium">
             Definição
             <span className="ml-1 text-destructive">*</span>
           </label>
@@ -154,35 +154,31 @@ function EditWordModal({ wordId }: { wordId: string }) {
             required
             rows={3}
             className={`
-              box-border w-full rounded-md border bg-background px-3
-              py-2 text-sm text-foreground transition-colors
-              focus:border-transparent focus:outline-none
-              focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50
+              w-full rounded-md border bg-background px-3 py-2
+              text-sm text-foreground transition-colors
+              focus:outline-none focus:ring-1
+              disabled:cursor-not-allowed disabled:opacity-50
               ${
                 errors.definition
-                  ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
-                  : 'focus:ring-primary-500 border-gray-300 dark:border-gray-600'
+                  ? 'border-destructive focus:border-destructive focus:ring-destructive'
+                  : 'border-border focus:border-primary focus:ring-primary'
               }
             `}
           />
           {errors.definition && (
-            <p className="text-xs text-red-600 dark:text-red-400">
-              {errors.definition}
-            </p>
+            <p className="text-xs text-destructive">{errors.definition}</p>
           )}
         </div>
 
         {/* Context Selection */}
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium ">
             Contexto
             <span className="ml-1 text-destructive">*</span>
           </label>
           {contexts.length === 0 ? (
             <div className="rounded-md border border-border bg-background py-4 text-center">
-              <p className="mb-2 text-sm text-foreground">
-                Nenhum contexto disponível
-              </p>
+              <p className="mb-2 text-sm">Nenhum contexto disponível</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -201,16 +197,18 @@ function EditWordModal({ wordId }: { wordId: string }) {
               className={`
                 h-10 w-full rounded-md border bg-background
                 px-3 py-2 text-sm text-foreground
-                transition-colors focus:border-transparent focus:outline-none
-                focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50
+                transition-colors focus:outline-none focus:ring-1
+                disabled:cursor-not-allowed disabled:opacity-50
                 ${
                   errors.contextId
-                    ? 'border-red-300 focus:ring-red-500 dark:border-red-600'
-                    : 'focus:ring-primary-500 border-gray-300 dark:border-gray-600'
+                    ? 'border-destructive focus:border-destructive focus:ring-destructive'
+                    : 'border-border focus:border-primary focus:ring-primary'
                 }
               `}
             >
-              <option value="">Selecione um contexto...</option>
+              <option value="" className="">
+                Selecione um contexto...
+              </option>
               {contexts.map((context) => (
                 <option key={context.id} value={context.id}>
                   {context.name}
@@ -219,9 +217,7 @@ function EditWordModal({ wordId }: { wordId: string }) {
             </select>
           )}
           {errors.contextId && (
-            <p className="text-xs text-red-600 dark:text-red-400">
-              {errors.contextId}
-            </p>
+            <p className="text-xs text-destructive">{errors.contextId}</p>
           )}
         </div>
 
