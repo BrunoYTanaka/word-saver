@@ -197,6 +197,303 @@
       "definition": "ramo da filosofia que se ocupa com questões de moralidade e comportamento humano.",
       "contextId": "56789abcdef1-2345-6789-abcd-ef123456789a",
       "tags": ["Filosofia", "Moral"]
+    },
+    {
+      "id": "abc123def456-7890-1234-5678-9abcdef01234",
+      "createdAt": "2026-01-08T08:15:22.456Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "inflação",
+      "definition": "aumento generalizado e contínuo dos preços de bens e serviços em uma economia.",
+      "contextId": "econ123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Economia", "Macroeconomia"]
+    },
+    {
+      "id": "def456789012-3456-789a-bcde-f123456789ab",
+      "createdAt": "2026-01-07T14:20:35.123Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T11:45:18.789Z",
+      "difficulty": "medium",
+      "word": "oligopólio",
+      "definition": "estrutura de mercado caracterizada por um pequeno número de empresas vendedoras.",
+      "contextId": "econ123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Economia", "Microeconomia"]
+    },
+    {
+      "id": "ghi789012345-6789-abcd-ef12-3456789abcde",
+      "createdAt": "2026-01-06T16:30:45.678Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-07T09:15:32.234Z",
+      "difficulty": "easy",
+      "word": "oferta",
+      "definition": "quantidade de um bem ou serviço que os produtores estão dispostos a vender a diferentes preços.",
+      "contextId": "econ123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Economia", "Lei da oferta"]
+    },
+    {
+      "id": "jkl012345678-9abc-def1-2345-6789abcdef12",
+      "createdAt": "2026-01-08T12:40:55.890Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "feudalismo",
+      "definition": "sistema político, econômico e social baseado na concessão de feudos em troca de fidelidade.",
+      "contextId": "hist123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["História", "Idade Média"]
+    },
+    {
+      "id": "mno345678901-2345-6789-abcd-ef123456789a",
+      "createdAt": "2026-01-07T18:25:15.567Z",
+      "reviewCount": 3,
+      "lastReviewed": "2026-01-08T15:30:42.123Z",
+      "difficulty": "medium",
+      "word": "renascimento",
+      "definition": "movimento cultural que marcou a transição da Idade Média para a Modernidade.",
+      "contextId": "hist123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["História", "Idade Moderna"]
+    },
+    {
+      "id": "pqr678901234-5678-9abc-def1-23456789abcd",
+      "createdAt": "2026-01-06T10:15:38.456Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T07:20:25.789Z",
+      "difficulty": "easy",
+      "word": "iluminismo",
+      "definition": "movimento intelectual do século XVIII que enfatizava a razão e o método científico.",
+      "contextId": "hist123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["História", "Filosofia"]
+    },
+    {
+      "id": "stu901234567-8901-2345-6789-abcdef123456",
+      "createdAt": "2026-01-08T09:35:48.234Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "inconsciente",
+      "definition": "parte da mente que contém pensamentos, sentimentos e memórias fora da consciência.",
+      "contextId": "psyc123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Psicologia", "Psicanálise"]
+    },
+    {
+      "id": "vwx234567890-1234-5678-9abc-def123456789",
+      "createdAt": "2026-01-07T13:50:22.678Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T19:15:35.456Z",
+      "difficulty": "medium",
+      "word": "cognição",
+      "definition": "processo mental de adquirir conhecimento e compreensão através do pensamento e experiência.",
+      "contextId": "psyc123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Psicologia", "Cognitiva"]
+    },
+    {
+      "id": "yza567890123-4567-89ab-cdef-123456789abc",
+      "createdAt": "2026-01-06T15:25:15.890Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-07T21:40:48.123Z",
+      "difficulty": "easy",
+      "word": "behaviorismo",
+      "definition": "abordagem psicológica que se concentra no comportamento observável e mensurável.",
+      "contextId": "psyc123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Psicologia", "Comportamental"]
+    },
+    {
+      "id": "bcd890123456-7890-abcd-ef12-3456789abcde",
+      "createdAt": "2026-01-08T11:10:32.567Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "polímero",
+      "definition": "macromolécula composta por muitas unidades repetidas de moléculas menores chamadas monômeros.",
+      "contextId": "chem123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Química", "Orgânica"]
+    },
+    {
+      "id": "efg123456789-0123-4567-89ab-cdef123456789",
+      "createdAt": "2026-01-07T16:45:28.234Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T12:20:55.678Z",
+      "difficulty": "medium",
+      "word": "catalisador",
+      "definition": "substância que acelera uma reação química sem ser consumida no processo.",
+      "contextId": "chem123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Química", "Cinética"]
+    },
+    {
+      "id": "hij456789012-3456-789a-bcde-f123456789ab",
+      "createdAt": "2026-01-06T14:35:45.890Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T08:15:28.345Z",
+      "difficulty": "easy",
+      "word": "ácido",
+      "definition": "substância que pode doar prótons (H+) em soluções aquosas, com pH menor que 7.",
+      "contextId": "chem123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Química", "Ácido-base"]
+    },
+    {
+      "id": "klm789012345-6789-abcd-ef12-3456789abcde",
+      "createdAt": "2026-01-08T17:20:15.456Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "medium",
+      "word": "planalto",
+      "definition": "extensão de terra elevada e relativamente plana, limitada por escarpas.",
+      "contextId": "geog123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Geografia", "Relevo"]
+    },
+    {
+      "id": "nop012345678-9abc-def1-2345-6789abcdef12",
+      "createdAt": "2026-01-07T10:55:42.123Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T14:30:18.789Z",
+      "difficulty": "easy",
+      "word": "bacia hidrográfica",
+      "definition": "área drenada por um rio principal e seus afluentes, delimitada por divisores de água.",
+      "contextId": "geog123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Geografia", "Hidrografia"]
+    },
+    {
+      "id": "qrs345678901-2345-6789-abcd-ef123456789a",
+      "createdAt": "2026-01-06T12:40:35.567Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T16:25:48.234Z",
+      "difficulty": "hard",
+      "word": "tectônica",
+      "definition": "teoria que explica a estrutura e evolução da superfície terrestre através do movimento das placas.",
+      "contextId": "geog123456789-abcd-ef12-3456-789abcdef123",
+      "tags": ["Geografia", "Geologia"]
+    },
+    {
+      "id": "adv001234567-8901-2345-6789-abcdef012345",
+      "createdAt": "2026-01-08T13:15:28.456Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "mandado de segurança",
+      "definition": "remédio constitucional para proteger direito líquido e certo contra ato de autoridade pública.",
+      "contextId": "d0644cc2-1fbd-4900-bc07-45983b259011",
+      "tags": ["Direito", "Constitucional"]
+    },
+    {
+      "id": "adv002345678-9012-3456-789a-bcdef0123456",
+      "createdAt": "2026-01-07T11:30:45.789Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T17:45:22.123Z",
+      "difficulty": "medium",
+      "word": "usucapião",
+      "definition": "forma de aquisição da propriedade pela posse prolongada com determinados requisitos legais.",
+      "contextId": "d0644cc2-1fbd-4900-bc07-45983b259011",
+      "tags": ["Direito", "Civil"]
+    },
+    {
+      "id": "med001234567-8901-2345-6789-abcdef012345",
+      "createdAt": "2026-01-08T15:20:35.678Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "fibrilação atrial",
+      "definition": "arritmia cardíaca caracterizada por ativação elétrica desorganizada dos átrios.",
+      "contextId": "2b3c4d5e-6f70-8901-bcde-f23456789012",
+      "tags": ["Medicina", "Cardiologia"]
+    },
+    {
+      "id": "med002345678-9012-3456-789a-bcdef0123456",
+      "createdAt": "2026-01-07T08:45:18.234Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T14:30:55.890Z",
+      "difficulty": "medium",
+      "word": "anemia",
+      "definition": "condição caracterizada pela diminuição do número de glóbulos vermelhos ou hemoglobina no sangue.",
+      "contextId": "2b3c4d5e-6f70-8901-bcde-f23456789012",
+      "tags": ["Medicina", "Hematologia"]
+    },
+    {
+      "id": "tech001234567-8901-2345-6789-abcdef012345",
+      "createdAt": "2026-01-08T10:15:42.567Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "machine learning",
+      "definition": "subcampo da inteligência artificial que permite sistemas aprenderem automaticamente a partir de dados.",
+      "contextId": "9012cdef-3456-789a-bcde-f123456789ab",
+      "tags": ["Programação", "IA"]
+    },
+    {
+      "id": "tech002345678-9012-3456-789a-bcdef0123456",
+      "createdAt": "2026-01-07T14:50:28.123Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T09:25:15.456Z",
+      "difficulty": "medium",
+      "word": "API",
+      "definition": "interface de programação de aplicações que permite comunicação entre diferentes softwares.",
+      "contextId": "9012cdef-3456-789a-bcde-f123456789ab",
+      "tags": ["Programação", "Interface"]
+    },
+    {
+      "id": "lit001234567-8901-2345-6789-abcdef012345",
+      "createdAt": "2026-01-08T16:35:48.789Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "medium",
+      "word": "allegoria",
+      "definition": "figura de linguagem que expressa ideias abstratas através de imagens concretas e simbólicas.",
+      "contextId": "f123456789ab-cdef-1234-5678-9abcdef12345",
+      "tags": ["Literatura", "Figura de linguagem"]
+    },
+    {
+      "id": "lit002345678-9012-3456-789a-bcdef0123456",
+      "createdAt": "2026-01-07T09:20:25.234Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T18:45:38.567Z",
+      "difficulty": "easy",
+      "word": "rima",
+      "definition": "correspondência de sons no final dos versos, criando harmonia sonora no poema.",
+      "contextId": "f123456789ab-cdef-1234-5678-9abcdef12345",
+      "tags": ["Literatura", "Poesia"]
+    },
+    {
+      "id": "bio001234567-8901-2345-6789-abcdef012345",
+      "createdAt": "2026-01-08T12:25:55.678Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "meiose",
+      "definition": "processo de divisão celular que produz gametas com metade do número de cromossomos.",
+      "contextId": "abcdef123456-7890-abcd-ef12-3456789abcde",
+      "tags": ["Biologia", "Reprodução"]
+    },
+    {
+      "id": "bio002345678-9012-3456-789a-bcdef0123456",
+      "createdAt": "2026-01-07T17:40:32.890Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T13:15:48.123Z",
+      "difficulty": "medium",
+      "word": "DNA",
+      "definition": "ácido desoxirribonucleico, molécula que carrega a informação genética dos seres vivos.",
+      "contextId": "abcdef123456-7890-abcd-ef12-3456789abcde",
+      "tags": ["Biologia", "Genética"]
+    },
+    {
+      "id": "phil001234567-8901-2345-6789-abcdef012345",
+      "createdAt": "2026-01-08T19:50:15.456Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "ontologia",
+      "definition": "ramo da filosofia que estuda a natureza do ser, da existência e da realidade.",
+      "contextId": "56789abcdef1-2345-6789-abcd-ef123456789a",
+      "tags": ["Filosofia", "Metafísica"]
+    },
+    {
+      "id": "phil002345678-9012-3456-789a-bcdef0123456",
+      "createdAt": "2026-01-07T06:30:42.234Z",
+      "reviewCount": 3,
+      "lastReviewed": "2026-01-08T21:15:28.567Z",
+      "difficulty": "medium",
+      "word": "dialética",
+      "definition": "método filosófico que busca a verdade através do confronto de ideias opostas.",
+      "contextId": "56789abcdef1-2345-6789-abcd-ef123456789a",
+      "tags": ["Filosofia", "Método"]
     }
   ],
   "contexts": [
@@ -241,6 +538,41 @@
       "name": "Filosofia",
       "color": "#8B5CF6",
       "icon": "🤔"
+    },
+    {
+      "id": "econ123456789-abcd-ef12-3456-789abcdef123",
+      "createdAt": "2026-01-07T09:25:33.789Z",
+      "name": "Economia",
+      "color": "#059669",
+      "icon": "💰"
+    },
+    {
+      "id": "hist123456789-abcd-ef12-3456-789abcdef123",
+      "createdAt": "2026-01-06T11:15:28.456Z",
+      "name": "História",
+      "color": "#DC2626",
+      "icon": "📜"
+    },
+    {
+      "id": "psyc123456789-abcd-ef12-3456-789abcdef123",
+      "createdAt": "2026-01-07T16:30:45.123Z",
+      "name": "Psicologia",
+      "color": "#7C3AED",
+      "icon": "🧠"
+    },
+    {
+      "id": "chem123456789-abcd-ef12-3456-789abcdef123",
+      "createdAt": "2026-01-06T14:45:18.890Z",
+      "name": "Química",
+      "color": "#EA580C",
+      "icon": "🧪"
+    },
+    {
+      "id": "geog123456789-abcd-ef12-3456-789abcdef123",
+      "createdAt": "2026-01-07T13:20:55.234Z",
+      "name": "Geografia",
+      "color": "#16A34A",
+      "icon": "🌍"
     }
   ],
   "alerts": [

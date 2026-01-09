@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef, useContext } from 'react'
 import { FileUp, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import Modal from '../UI/Modal'
 import Button from '../UI/Button'
 import Card from '../UI/Card'
 import { useModal } from '../../context/ModalContext'
 import { fileService } from '../../services/file'
+import { useApp } from '../../context/AppContext'
 
 interface ImportResult {
   success: boolean
@@ -22,6 +23,8 @@ interface ImportStats {
 
 const ImportDataModal = () => {
   const { closeModal } = useModal()
+  const { loadAllData } = useApp()
+  const modalRef = useRef<HTMLDivElement>(null)
 
   const [importMode, setImportMode] = useState<'merge' | 'replace'>('merge')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -32,7 +35,24 @@ const ImportDataModal = () => {
   const [previewStats, setPreviewStats] = useState<ImportStats | null>(null)
   const [errors, setErrors] = useState<string[]>([])
 
+  const scrollToSection = (
+    selector: string,
+    block: ScrollLogicalPosition = 'start'
+  ) => {
+    setTimeout(() => {
+      const element = modalRef.current?.querySelector(selector)
+      element?.scrollIntoView({
+        behavior: 'smooth',
+        block
+      })
+    }, 100)
+  }
+
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setImportResult(null)
+    setPreviewStats(null)
+    setErrors([])
+
     const file = event.target.files?.[0]
     if (file) {
       if (file.type !== 'application/json') {
@@ -85,6 +105,8 @@ const ImportDataModal = () => {
       hasSettings: !!dataObj.settings
     }
     setPreviewStats(stats)
+
+    scrollToSection('[data-section="preview"]')
   }
 
   const handleImport = async () => {
@@ -104,6 +126,8 @@ const ImportDataModal = () => {
       })
 
       setImportResult(result)
+
+      await loadAllData()
     } catch (error: unknown) {
       setImportResult({
         success: false,
@@ -113,7 +137,17 @@ const ImportDataModal = () => {
       })
     } finally {
       setIsImporting(false)
+      scrollToSection('[data-section="result"]', 'center')
     }
+  }
+
+  const handleSelectImportType = (type: 'file' | 'text') => {
+    setImportMethod(type)
+    setSelectedFile(null)
+    setJsonData('')
+    setPreviewStats(null)
+    setImportResult(null)
+    setErrors([])
   }
 
   const resetModal = () => {
@@ -150,7 +184,7 @@ const ImportDataModal = () => {
       closeOnOverlayClick={!isImporting}
       footer={modalFooter}
     >
-      <div className="space-y-6">
+      <div ref={modalRef} className="space-y-6">
         {/* Import Method Selection */}
         <Card>
           <h3 className="mb-4 font-semibold text-foreground">
@@ -164,7 +198,7 @@ const ImportDataModal = () => {
                 value="file"
                 checked={importMethod === 'file'}
                 onChange={(e) =>
-                  setImportMethod(e.target.value as 'file' | 'text')
+                  handleSelectImportType(e.target.value as 'file' | 'text')
                 }
                 className="text-primary"
               />
@@ -183,7 +217,7 @@ const ImportDataModal = () => {
                 value="text"
                 checked={importMethod === 'text'}
                 onChange={(e) =>
-                  setImportMethod(e.target.value as 'file' | 'text')
+                  handleSelectImportType(e.target.value as 'file' | 'text')
                 }
                 className="text-primary"
               />
@@ -228,19 +262,13 @@ const ImportDataModal = () => {
 
               {selectedFile && (
                 <div className="flex items-center gap-2 rounded-lg bg-surface-muted p-2">
-                  <CheckCircle className="size-4 text-success" />
-                  <span className="text-sm text-foreground">
-                    {selectedFile.name}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedFile(null)
-                      setJsonData('')
-                      setPreviewStats(null)
-                    }}
-                  >
+                  <div className="flex flex-1 items-center gap-2">
+                    <CheckCircle className="size-4 text-success" />
+                    <span className="text-sm text-foreground">
+                      {selectedFile.name}
+                    </span>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={resetModal}>
                     Remover
                   </Button>
                 </div>
@@ -265,7 +293,10 @@ const ImportDataModal = () => {
 
         {/* Preview Stats */}
         {previewStats && (
-          <Card>
+          <div
+            data-section="preview"
+            className="bg-card rounded-lg border border-border p-6 shadow-sm"
+          >
             <h3 className="mb-4 flex items-center gap-2 font-semibold text-foreground">
               <AlertTriangle className="size-5 text-warning" />
               Prévia dos Dados
@@ -355,12 +386,12 @@ const ImportDataModal = () => {
                 </div>
               </label>
             </div>
-          </Card>
+          </div>
         )}
 
         {/* Errors */}
         {errors.length > 0 && (
-          <Card className="border-destructive/20">
+          <Card className="border-destructive/20" data-section="errors">
             <div className="flex items-start gap-2">
               <XCircle className="mt-0.5 size-5 text-destructive" />
               <div className="space-y-1">
@@ -379,12 +410,13 @@ const ImportDataModal = () => {
 
         {/* Import Result */}
         {importResult && (
-          <Card
-            className={
+          <div
+            data-section="result"
+            className={`rounded-lg border p-6 shadow-sm ${
               importResult.success
-                ? 'border-success/20'
-                : 'border-destructive/20'
-            }
+                ? 'border-success/20 bg-card'
+                : 'border-destructive/20 bg-card'
+            }`}
           >
             <div className="flex items-start gap-2">
               {importResult.success ? (
@@ -420,7 +452,7 @@ const ImportDataModal = () => {
                 )}
               </div>
             </div>
-          </Card>
+          </div>
         )}
       </div>
     </Modal>

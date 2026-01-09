@@ -92,30 +92,30 @@ const Dashboard = () => {
   const statCards = [
     {
       title: 'Total de Palavras',
-      value: stats?.totalWords || 10,
+      value: stats?.totalWords ?? 0,
       icon: BookOpen,
       color: 'text-primary',
       bgColor: 'bg-primary-soft',
-      textColor: 'text-success',
-      text: '+5% desde ontem'
+      textColor: 'text-success'
+      // text: '+5% desde ontem'
     },
     {
       title: 'Contextos',
-      value: stats?.totalContexts || 20,
+      value: stats?.totalContexts ?? 0,
       icon: Archive,
       color: 'text-success',
       bgColor: 'bg-success-soft',
-      textColor: 'text-destructive',
-      text: '-3% desde ontem'
+      textColor: 'text-destructive'
+      // text: '-3% desde ontem'
     },
     {
       title: 'Alertas Ativos',
-      value: stats?.activeAlerts || 30,
+      value: stats?.activeAlerts ?? 0,
       icon: Bell,
       color: 'text-warning',
       bgColor: 'bg-warning-soft',
-      textColor: 'text-muted-foreground',
-      text: '0% desde ontem'
+      textColor: 'text-muted-foreground'
+      // text: '0% desde ontem'
     }
   ]
 
@@ -209,7 +209,8 @@ const Dashboard = () => {
           onEdit={(alertId) => openModal('EDIT_ALERT', { alertId })}
           data={alerts.map((alert) => ({
             id: alert.id,
-            frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',
+            name: alert.name,
+            // frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',
             days: alert.days
               .map((day: number) => {
                 switch (day) {
@@ -232,12 +233,14 @@ const Dashboard = () => {
                 }
               })
               .join(', '),
+            time: alert.time,
             lastTriggered: formatDate(alert.lastTriggered),
             createdAt: formatDate(alert.createdAt)
           }))}
           columns={[
-            { title: 'Frequência', field: 'frequency' },
+            { title: 'Nome', field: 'name' },
             { title: 'Dias', field: 'days' },
+            { title: 'Hora', field: 'time' },
             { title: 'Criado Em', field: 'createdAt' },
             { title: 'Último Acionamento', field: 'lastTriggered' },
             { title: 'Ações', field: 'actions' }
