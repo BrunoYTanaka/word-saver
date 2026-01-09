@@ -10,8 +10,14 @@ import { useModal } from '../../context/ModalContext'
 import { cn } from '../../utils/cn'
 
 const SettingsModal = () => {
-  const { words, contexts, alerts, deleteAllData, isNotificationEnabled } =
-    useApp()
+  const {
+    words,
+    contexts,
+    alerts,
+    deleteAllData,
+    isNotificationEnabled,
+    loadAllData
+  } = useApp()
   const { closeModal, openModal } = useModal()
 
   const { isDark, toggleTheme } = useTheme()
@@ -51,11 +57,8 @@ const SettingsModal = () => {
       )
     ) {
       try {
-        // Clear all data from IndexedDB
         await deleteAllData()
-
-        // Reload the page to reset state
-        window.location.reload()
+        await loadAllData()
       } catch (error) {
         console.error('Erro ao limpar dados:', error)
         alert('Erro ao limpar dados. Tente novamente.')
