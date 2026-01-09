@@ -267,8 +267,6 @@ const Dashboard = () => {
         })}
       </div>
 
-      <Tab tabs={tabs} defaultTab="words" variant="underlined" size="md" />
-
       {/* Quick Actions */}
       <div>
         <h2 className="mb-4 text-xl font-semibold">Ações Rápidas</h2>
@@ -352,13 +350,13 @@ const Dashboard = () => {
           <Card.Header>
             <div className="flex items-center justify-between">
               <Card.Title>Contextos Recentes</Card.Title>
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => openModal('ADD_CONTEXT')}
               >
                 Ver Todos
-              </Button>
+              </Button> */}
             </div>
           </Card.Header>
           <Card.Content>
@@ -399,18 +397,22 @@ const Dashboard = () => {
                     </span>
                   </div>
                 ))}
-                {contexts.length > 3 && (
+                {/* {contexts.length > 3 && (
                   <div className="pt-2 text-center">
                     <Button variant="ghost" size="sm">
                       Ver mais {contexts.length - 3} contextos
                     </Button>
                   </div>
-                )}
+                )} */}
               </div>
             )}
           </Card.Content>
         </Card>
       </div>
+
+      {words.length > 0 && (
+        <Tab tabs={tabs} defaultTab="words" variant="underlined" size="md" />
+      )}
 
       {/* Empty State for New Users */}
       {(!stats || stats.totalWords === 0) && (
