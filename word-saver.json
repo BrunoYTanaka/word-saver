@@ -1,0 +1,317 @@
+{
+  "words": [
+    {
+      "id": "43189233-87b2-4230-ba89-3e555e6672b9",
+      "createdAt": "2026-01-08T14:46:36.190Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "medium",
+      "word": "inconstitucional",
+      "definition": "que está em desacordo com a constituição ('conjunto de leis') de um país; que fere a constituição.",
+      "contextId": "d0644cc2-1fbd-4900-bc07-45983b259011",
+      "tags": ["Direito", "Constitucional"]
+    },
+    {
+      "id": "f1e8d7c6-b5a4-4321-9876-1a2b3c4d5e6f",
+      "createdAt": "2026-01-07T10:30:15.123Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T09:15:22.456Z",
+      "difficulty": "hard",
+      "word": "jurisprudência",
+      "definition": "conjunto de decisões judiciais que orientam a interpretação e aplicação do direito.",
+      "contextId": "d0644cc2-1fbd-4900-bc07-45983b259011",
+      "tags": ["Direito", "Jurisprudência"]
+    },
+    {
+      "id": "a9b8c7d6-e5f4-3210-9876-fedcba098765",
+      "createdAt": "2026-01-06T16:45:30.789Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-07T14:20:18.321Z",
+      "difficulty": "medium",
+      "word": "habeas corpus",
+      "definition": "garantia constitucional que protege a liberdade de locomoção contra prisão ilegal ou abusiva.",
+      "contextId": "d0644cc2-1fbd-4900-bc07-45983b259011",
+      "tags": ["Direito", "Garantias"]
+    },
+    {
+      "id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+      "createdAt": "2026-01-08T11:20:45.567Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "miocárdio",
+      "definition": "músculo cardíaco; camada média da parede do coração responsável pela contração.",
+      "contextId": "2b3c4d5e-6f70-8901-bcde-f23456789012",
+      "tags": ["Medicina", "Cardiologia"]
+    },
+    {
+      "id": "3c4d5e6f-7890-1abc-def1-234567890123",
+      "createdAt": "2026-01-07T15:30:12.890Z",
+      "reviewCount": 3,
+      "lastReviewed": "2026-01-08T18:45:33.678Z",
+      "difficulty": "medium",
+      "word": "hipotensão",
+      "definition": "condição caracterizada pela pressão arterial anormalmente baixa.",
+      "contextId": "2b3c4d5e-6f70-8901-bcde-f23456789012",
+      "tags": ["Medicina", "Pressão arterial"]
+    },
+    {
+      "id": "5e6f7890-1abc-def1-2345-67890123cdef",
+      "createdAt": "2026-01-06T09:15:27.234Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T12:30:45.789Z",
+      "difficulty": "easy",
+      "word": "cefaleia",
+      "definition": "dor de cabeça; sintoma comum que pode ter diversas causas.",
+      "contextId": "2b3c4d5e-6f70-8901-bcde-f23456789012",
+      "tags": ["Medicina", "Sintomas"]
+    },
+    {
+      "id": "7890abcd-ef12-3456-7890-abcdef123456",
+      "createdAt": "2026-01-08T13:45:18.456Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "algoritmo",
+      "definition": "sequência finita de instruções bem definidas para resolver um problema computacional.",
+      "contextId": "9012cdef-3456-789a-bcde-f123456789ab",
+      "tags": ["Programação", "Lógica"]
+    },
+    {
+      "id": "9abcdef1-2345-6789-abcd-ef123456789a",
+      "createdAt": "2026-01-07T08:20:35.123Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T16:15:42.567Z",
+      "difficulty": "medium",
+      "word": "framework",
+      "definition": "estrutura conceitual e tecnológica que serve como base para o desenvolvimento de software.",
+      "contextId": "9012cdef-3456-789a-bcde-f123456789ab",
+      "tags": ["Programação", "Desenvolvimento"]
+    },
+    {
+      "id": "bcdef123-4567-89ab-cdef-123456789abc",
+      "createdAt": "2026-01-06T14:30:55.789Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-07T11:45:28.234Z",
+      "difficulty": "easy",
+      "word": "debug",
+      "definition": "processo de encontrar e corrigir erros em um programa de computador.",
+      "contextId": "9012cdef-3456-789a-bcde-f123456789ab",
+      "tags": ["Programação", "Manutenção"]
+    },
+    {
+      "id": "def12345-6789-abcd-ef12-3456789abcde",
+      "createdAt": "2026-01-08T17:25:40.345Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "medium",
+      "word": "metáfora",
+      "definition": "figura de linguagem que estabelece comparação implícita entre dois elementos.",
+      "contextId": "f123456789ab-cdef-1234-5678-9abcdef12345",
+      "tags": ["Literatura", "Figura de linguagem"]
+    },
+    {
+      "id": "123456789abc-def1-2345-6789-abcdef123456",
+      "createdAt": "2026-01-07T12:15:50.678Z",
+      "reviewCount": 3,
+      "lastReviewed": "2026-01-08T20:30:15.890Z",
+      "difficulty": "easy",
+      "word": "soneto",
+      "definition": "forma poética de catorze versos, tradicionalmente com esquema de rimas fixo.",
+      "contextId": "f123456789ab-cdef-1234-5678-9abcdef12345",
+      "tags": ["Literatura", "Poesia"]
+    },
+    {
+      "id": "456789abcdef-1234-5678-9abc-def123456789",
+      "createdAt": "2026-01-06T18:40:25.123Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T07:20:38.456Z",
+      "difficulty": "hard",
+      "word": "epifania",
+      "definition": "momento de revelação ou compreensão súbita; recurso narrativo que revela verdade profunda.",
+      "contextId": "f123456789ab-cdef-1234-5678-9abcdef12345",
+      "tags": ["Literatura", "Narrativa"]
+    },
+    {
+      "id": "789abcdef123-4567-89ab-cdef-123456789abc",
+      "createdAt": "2026-01-08T06:10:15.789Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "fotossíntese",
+      "definition": "processo pelo qual plantas convertem luz solar, água e dióxido de carbono em glicose e oxigênio.",
+      "contextId": "abcdef123456-7890-abcd-ef12-3456789abcde",
+      "tags": ["Biologia", "Plantas"]
+    },
+    {
+      "id": "abcdef123456-789a-bcde-f123-456789abcdef",
+      "createdAt": "2026-01-07T21:35:42.234Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T15:50:27.567Z",
+      "difficulty": "medium",
+      "word": "mitose",
+      "definition": "processo de divisão celular que resulta em duas células filhas geneticamente idênticas.",
+      "contextId": "abcdef123456-7890-abcd-ef12-3456789abcde",
+      "tags": ["Biologia", "Células"]
+    },
+    {
+      "id": "def123456789-abcd-ef12-3456-789abcdef123",
+      "createdAt": "2026-01-06T13:25:18.345Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-07T19:40:52.678Z",
+      "difficulty": "easy",
+      "word": "enzima",
+      "definition": "proteína que acelera reações bioquímicas específicas no organismo.",
+      "contextId": "abcdef123456-7890-abcd-ef12-3456789abcde",
+      "tags": ["Biologia", "Proteínas"]
+    },
+    {
+      "id": "123456789abcdef-1234-5678-9abc-def123456789",
+      "createdAt": "2026-01-08T19:15:33.890Z",
+      "reviewCount": 0,
+      "lastReviewed": null,
+      "difficulty": "hard",
+      "word": "paradigma",
+      "definition": "modelo ou padrão conceitual que orienta o pensamento e a prática em uma área específica.",
+      "contextId": "56789abcdef1-2345-6789-abcd-ef123456789a",
+      "tags": ["Filosofia", "Conceitos"]
+    },
+    {
+      "id": "456789abcdef123-4567-89ab-cdef-123456789abc",
+      "createdAt": "2026-01-07T05:45:28.123Z",
+      "reviewCount": 2,
+      "lastReviewed": "2026-01-08T22:10:45.456Z",
+      "difficulty": "medium",
+      "word": "epistemologia",
+      "definition": "ramo da filosofia que estuda a natureza, origem e validade do conhecimento.",
+      "contextId": "56789abcdef1-2345-6789-abcd-ef123456789a",
+      "tags": ["Filosofia", "Conhecimento"]
+    },
+    {
+      "id": "789abcdef123456-789a-bcde-f123-456789abcdef",
+      "createdAt": "2026-01-06T20:30:15.567Z",
+      "reviewCount": 1,
+      "lastReviewed": "2026-01-08T04:25:38.789Z",
+      "difficulty": "easy",
+      "word": "ética",
+      "definition": "ramo da filosofia que se ocupa com questões de moralidade e comportamento humano.",
+      "contextId": "56789abcdef1-2345-6789-abcd-ef123456789a",
+      "tags": ["Filosofia", "Moral"]
+    }
+  ],
+  "contexts": [
+    {
+      "id": "d0644cc2-1fbd-4900-bc07-45983b259011",
+      "createdAt": "2026-01-08T14:46:27.592Z",
+      "name": "Advocacia",
+      "color": "#8B5CF6",
+      "icon": "💼"
+    },
+    {
+      "id": "2b3c4d5e-6f70-8901-bcde-f23456789012",
+      "createdAt": "2026-01-06T09:15:30.123Z",
+      "name": "Medicina",
+      "color": "#EF4444",
+      "icon": "⚕️"
+    },
+    {
+      "id": "9012cdef-3456-789a-bcde-f123456789ab",
+      "createdAt": "2026-01-07T11:30:45.456Z",
+      "name": "Tecnologia",
+      "color": "#3B82F6",
+      "icon": "💻"
+    },
+    {
+      "id": "f123456789ab-cdef-1234-5678-9abcdef12345",
+      "createdAt": "2026-01-06T16:20:18.789Z",
+      "name": "Literatura",
+      "color": "#F59E0B",
+      "icon": "📚"
+    },
+    {
+      "id": "abcdef123456-7890-abcd-ef12-3456789abcde",
+      "createdAt": "2026-01-07T14:45:25.234Z",
+      "name": "Biologia",
+      "color": "#10B981",
+      "icon": "🧬"
+    },
+    {
+      "id": "56789abcdef1-2345-6789-abcd-ef123456789a",
+      "createdAt": "2026-01-06T12:10:40.567Z",
+      "name": "Filosofia",
+      "color": "#8B5CF6",
+      "icon": "🤔"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "8b9096e1-ad62-4a7e-acc6-2e0d2dba9a32",
+      "createdAt": "2026-01-08T14:46:53.296Z",
+      "lastTriggered": "2026-01-08T14:50:00.004Z",
+      "isActive": true,
+      "name": "Revisão Direito",
+      "frequency": "daily",
+      "time": "10:50",
+      "contextIds": ["d0644cc2-1fbd-4900-bc07-45983b259011"],
+      "days": [1, 2, 3, 4, 5]
+    },
+    {
+      "id": "c1d2e3f4-5678-90ab-cdef-123456789012",
+      "createdAt": "2026-01-07T09:30:15.789Z",
+      "lastTriggered": "2026-01-08T08:00:00.123Z",
+      "isActive": true,
+      "name": "Estudos Medicina",
+      "frequency": "daily",
+      "time": "08:00",
+      "contextIds": ["2b3c4d5e-6f70-8901-bcde-f23456789012"],
+      "days": [1, 2, 3, 4, 5, 6]
+    },
+    {
+      "id": "e5f6a7b8-c9d0-1234-5678-90abcdef1234",
+      "createdAt": "2026-01-06T15:20:40.456Z",
+      "lastTriggered": "2026-01-08T20:00:00.567Z",
+      "isActive": false,
+      "name": "Programação Noturna",
+      "frequency": "weekly",
+      "time": "20:00",
+      "contextIds": ["9012cdef-3456-789a-bcde-f123456789ab"],
+      "days": [1, 3, 5]
+    },
+    {
+      "id": "a9b0c1d2-e3f4-5678-90ab-cdef12345678",
+      "createdAt": "2026-01-07T18:45:25.234Z",
+      "lastTriggered": null,
+      "isActive": true,
+      "name": "Literatura & Filosofia",
+      "frequency": "weekly",
+      "time": "14:30",
+      "contextIds": [
+        "f123456789ab-cdef-1234-5678-9abcdef12345",
+        "56789abcdef1-2345-6789-abcd-ef123456789a"
+      ],
+      "days": [2, 4, 6]
+    },
+    {
+      "id": "f7g8h9i0-j1k2-l3m4-n5o6-p7q8r9s0t1u2",
+      "createdAt": "2026-01-06T11:15:18.890Z",
+      "lastTriggered": "2026-01-08T16:30:00.345Z",
+      "isActive": true,
+      "name": "Biologia Diária",
+      "frequency": "daily",
+      "time": "16:30",
+      "contextIds": ["abcdef123456-7890-abcd-ef12-3456789abcde"],
+      "days": [1, 2, 3, 4, 5]
+    }
+  ],
+  "settings": {
+    "theme": "dark"
+  },
+  "exportedAt": "2026-01-09T13:46:57.924Z",
+  "version": 1,
+  "metadata": {
+    "appName": "WordSaverDB",
+    "exportType": "full",
+    "exportedAt": "2026-01-09T13:46:57.924Z",
+    "version": 1
+  }
+}

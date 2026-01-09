@@ -59,8 +59,8 @@ class ExportImportAction {
       }
 
       if (data.settings) {
-        data.settings.forEach((setting) => {
-          imports.push(transaction.objectStore(STORES.SETTINGS).put(setting))
+        Object.entries(data.settings).forEach(([key, value]) => {
+          transaction.objectStore(STORES.SETTINGS).put({ key, value })
         })
       }
 

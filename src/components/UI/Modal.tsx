@@ -100,7 +100,7 @@ function Modal({
       <div
         ref={modalRef}
         className={`
-          relative w-full ${sizeClasses[size]} max-h-[90vh] animate-slide-up overflow-hidden
+          relative w-full ${sizeClasses[size]} max-h-[95vh] animate-slide-up overflow-hidden
           rounded-lg bg-surface shadow-xl
           focus:outline-none ${className}
         `}
