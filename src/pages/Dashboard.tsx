@@ -92,30 +92,30 @@ const Dashboard = () => {
   const statCards = [
     {
       title: 'Total de Palavras',
-      value: stats?.totalWords || 10,
+      value: stats?.totalWords ?? 0,
       icon: BookOpen,
       color: 'text-primary',
       bgColor: 'bg-primary-soft',
-      textColor: 'text-success',
-      text: '+5% desde ontem'
+      textColor: 'text-success'
+      // text: '+5% desde ontem'
     },
     {
       title: 'Contextos',
-      value: stats?.totalContexts || 20,
+      value: stats?.totalContexts ?? 0,
       icon: Archive,
       color: 'text-success',
       bgColor: 'bg-success-soft',
-      textColor: 'text-destructive',
-      text: '-3% desde ontem'
+      textColor: 'text-destructive'
+      // text: '-3% desde ontem'
     },
     {
       title: 'Alertas Ativos',
-      value: stats?.activeAlerts || 30,
+      value: stats?.activeAlerts ?? 0,
       icon: Bell,
       color: 'text-warning',
       bgColor: 'bg-warning-soft',
-      textColor: 'text-muted-foreground',
-      text: '0% desde ontem'
+      textColor: 'text-muted-foreground'
+      // text: '0% desde ontem'
     }
   ]
 
@@ -209,7 +209,8 @@ const Dashboard = () => {
           onEdit={(alertId) => openModal('EDIT_ALERT', { alertId })}
           data={alerts.map((alert) => ({
             id: alert.id,
-            frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',
+            name: alert.name,
+            // frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',
             days: alert.days
               .map((day: number) => {
                 switch (day) {
@@ -232,12 +233,14 @@ const Dashboard = () => {
                 }
               })
               .join(', '),
+            time: alert.time,
             lastTriggered: formatDate(alert.lastTriggered),
             createdAt: formatDate(alert.createdAt)
           }))}
           columns={[
-            { title: 'Frequência', field: 'frequency' },
+            { title: 'Nome', field: 'name' },
             { title: 'Dias', field: 'days' },
+            { title: 'Hora', field: 'time' },
             { title: 'Criado Em', field: 'createdAt' },
             { title: 'Último Acionamento', field: 'lastTriggered' },
             { title: 'Ações', field: 'actions' }
@@ -263,8 +266,6 @@ const Dashboard = () => {
           return <CountCard key={index} {...stat} number={stat.value} />
         })}
       </div>
-
-      <Tab tabs={tabs} defaultTab="words" variant="underlined" size="md" />
 
       {/* Quick Actions */}
       <div>
@@ -349,13 +350,13 @@ const Dashboard = () => {
           <Card.Header>
             <div className="flex items-center justify-between">
               <Card.Title>Contextos Recentes</Card.Title>
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => openModal('ADD_CONTEXT')}
               >
                 Ver Todos
-              </Button>
+              </Button> */}
             </div>
           </Card.Header>
           <Card.Content>
@@ -396,18 +397,22 @@ const Dashboard = () => {
                     </span>
                   </div>
                 ))}
-                {contexts.length > 3 && (
+                {/* {contexts.length > 3 && (
                   <div className="pt-2 text-center">
                     <Button variant="ghost" size="sm">
                       Ver mais {contexts.length - 3} contextos
                     </Button>
                   </div>
-                )}
+                )} */}
               </div>
             )}
           </Card.Content>
         </Card>
       </div>
+
+      {words.length > 0 && (
+        <Tab tabs={tabs} defaultTab="words" variant="underlined" size="md" />
+      )}
 
       {/* Empty State for New Users */}
       {(!stats || stats.totalWords === 0) && (
