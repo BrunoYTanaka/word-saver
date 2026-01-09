@@ -151,6 +151,14 @@ const Flashcards = () => {
 
   return (
     <div className="space-y-6">
+      {/* Welcome Section */}
+      <div className="text-left sm:text-center">
+        <h1 className="mb-2 text-3xl font-bold">Flashcards</h1>
+        <p className="text-muted-foreground">
+          Pratique suas palavras revisando os flashcards abaixo.
+        </p>
+      </div>
+
       {/* Session Stats */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <Card className="text-center">
@@ -216,7 +224,8 @@ const Flashcards = () => {
 
       {/* Flashcard */}
       <Card
-        className="min-h-[400px] cursor-pointer"
+        className="min-h-[400px]"
+        clickable
         onClick={() => !showDefinition && setShowDefinition(true)}
       >
         <div className="flex min-h-[350px] flex-col items-center justify-center space-y-6 text-center">
@@ -263,7 +272,7 @@ const Flashcards = () => {
             onClick={prevCard}
             disabled={currentWordIndex === 0}
             variant="outline"
-            className="flex items-center gap-2"
+            className="[&>span]:flex [&>span]:items-center [&>span]:space-x-2"
           >
             <ChevronLeft className="size-4" />
             Anterior
@@ -272,7 +281,7 @@ const Flashcards = () => {
             onClick={nextCard}
             disabled={currentWordIndex === filteredWords.length - 1}
             variant="outline"
-            className="flex items-center gap-2"
+            className="[&>span]:flex [&>span]:items-center [&>span]:space-x-2"
           >
             Próximo
             <ChevronRight className="size-4" />
@@ -284,14 +293,17 @@ const Flashcards = () => {
           <div className="flex items-center gap-4">
             <Button
               onClick={() => markAnswer(false)}
-              className="flex items-center gap-2 bg-destructive text-destructive-foreground hover:bg-destructive-hover"
+              variant="danger"
+              className="[&>span]:flex [&>span]:items-center [&>span]:gap-1"
+              // className="flex items-center gap-2 bg-destructive text-destructive-foreground hover:bg-destructive-hover"
             >
               <XCircle className="size-4" />
               Errei
             </Button>
             <Button
               onClick={() => markAnswer(true)}
-              className="flex items-center gap-2 bg-success text-success-foreground hover:bg-success-hover"
+              variant="secondary"
+              className="[&>span]:flex [&>span]:items-center [&>span]:gap-1"
             >
               <CheckCircle className="size-4" />
               Acertei
@@ -303,9 +315,9 @@ const Flashcards = () => {
         <Button
           onClick={resetSession}
           variant="outline"
-          className="flex items-center gap-2"
+          className="[&>span]:flex [&>span]:items-center [&>span]:gap-1"
         >
-          <RotateCcw className="size-4" />
+          <RotateCcw className="size-4 " />
           Reiniciar
         </Button>
       </div>

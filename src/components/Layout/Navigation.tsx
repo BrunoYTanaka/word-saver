@@ -1,12 +1,4 @@
-import {
-  Home,
-  BookOpen,
-  Bell,
-  Archive,
-  BarChart3,
-  Zap,
-  Brain
-} from 'lucide-react'
+import { Home, BarChart3, Zap, Brain } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
 const Navigation = () => {
