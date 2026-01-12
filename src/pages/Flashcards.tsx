@@ -24,13 +24,23 @@ const Flashcards = () => {
     total: 0
   })
 
+  // Randomize words on initial load
+  const shuffleArray = (array: FullWord[]) => {
+    return array
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value)
+  }
+
   // Filter words based on selected contexts
   useEffect(() => {
     if (selectedContexts.length === 0) {
-      setFilteredWords(words)
+      setFilteredWords(shuffleArray(words))
     } else {
       setFilteredWords(
-        words.filter((word) => selectedContexts.includes(word.contextId))
+        shuffleArray(
+          words.filter((word) => selectedContexts.includes(word.contextId))
+        )
       )
     }
     setCurrentWordIndex(0)
@@ -69,9 +79,7 @@ const Flashcards = () => {
       total: prev.total + 1
     }))
 
-    setTimeout(() => {
-      nextCard()
-    }, 500)
+    nextCard()
   }
 
   const resetSession = () => {
@@ -223,49 +231,79 @@ const Flashcards = () => {
       </Card>
 
       {/* Flashcard */}
-      <Card
-        className="min-h-[400px]"
-        clickable
-        onClick={() => !showDefinition && setShowDefinition(true)}
-      >
-        <div className="flex min-h-[350px] flex-col items-center justify-center space-y-6 text-center">
-          {!showDefinition ? (
-            <>
-              <div className="text-5xl font-bold text-foreground">
-                {currentWord?.word}
-              </div>
-              {currentWord?.tags && (
-                <div className="text-lg text-primary">{currentWord.tags}</div>
-              )}
-              <p className="text-muted-foreground">
-                Clique para revelar a definição
-              </p>
-              <Eye className="size-8 text-muted-foreground opacity-50" />
-            </>
-          ) : (
-            <>
-              <div className="mb-4 text-3xl font-bold text-foreground">
-                {currentWord?.word}
-              </div>
-              {currentWord?.tags && (
-                <div className="mb-4 text-lg text-primary">
-                  {currentWord.tags}
+      {currentWordIndex === filteredWords.length - 1 ? (
+        <Card className="flex min-h-[400px] items-center justify-center text-center">
+          <div className="space-y-4">
+            <div className="text-6xl">✅</div>
+            <h2 className="text-xl font-semibold text-foreground">
+              Você revisou todas as palavras!
+            </h2>
+            <p className="text-muted-foreground">
+              Reinicie a sessão para revisar novamente.
+            </p>
+            <Button
+              onClick={resetSession}
+              variant="outline"
+              className="[&>span]:flex [&>span]:items-center [&>span]:gap-1"
+            >
+              <RotateCcw className="size-4" />
+              Reiniciar Sessão
+            </Button>
+          </div>
+        </Card>
+      ) : (
+        <Card
+          className="min-h-[400px]"
+          clickable
+          onClick={() => !showDefinition && setShowDefinition(true)}
+        >
+          <div className="flex min-h-[350px] flex-col items-center justify-center space-y-6 text-center">
+            {!showDefinition ? (
+              <>
+                <h3 className="text-5xl font-bold text-foreground">
+                  {currentWord?.word}
+                </h3>
+                {currentWord?.tags && (
+                  <span className="mb-4 font-bold">
+                    tags:
+                    <span className="ml-1 text-lg text-primary">
+                      {currentWord.tags.join(', ')}
+                    </span>
+                  </span>
+                )}
+                <p className="text-muted-foreground">
+                  Clique para revelar a definição
+                </p>
+                <Eye className="size-8 text-muted-foreground opacity-50" />
+              </>
+            ) : (
+              <>
+                <h3 className="mb-4 text-3xl font-bold text-foreground">
+                  {currentWord?.word}
+                </h3>
+                {currentWord?.tags && (
+                  <span className="mb-4 font-bold">
+                    tags:
+                    <span className="ml-1 text-lg text-primary">
+                      {currentWord.tags.join(', ')}
+                    </span>
+                  </span>
+                )}
+                <p className="max-w-2xl text-xl leading-relaxed text-foreground">
+                  {currentWord?.definition}
+                </p>
+                <div className="text-sm text-muted-foreground">
+                  Contexto:{' '}
+                  {contexts.find((c) => c.id === currentWord?.contextId)?.name}
                 </div>
-              )}
-              <div className="max-w-2xl text-xl leading-relaxed text-foreground">
-                {currentWord?.definition}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Contexto:{' '}
-                {contexts.find((c) => c.id === currentWord?.contextId)?.name}
-              </div>
-            </>
-          )}
-        </div>
-      </Card>
+              </>
+            )}
+          </div>
+        </Card>
+      )}
 
       {/* Controls */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
         {/* Navigation */}
         <div className="flex items-center gap-4">
           <Button
@@ -295,7 +333,6 @@ const Flashcards = () => {
               onClick={() => markAnswer(false)}
               variant="danger"
               className="[&>span]:flex [&>span]:items-center [&>span]:gap-1"
-              // className="flex items-center gap-2 bg-destructive text-destructive-foreground hover:bg-destructive-hover"
             >
               <XCircle className="size-4" />
               Errei
@@ -321,20 +358,6 @@ const Flashcards = () => {
           Reiniciar
         </Button>
       </div>
-
-      {/* Show Definition Button (when definition is hidden) */}
-      {!showDefinition && (
-        <div className="text-center">
-          <Button
-            onClick={() => setShowDefinition(true)}
-            variant="primary"
-            className="flex items-center gap-2"
-          >
-            <Eye className="size-4" />
-            Ver Definição
-          </Button>
-        </div>
-      )}
     </div>
   )
 }
