@@ -260,7 +260,7 @@ const Flashcards = () => {
           <div className="flex min-h-[350px] flex-col items-center justify-center space-y-6 text-center">
             {!showDefinition ? (
               <>
-                <h3 className="text-5xl font-bold text-foreground">
+                <h3 className="break-all text-5xl font-bold text-foreground">
                   {currentWord?.word}
                 </h3>
                 {currentWord?.tags && (
@@ -278,7 +278,7 @@ const Flashcards = () => {
               </>
             ) : (
               <>
-                <h3 className="mb-4 text-3xl font-bold text-foreground">
+                <h3 className="mb-4 break-all text-3xl font-bold text-foreground">
                   {currentWord?.word}
                 </h3>
                 {currentWord?.tags && (

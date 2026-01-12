@@ -12,7 +12,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {/* <Breadcrumb /> */}
 
       {/* Main Content */}
-      <main className="container mx-auto max-w-7xl px-4 py-6">{children}</main>
+      <main className="container mx-auto max-w-7xl px-4 pb-20 pt-6 md:pb-8">
+        {children}
+      </main>
 
       {/* Bottom Navigation for mobile */}
       <Navigation />

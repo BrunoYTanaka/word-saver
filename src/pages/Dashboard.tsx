@@ -251,7 +251,7 @@ const Dashboard = () => {
   ]
 
   return (
-    <div className="space-y-8 pb-20 md:pb-8">
+    <div className="space-y-8">
       {/* Welcome Section */}
       <div className="text-left sm:text-center">
         <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
