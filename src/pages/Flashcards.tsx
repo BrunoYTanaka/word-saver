@@ -18,6 +18,7 @@ const Flashcards = () => {
   const [showDefinition, setShowDefinition] = useState(false)
   const [selectedContexts, setSelectedContexts] = useState<string[]>([])
   const [filteredWords, setFilteredWords] = useState<FullWord[]>([])
+  const [finished, setFinished] = useState(false)
   const [sessionStats, setSessionStats] = useState({
     correct: 0,
     incorrect: 0,
@@ -60,8 +61,10 @@ const Flashcards = () => {
   const nextCard = () => {
     if (currentWordIndex < filteredWords.length - 1) {
       setCurrentWordIndex((prev) => prev + 1)
-      setShowDefinition(false)
+    } else {
+      setFinished(true)
     }
+    setShowDefinition(false)
   }
 
   const prevCard = () => {
@@ -84,13 +87,14 @@ const Flashcards = () => {
 
   const resetSession = () => {
     setCurrentWordIndex(0)
+    setFinished(false)
     setShowDefinition(false)
     setSessionStats({ correct: 0, incorrect: 0, total: 0 })
   }
 
   if (words.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="flex min-h-[80vh] items-center justify-center p-4">
         <Card className="max-w-md text-center">
           <div className="space-y-4">
             <div className="text-6xl">📚</div>
@@ -231,7 +235,7 @@ const Flashcards = () => {
       </Card>
 
       {/* Flashcard */}
-      {currentWordIndex === filteredWords.length - 1 ? (
+      {finished ? (
         <Card className="flex min-h-[400px] items-center justify-center text-center">
           <div className="space-y-4">
             <div className="text-6xl">✅</div>

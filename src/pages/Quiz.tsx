@@ -150,7 +150,7 @@ const Quiz = () => {
 
   if (words.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="flex min-h-[80vh] items-center justify-center p-4">
         <Card className="max-w-md text-center">
           <div className="space-y-4">
             <div className="text-6xl">🧠</div>
@@ -236,7 +236,10 @@ const Quiz = () => {
                 )}
               </div>
 
-              <Button onClick={resetQuiz} className="flex items-center gap-2">
+              <Button
+                onClick={resetQuiz}
+                className="[&>span]:flex [&>span]:items-center [&>span]:gap-2"
+              >
                 <RotateCcw className="size-4" />
                 Fazer Novo Quiz
               </Button>
@@ -383,7 +386,7 @@ const Quiz = () => {
             <Button
               onClick={startQuiz}
               disabled={filteredWords.length < 4}
-              className="flex items-center gap-2 px-8 py-3 text-lg"
+              className="[&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span]:px-8 [&>span]:py-3 [&>span]:text-lg"
             >
               <Play className="size-5" />
               Iniciar Quiz
@@ -436,12 +439,6 @@ const Quiz = () => {
                   ? currentQuestion?.word.word
                   : currentQuestion?.word.definition}
               </div>
-              {quizSettings.mode === 'definition' &&
-                currentQuestion?.word.tags && (
-                  <div className="mt-2 text-lg text-primary">
-                    {currentQuestion.word.tags}
-                  </div>
-                )}
             </div>
 
             {/* Options */}
@@ -510,7 +507,7 @@ const Quiz = () => {
           <Button
             onClick={resetQuiz}
             variant="outline"
-            className="mx-auto flex items-center gap-2"
+            className="[&>span]:mx-auto [&>span]:flex [&>span]:items-center [&>span]:gap-2"
           >
             <RotateCcw className="size-4" />
             Reiniciar Quiz
