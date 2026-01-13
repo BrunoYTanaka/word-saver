@@ -1,26 +1,29 @@
-import { Home, BookOpen, Bell, Archive } from 'lucide-react'
+import { Home, BarChart3, Zap, Brain } from 'lucide-react'
+import { Link, useLocation } from 'react-router-dom'
 
 const Navigation = () => {
+  const location = useLocation()
+
   const navItems = [
     {
       icon: Home,
       label: 'Dashboard',
-      active: true // For now, we'll make dashboard active
+      path: '/dashboard'
     },
     {
-      icon: BookOpen,
-      label: 'Palavras',
-      active: false
+      icon: Zap,
+      label: 'Flashcards',
+      path: '/flashcards'
     },
     {
-      icon: Archive,
-      label: 'Contextos',
-      active: false
+      icon: Brain,
+      label: 'Quiz',
+      path: '/quiz'
     },
     {
-      icon: Bell,
-      label: 'Alertas',
-      active: false
+      icon: BarChart3,
+      label: 'Estatísticas',
+      path: '/statistics'
     }
   ]
 
@@ -29,13 +32,18 @@ const Navigation = () => {
       <div className="flex items-center justify-around py-2">
         {navItems.map((item, index) => {
           const Icon = item.icon
+          const isActive =
+            location.pathname === item.path ||
+            (item.path === '/dashboard' && location.pathname === '/')
+
           return (
-            <button
+            <Link
               key={index}
+              to={item.path}
               className={`
                 flex min-w-0 flex-1 flex-col items-center px-3 py-2
                 ${
-                  item.active
+                  isActive
                     ? 'text-primary'
                     : 'text-muted-foreground hover:text-foreground'
                 }
@@ -44,7 +52,7 @@ const Navigation = () => {
             >
               <Icon size={20} className="mb-1" />
               <span className="text-xs font-medium">{item.label}</span>
-            </button>
+            </Link>
           )
         })}
       </div>

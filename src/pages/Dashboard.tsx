@@ -67,7 +67,7 @@ const Dashboard = () => {
         word: word.word,
         definition: word.definition,
         context: contexts.find((c) => c.id === word.contextId)?.name || 'N/A',
-        alerts: word.reviewCount ?? 0
+        reviewCount: word.reviewCount ?? 0
       })),
     [words, contexts]
   )
@@ -167,8 +167,8 @@ const Dashboard = () => {
               field: 'context'
             },
             {
-              title: 'Alertas',
-              field: 'alerts'
+              title: 'N. de Revisões',
+              field: 'reviewCount'
             },
             {
               title: 'Ações',
@@ -251,7 +251,7 @@ const Dashboard = () => {
   ]
 
   return (
-    <div className="space-y-8 pb-20 md:pb-8">
+    <div className="space-y-8">
       {/* Welcome Section */}
       <div className="text-left sm:text-center">
         <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>

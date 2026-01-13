@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef } from 'react'
 import { FileUp, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import Modal from '../UI/Modal'
 import Button from '../UI/Button'

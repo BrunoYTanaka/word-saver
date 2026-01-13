@@ -1,7 +1,11 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AppProvider } from '../context/AppContext'
 import { useTheme } from '../context/ThemeContext'
 import Layout from '../components/Layout/Layout'
 import Dashboard from '../pages/Dashboard'
+import Flashcards from '../pages/Flashcards'
+import Quiz from '../pages/Quiz'
+import Statistics from '../pages/Statistics'
 import PWAInstallPrompt from '../components/PWA/PWAInstallPrompt'
 import PWAStatus from '../components/PWA/PWAStatus'
 import { ThemeProvider } from '../context/ThemeContext'
@@ -33,9 +37,17 @@ function App() {
       <AppProvider>
         <ThemeWrapper>
           <ModalProvider>
-            <Layout>
-              <Dashboard />
-            </Layout>
+            <Router>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/flashcards" element={<Flashcards />} />
+                  <Route path="/quiz" element={<Quiz />} />
+                  <Route path="/statistics" element={<Statistics />} />
+                </Routes>
+              </Layout>
+            </Router>
           </ModalProvider>
           {/* PWA Components */}
           <PWAInstallPrompt />
