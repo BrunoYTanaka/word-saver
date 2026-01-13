@@ -388,9 +388,8 @@ const Statistics = () => {
             </div>
           </Card>
         </div>
-
         {/* Insights */}
-        {stats.total > 0 && (
+        {/* {stats.total > 0 && (
           <Card className="mt-8">
             <h3 className="mb-4 font-semibold text-foreground">💡 Insights</h3>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -434,7 +433,7 @@ const Statistics = () => {
               )}
             </div>
           </Card>
-        )}
+        )} */}
       </div>
     </div>
   )
