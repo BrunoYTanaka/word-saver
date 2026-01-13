@@ -19,7 +19,7 @@ interface QuizStats {
 }
 
 const Quiz = () => {
-  const { words, contexts } = useApp()
+  const { words, contexts, reviewWord } = useApp()
   const [isQuizStarted, setIsQuizStarted] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
@@ -38,8 +38,12 @@ const Quiz = () => {
   })
   const [startTime, setStartTime] = useState<number>(0)
   const [isQuizCompleted, setIsQuizCompleted] = useState(false)
+  const [isReviewing, setIsReviewing] = useState(false)
 
   const generateQuestions = () => {
+    // Don't regenerate questions if already reviewing
+    if (isReviewing && questions.length > 0) return questions
+
     const filteredWords =
       selectedContexts.length === 0
         ? words
@@ -89,6 +93,7 @@ const Quiz = () => {
     setStats({ correct: 0, incorrect: 0, timeSpent: 0, accuracy: 0 })
     setStartTime(Date.now())
     setIsQuizCompleted(false)
+    setIsReviewing(true)
   }
 
   const handleAnswerSelect = (answer: string) => {
@@ -102,6 +107,9 @@ const Quiz = () => {
       [isCorrect ? 'correct' : 'incorrect']:
         prev[isCorrect ? 'correct' : 'incorrect'] + 1
     }))
+
+    // Mark word as reviewed
+    reviewWord(questions[currentQuestionIndex].word.id)
 
     setTimeout(() => {
       if (currentQuestionIndex < questions.length - 1) {
@@ -132,9 +140,11 @@ const Quiz = () => {
     setQuestions([])
     setStats({ correct: 0, incorrect: 0, timeSpent: 0, accuracy: 0 })
     setIsQuizCompleted(false)
+    setIsReviewing(false)
   }
 
   const handleContextToggle = (contextId: string) => {
+    setIsReviewing(false)
     setSelectedContexts((prev) =>
       prev.includes(contextId)
         ? prev.filter((id) => id !== contextId)

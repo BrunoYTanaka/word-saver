@@ -67,7 +67,7 @@ const Dashboard = () => {
         word: word.word,
         definition: word.definition,
         context: contexts.find((c) => c.id === word.contextId)?.name || 'N/A',
-        alerts: word.reviewCount ?? 0
+        reviewCount: word.reviewCount ?? 0
       })),
     [words, contexts]
   )
@@ -167,8 +167,8 @@ const Dashboard = () => {
               field: 'context'
             },
             {
-              title: 'Alertas',
-              field: 'alerts'
+              title: 'N. de Revisões',
+              field: 'reviewCount'
             },
             {
               title: 'Ações',

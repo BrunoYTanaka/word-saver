@@ -69,8 +69,9 @@ const Statistics = () => {
 
     // Learning streak (simplified - based on word creation dates)
     const wordDates = words
+      .filter((word) => word.lastReviewed)
       .map((word) => {
-        const date = new Date(word.createdAt)
+        const date = new Date(word.lastReviewed!)
         return new Date(
           date.getFullYear(),
           date.getMonth(),

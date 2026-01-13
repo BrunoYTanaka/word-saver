@@ -13,12 +13,13 @@ import Button from '../components/UI/Button'
 import { FullWord } from '../types/word'
 
 const Flashcards = () => {
-  const { words, contexts } = useApp()
+  const { words, contexts, reviewWord } = useApp()
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [showDefinition, setShowDefinition] = useState(false)
   const [selectedContexts, setSelectedContexts] = useState<string[]>([])
   const [filteredWords, setFilteredWords] = useState<FullWord[]>([])
   const [finished, setFinished] = useState(false)
+  const [isReviewing, setIsReviewing] = useState(false)
   const [sessionStats, setSessionStats] = useState({
     correct: 0,
     incorrect: 0,
@@ -35,6 +36,7 @@ const Flashcards = () => {
 
   // Filter words based on selected contexts
   useEffect(() => {
+    if (isReviewing) return // Don't change words while reviewing
     if (selectedContexts.length === 0) {
       setFilteredWords(shuffleArray(words))
     } else {
@@ -46,11 +48,17 @@ const Flashcards = () => {
     }
     setCurrentWordIndex(0)
     setShowDefinition(false)
-  }, [words, selectedContexts])
+
+    // Start reviewing session when there are words
+    if (words.length > 0) {
+      setIsReviewing(true)
+    }
+  }, [words, selectedContexts, isReviewing])
 
   const currentWord = filteredWords[currentWordIndex]
 
   const handleContextToggle = (contextId: string) => {
+    setIsReviewing(false)
     setSelectedContexts((prev) =>
       prev.includes(contextId)
         ? prev.filter((id) => id !== contextId)
@@ -83,16 +91,23 @@ const Flashcards = () => {
     }))
 
     nextCard()
+    reviewWord(currentWord.id)
   }
 
   const resetSession = () => {
+    setIsReviewing(false)
     setCurrentWordIndex(0)
     setFinished(false)
     setShowDefinition(false)
     setSessionStats({ correct: 0, incorrect: 0, total: 0 })
   }
 
-  if (words.length === 0) {
+  const handleClearContextFilters = () => {
+    setIsReviewing(false)
+    setSelectedContexts([])
+  }
+
+  if (filteredWords.length === 0) {
     return (
       <div className="flex min-h-[80vh] items-center justify-center p-4">
         <Card className="max-w-md text-center">
@@ -137,7 +152,7 @@ const Flashcards = () => {
             ))}
             {selectedContexts.length > 0 && (
               <button
-                onClick={() => setSelectedContexts([])}
+                onClick={handleClearContextFilters}
                 className="rounded-full bg-destructive px-3 py-1 text-sm font-medium text-destructive-foreground hover:bg-destructive-hover"
               >
                 Limpar filtros
@@ -225,7 +240,7 @@ const Flashcards = () => {
           ))}
           {selectedContexts.length > 0 && (
             <button
-              onClick={() => setSelectedContexts([])}
+              onClick={handleClearContextFilters}
               className="rounded-full bg-destructive px-3 py-1 text-sm font-medium text-destructive-foreground hover:bg-destructive-hover"
             >
               Limpar filtros

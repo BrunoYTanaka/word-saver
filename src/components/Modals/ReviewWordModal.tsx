@@ -11,12 +11,13 @@ interface ReviewWordModalProps {
 }
 
 function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
-  const { words, contexts } = useApp()
+  const { words, contexts, reviewWord } = useApp()
   const { closeModal } = useModal()
 
   const [currentWord, setCurrentWord] = useState<FullWord | null>(null)
   const [showDefinition, setShowDefinition] = useState(false)
   const [reviewedCount, setReviewedCount] = useState(0)
+  const [isReviewing, setIsReviewing] = useState(false)
 
   // Get random word from selected contexts
   const getRandomWord = useCallback(() => {
@@ -36,16 +37,22 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
 
   // Load random word on mount or when getting next word
   useEffect(() => {
-    const word = getRandomWord()
-    setCurrentWord(word)
-    setShowDefinition(false)
-  }, [getRandomWord])
+    // Só busca nova palavra se não estiver no meio de uma revisão
+    if (!isReviewing) {
+      const word = getRandomWord()
+      setCurrentWord(word)
+      setShowDefinition(false)
+    }
+  }, [getRandomWord, isReviewing])
 
-  const handleShowDefinition = () => {
+  const handleShowDefinition = async () => {
     setShowDefinition(true)
+    setIsReviewing(true)
+    await reviewWord(currentWord!.id)
   }
 
   const handleNextWord = () => {
+    setIsReviewing(false) // Permite buscar nova palavra
     const nextWord = getRandomWord()
     setCurrentWord(nextWord)
     setShowDefinition(false)
@@ -107,6 +114,17 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
               {currentWord.tags && (
                 <div className="text-sm text-primary">{currentWord.tags}</div>
               )}
+              <div className="mt-2 flex justify-center gap-4 text-xs text-muted-foreground">
+                <span>Revisões: {currentWord.reviewCount}</span>
+                {currentWord.lastReviewed && (
+                  <span>
+                    Última revisão:{' '}
+                    {new Date(currentWord.lastReviewed).toLocaleDateString(
+                      'pt-BR'
+                    )}
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Definition (shown after click) */}
