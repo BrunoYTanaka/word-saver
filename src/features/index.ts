@@ -1,7 +1,7 @@
-// Main Features Export
-export * from './vocabulary'
-export * from './learning'
-export * from './analytics'
+// Features - Centralized exports
 export * from './alerts'
+export * from './analytics'
 export * from './data-management'
+export * from './learning'
 export * from './settings'
+export * from './vocabulary'

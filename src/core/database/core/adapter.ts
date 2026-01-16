@@ -1,6 +1,6 @@
 import database from './database'
 
-class BaseAction {
+class IndexedDBAdapter {
   private storeName: string
 
   constructor(storeName: string) {
@@ -86,4 +86,4 @@ class BaseAction {
   }
 }
 
-export default BaseAction
+export { IndexedDBAdapter }

@@ -68,7 +68,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const initTheme = async () => {
       try {
         await dbService.init()
-        const savedTheme = await dbService.settings.getSetting(THEME_KEY)
+        const settingsStore = await dbService.settings
+        const savedTheme = await settingsStore.getSetting(THEME_KEY)
         const initialTheme = savedTheme || THEMES.AUTO
 
         setTheme(initialTheme as ThemeType)
@@ -137,7 +138,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     try {
       // Save to database
-      await dbService.settings.setSetting(THEME_KEY, newTheme)
+      const settingsStore = await dbService.settings
+      await settingsStore.setSetting(THEME_KEY, newTheme)
 
       // Update state and apply
       setTheme(newTheme)

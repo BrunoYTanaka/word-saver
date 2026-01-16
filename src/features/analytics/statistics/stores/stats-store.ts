@@ -1,18 +1,28 @@
 import { Stats } from '../types/stats'
-import AlertService from '../../../alerts/services/alert-action'
-import ContextService from '../../../vocabulary/contexts/services/context-action'
-import WordService from '../../../vocabulary/words/services/word-action'
+import AlertStore from '@/features/alerts/stores/alert-store'
+import WordStore from '@/features/vocabulary/words/stores/word-store'
+import { STORES, IndexedDBAdapter, database } from '@/core/database'
 
-class StatsAction {
+class StatsStore extends IndexedDBAdapter {
+  private dbReady: Promise<void>
+
+  constructor() {
+    super(STORES.STATS)
+    this.dbReady = database.init().then(() => {})
+  }
+
+  private async ensureDB(): Promise<void> {
+    await this.dbReady
+  }
+
   async getStats(): Promise<Stats> {
-    const [words, contexts, alerts] = await Promise.all([
-      WordService.getAll(),
-      ContextService.getAll(),
-      AlertService.getAll()
+    await this.ensureDB()
+    const [words, alerts] = await Promise.all([
+      WordStore.getAll(),
+      AlertStore.getAll()
     ])
 
     const totalWords = words.length
-    const totalContexts = contexts.length
     const activeAlerts = alerts.filter((alert) => alert.isActive).length
     const reviewedWords = words.filter((word) => word.reviewCount > 0).length
     const totalReviews = words.reduce(
@@ -43,7 +53,7 @@ class StatsAction {
 
     return {
       totalWords,
-      totalContexts,
+      totalContexts: 0, // Placeholder - implementar depois
       activeAlerts,
       reviewedWords,
       totalReviews,
@@ -56,4 +66,4 @@ class StatsAction {
   }
 }
 
-export default new StatsAction()
+export default new StatsStore()

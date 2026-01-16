@@ -7,14 +7,14 @@ import {
   Calendar,
   Target
 } from 'lucide-react'
-import { useApp } from '../../shared/context/AppContext'
-import Card from '../../shared/ui/Card'
-import Button from '../../shared/ui/Button'
-import CountCard from '../../shared/ui/CountCard'
-import Table from '../../shared/ui/Table'
-import Tab from '../../shared/ui/Tab'
-import { formatDate } from '../../shared/utils/format-date'
-import { useModal } from '../../shared/context/ModalContext'
+import { useApp } from '@/shared/context/AppContext'
+import Card from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import CountCard from '@/shared/ui/CountCard'
+import Table from '@/shared/ui/Table'
+import Tab from '@/shared/ui/Tab'
+import { formatDate } from '@/shared/utils/format-date'
+import { useModal } from '@/shared/context/ModalContext'
 
 const Dashboard = () => {
   const {

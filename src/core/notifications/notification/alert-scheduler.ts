@@ -1,4 +1,3 @@
-// Alert Scheduler Service
 import { FullAlert } from '../../../features/alerts/types/alert'
 import { dbService } from '../../database'
 import { CoreNotificationService } from './core-notification-service'
@@ -60,8 +59,9 @@ export class AlertScheduler {
   private async triggerAlert(alert: FullAlert): Promise<void> {
     try {
       // Get words from selected contexts
+      const wordsStore = await dbService.words
       const wordsPromises = alert.contextIds.map((contextId) =>
-        dbService.words.getWordsByContext(contextId)
+        wordsStore.getWordsByContext(contextId)
       )
       const wordArrays = await Promise.all(wordsPromises)
       const allWords = wordArrays.flat()
@@ -72,11 +72,12 @@ export class AlertScheduler {
       }
 
       // Get context names
+      const contextsStore = await dbService.contexts
       const contexts = await Promise.all(
-        alert.contextIds.map((id) => dbService.contexts.get(id))
+        alert.contextIds.map((id) => contextsStore.get(id))
       )
       const contextNames = contexts
-        .map((ctx) => ctx?.name)
+        .map((ctx: any) => ctx?.name)
         .filter(Boolean)
         .join(', ')
 
@@ -106,7 +107,8 @@ export class AlertScheduler {
       )
 
       // Update alert last triggered
-      await dbService.alerts.updateAlertLastTriggered(alert.id)
+      const alertsStore = await dbService.alerts
+      await alertsStore.updateAlertLastTriggered(alert.id)
 
       // Reschedule for next occurrence
       if (alert.isActive) {
@@ -133,7 +135,8 @@ export class AlertScheduler {
     if (!this.notificationService.isEnabled()) return
 
     try {
-      const activeAlerts = await dbService.alerts.getActiveAlerts()
+      const alertsStore = await dbService.alerts
+      const activeAlerts = await alertsStore.getActiveAlerts()
 
       for (const alert of activeAlerts) {
         await this.scheduleAlert(alert)

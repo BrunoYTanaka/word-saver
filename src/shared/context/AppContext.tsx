@@ -14,6 +14,7 @@ import {
 } from '../../features/vocabulary/contexts/types/context'
 import { Alert, FullAlert } from '../../features/alerts/types/alert'
 import { Stats } from '../../features/analytics/statistics/types/stats'
+import alertRepository from '@/features/alerts/stores/alert-store'
 
 // Type definitions
 export interface AppState {
@@ -298,11 +299,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Load all data from database
   const loadAllData = async () => {
     try {
+      const [wordsStore, contextsStore, statsStore] = await Promise.all([
+        dbService.words,
+        dbService.contexts,
+        dbService.stats
+      ])
+
       const [words, contexts, alerts, stats] = await Promise.all([
-        dbService.words.getAll(),
-        dbService.contexts.getContextWithWordCount(),
-        dbService.alerts.getAll(),
-        dbService.stats.getStats()
+        wordsStore.getAll(),
+        contextsStore.getContextWithWordCount(),
+        alertRepository.getAll(),
+        statsStore.getStats()
       ])
 
       dispatch({ type: ACTIONS.SET_WORDS, payload: words })
@@ -318,9 +325,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const deleteAllData = async () => {
     try {
       dispatch({ type: ACTIONS.SET_LOADING, payload: true })
-      await dbService.words.clear()
-      await dbService.contexts.clear()
-      await dbService.alerts.clear()
+      const [wordsStore, contextsStore, alertsStore] = await Promise.all([
+        dbService.words,
+        dbService.contexts,
+        dbService.alerts
+      ])
+
+      await Promise.all([
+        wordsStore.clear(),
+        contextsStore.clear(),
+        alertsStore.clear()
+      ])
+
       await loadAllData()
     } catch (error) {
       console.error('Error deleting all data:', error)
@@ -420,11 +436,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const deleteContext = async (contextId: string) => {
     try {
       // Delete all words in this context first
-      const words = await dbService.words.getWordsByContext(contextId)
-      await Promise.all(words.map((word) => dbService.words.delete(word.id)))
+      const wordsStore = await dbService.words
+      const contextsStore = await dbService.contexts
+      const words = await wordsStore.getWordsByContext(contextId)
+      await Promise.all(words.map((word: any) => wordsStore.delete(word.id)))
 
       // Delete the context
-      await dbService.contexts.delete(contextId)
+      await contextsStore.delete(contextId)
       dispatch({ type: ACTIONS.DELETE_CONTEXT, payload: contextId })
       await refreshStats()
     } catch (error) {

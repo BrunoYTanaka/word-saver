@@ -1,8 +1,7 @@
 import { Settings } from '../types/settings'
-import { STORES } from '../../../core/database/config/database'
-import BaseAction from '../../../core/database/core/base-action'
+import { STORES, IndexedDBAdapter } from '@/core/database'
 
-class SettingAction extends BaseAction {
+class SettingStore extends IndexedDBAdapter {
   constructor() {
     super(STORES.SETTINGS)
   }
@@ -26,4 +25,4 @@ class SettingAction extends BaseAction {
   }
 }
 
-export default new SettingAction()
+export default new SettingStore()

@@ -40,7 +40,8 @@ class ImportAction {
       }
 
       // Import data to database
-      const result = await dbService.import.importData(data, mode)
+      const importStore = await dbService.import
+      const result = await importStore.importData(data, mode)
 
       return {
         success: true,

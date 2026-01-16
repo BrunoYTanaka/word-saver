@@ -42,7 +42,8 @@ interface ExportWordsOnly {
 class ExportAction {
   async exportAllData(): Promise<ExportAllData> {
     try {
-      const data = await dbService.export.exportData()
+      const exportStore = await dbService.export
+      const data = await exportStore.exportData()
       const exportData = {
         ...data,
         metadata: {
@@ -62,7 +63,8 @@ class ExportAction {
 
   async exportContextData(contextId: string): Promise<ExportContextData> {
     try {
-      const contextData = await dbService.export.exportContextData(contextId)
+      const exportStore = await dbService.export
+      const contextData = await exportStore.exportContextData(contextId)
       const exportData = {
         ...contextData,
         metadata: {
@@ -87,17 +89,20 @@ class ExportAction {
       let words
 
       if (contextIds && contextIds.length > 0) {
+        const wordsStore = await dbService.words
         const wordArrays = await Promise.all(
-          contextIds.map((id) => dbService.words.getWordsByContext(id))
+          contextIds.map((id) => wordsStore.getWordsByContext(id))
         )
         words = wordArrays.flat()
       } else {
-        words = await dbService.words.getAll()
+        const wordsStore = await dbService.words
+        words = await wordsStore.getAll()
       }
 
-      const contexts = await dbService.contexts.getAll()
+      const contextsStore = await dbService.contexts
+      const contexts = await contextsStore.getAll()
       const contextMap = contexts.reduce(
-        (acc, ctx) => {
+        (acc: Record<string, string>, ctx: any) => {
           acc[ctx.id] = ctx.name
           return acc
         },
@@ -105,7 +110,7 @@ class ExportAction {
       )
 
       // Add context names to words for readability
-      const enrichedWords = words.map((word) => ({
+      const enrichedWords = words.map((word: any) => ({
         ...word,
         contextName: contextMap[word.contextId] || 'Desconhecido'
       }))
@@ -113,7 +118,7 @@ class ExportAction {
       return {
         words: enrichedWords,
         contexts: contextIds
-          ? contexts.filter((ctx) => contextIds.includes(ctx.id))
+          ? contexts.filter((ctx: any) => contextIds.includes(ctx.id))
           : contexts,
         metadata: {
           appName: DB_NAME,

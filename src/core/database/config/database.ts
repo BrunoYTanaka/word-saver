@@ -5,7 +5,10 @@ const STORES = {
   WORDS: 'words',
   CONTEXTS: 'contexts',
   ALERTS: 'alerts',
-  SETTINGS: 'settings'
+  SETTINGS: 'settings',
+  FLASHCARDS: 'flashcards',
+  QUIZ: 'quiz',
+  STATS: 'stats'
 }
 
 export { STORES, DB_NAME, DB_VERSION }

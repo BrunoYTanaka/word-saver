@@ -1,11 +1,16 @@
 import { Word, FullWord } from '../types/word'
-import { STORES } from '../../../../core/database/config/database'
-import BaseAction from '../../../../core/database/core/base-action'
-import database from '../../../../core/database/core/database'
+import { STORES, IndexedDBAdapter, database } from '@/core/database'
 
-class WordAction extends BaseAction {
+class WordStore extends IndexedDBAdapter {
+  private dbReady: Promise<void>
+
   constructor() {
     super(STORES.WORDS)
+    this.dbReady = database.init().then(() => {})
+  }
+
+  private async ensureDB(): Promise<void> {
+    await this.dbReady
   }
 
   async getAll<T = FullWord>(): Promise<T[]> {
@@ -24,15 +29,8 @@ class WordAction extends BaseAction {
   }
 
   async getWordsByContext(contextId: string): Promise<FullWord[]> {
-    return new Promise((resolve, reject) => {
-      const transaction = database.db!.transaction([STORES.WORDS], 'readonly')
-      const store = transaction.objectStore(STORES.WORDS)
-      const index = store.index('contextId')
-      const request = index.getAll(contextId)
-
-      request.onsuccess = () => resolve(request.result)
-      request.onerror = () => reject(request.error)
-    })
+    const words = await this.getAll<FullWord>()
+    return words.filter((word) => word.contextId === contextId)
   }
 
   async searchWords(query: string): Promise<FullWord[]> {
@@ -56,6 +54,11 @@ class WordAction extends BaseAction {
       return this.update(word)
     }
   }
+
+  async clear(): Promise<void> {
+    await this.ensureDB()
+    return super.clear()
+  }
 }
 
-export default new WordAction()
+export default new WordStore()

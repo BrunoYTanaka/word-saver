@@ -1,4 +1,2 @@
-// Backup Data Management - Main Export
-// TODO: Implement backup functionality
-
-export {}
+export { default as BackupStore } from './stores/backup-store'
+export * from './types/backup'

@@ -1,14 +1,20 @@
 import { Alert, FullAlert } from '../types/alert'
-import { STORES } from '../../../core/database/config/database'
-import BaseAction from '../../../core/database/core/base-action'
-import database from '../../../core/database/core/database'
+import { STORES, IndexedDBAdapter, database } from '@/core/database'
 
-class AlertAction extends BaseAction {
+class AlertStore extends IndexedDBAdapter {
+  private dbReady: Promise<void>
+
   constructor() {
     super(STORES.ALERTS)
+    this.dbReady = database.init().then(() => {})
+  }
+
+  private async ensureDB(): Promise<void> {
+    await this.dbReady
   }
 
   async getAll<T = FullAlert>(): Promise<T[]> {
+    await this.ensureDB()
     return super.getAll<T>()
   }
 
@@ -27,29 +33,26 @@ class AlertAction extends BaseAction {
   }
 
   async getActiveAlerts(): Promise<FullAlert[]> {
-    return new Promise((resolve, reject) => {
-      const transaction = database.db!.transaction([STORES.ALERTS], 'readonly')
-      const store = transaction.objectStore(STORES.ALERTS)
-      const request = store.getAll()
-
-      request.onsuccess = () => {
-        const alerts = request.result
-        const activeAlerts = alerts.filter((alert) => alert.isActive === true)
-        resolve(activeAlerts)
-      }
-      request.onerror = () => reject(request.error)
-    })
+    await this.ensureDB()
+    const alerts = await this.getAll<FullAlert>()
+    return alerts.filter((alert: FullAlert) => alert.isActive)
   }
 
   async updateAlertLastTriggered(
     alertId: string
   ): Promise<IDBValidKey | undefined> {
+    await this.ensureDB()
     const alert = await this.get<FullAlert>(alertId)
     if (alert) {
       alert.lastTriggered = new Date().toISOString()
       return this.update(alert)
     }
   }
+
+  async clear(): Promise<void> {
+    await this.ensureDB()
+    return super.clear()
+  }
 }
 
-export default new AlertAction()
+export default new AlertStore()
