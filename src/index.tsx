@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import './global/global.css'
-import App from 'components/App'
+import './shared/global/global.css'
+import App from './app/App'
 
 const container = document.getElementById('root') as HTMLDivElement
 const root = createRoot(container)
