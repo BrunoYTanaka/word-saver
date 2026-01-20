@@ -1,4 +1,8 @@
+import { Button, useAppRouter } from '../shared'
+
 function NotFoundPage() {
+  const { navigateTo } = useAppRouter()
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="p-6 text-center">
@@ -11,12 +15,9 @@ function NotFoundPage() {
         <p className="mb-6 text-gray-500 dark:text-gray-500">
           A página que você está procurando não existe.
         </p>
-        <a
-          href="/dashboard"
-          className="bg-primary-600 hover:bg-primary-700 inline-block rounded-md px-6 py-3 text-white transition-colors"
-        >
+        <Button variant="primary" onClick={() => navigateTo('/dashboard')}>
           Voltar ao Dashboard
-        </a>
+        </Button>
       </div>
     </div>
   )

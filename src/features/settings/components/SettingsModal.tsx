@@ -1,6 +1,5 @@
 import { FileDown, FileUp } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { useApp } from '@/shared/hooks'
+import { useApp, useStorageUsage } from '@/shared/hooks'
 import { useAppSelector } from '@/store/hooks'
 import Modal from '@/shared/ui/Modal'
 import Button from '@/shared/ui/Button'
@@ -16,34 +15,14 @@ const SettingsModal = () => {
   const { contexts } = useAppSelector((state) => state.contexts)
   const { alerts } = useAppSelector((state) => state.alerts)
   const { closeModal, openModal } = useModal()
-
   const { isDark, toggleTheme } = useTheme()
-  const [appInfo, setAppInfo] = useState({
+  const { storageInfo } = useStorageUsage()
+
+  const appInfo = {
     version: pckInfo.version,
     buildDate: new Date().toLocaleDateString('pt-BR'),
-    totalStorage: '0 KB'
-  })
-  // Calculate storage and stats when modal opens
-  useEffect(() => {
-    const calculateStorageUsage = () => {
-      try {
-        // Estimate storage usage
-        const dataSize = JSON.stringify({ words, contexts, alerts }).length
-        const sizeInKB = (dataSize / 1024).toFixed(1)
-        const sizeInMB =
-          dataSize > 1024 * 1024 ? (dataSize / (1024 * 1024)).toFixed(2) : null
-
-        setAppInfo((prev) => ({
-          ...prev,
-          totalStorage: sizeInMB ? `${sizeInMB} MB` : `${sizeInKB} KB`
-        }))
-      } catch (error) {
-        console.error('Erro ao calcular uso de armazenamento:', error)
-      }
-    }
-
-    calculateStorageUsage()
-  }, [words, contexts, alerts])
+    totalStorage: storageInfo
+  }
 
   const clearAllData = async () => {
     if (

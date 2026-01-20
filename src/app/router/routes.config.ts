@@ -1,4 +1,3 @@
-import { Settings } from 'lucide-react'
 import Dashboard from '@/pages/dashboard/Dashboard'
 import { Flashcards, Quiz, Statistics } from '@/features'
 import { AppRoutes, RouteConfig } from './types'
@@ -31,12 +30,5 @@ export const routesConfig: RouteConfig[] = [
     protected: true,
     title: 'Estatísticas',
     description: 'Acompanhe seu progresso detalhado'
-  },
-  {
-    path: AppRoutes.SETTINGS,
-    component: Settings,
-    protected: true,
-    title: 'Configurações',
-    description: 'Configurações da aplicação'
   }
 ]

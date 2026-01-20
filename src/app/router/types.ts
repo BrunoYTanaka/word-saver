@@ -18,10 +18,5 @@ export enum AppRoutes {
   DASHBOARD = '/dashboard',
   FLASHCARDS = '/flashcards',
   QUIZ = '/quiz',
-  STATISTICS = '/statistics',
-  VOCABULARY = '/vocabulary',
-  SETTINGS = '/settings',
-  BACKUP = '/backup',
-  EXPORT = '/export',
-  IMPORT = '/import'
+  STATISTICS = '/statistics'
 }

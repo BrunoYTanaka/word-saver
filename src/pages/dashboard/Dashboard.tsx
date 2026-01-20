@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useContext, useState } from 'react'
+import { useMemo, useEffect } from 'react'
 import {
   BookOpen,
   Archive,
@@ -18,9 +18,11 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { deleteWord } from '@/store/slices/wordsSlice'
 import { deleteContext } from '@/store/slices/contextsSlice'
 import { deleteAlert } from '@/store/slices/alertsSlice'
+import { useApp } from '../../shared'
 
 const Dashboard = () => {
   const dispatch = useAppDispatch()
+  const { initialized } = useApp()
   const { loading, words } = useAppSelector((state) => state.words)
   const { contexts } = useAppSelector((state) => state.contexts)
   const { alerts } = useAppSelector((state) => state.alerts)
@@ -33,7 +35,7 @@ const Dashboard = () => {
     const reviewParam = urlParams.get('review')
     const alertParam = urlParams.get('alert')
 
-    if (reviewParam) {
+    if (reviewParam && initialized) {
       console.log(
         'Opening from notification - Review contexts:',
         reviewParam,
@@ -51,7 +53,7 @@ const Dashboard = () => {
 
       window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [alerts, openModal])
+  }, [alerts, openModal, initialized])
 
   const data = useMemo(
     () =>
