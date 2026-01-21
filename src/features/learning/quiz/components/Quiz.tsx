@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { Play, RotateCcw, CheckCircle, XCircle } from 'lucide-react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Card from '../../../../shared/ui/Card'
-import Button from '../../../../shared/ui/Button'
-import { FullWord } from '../../../vocabulary/words/types/word'
+import { useWords, useContexts, FullWord } from '@/features/vocabulary'
+import Card from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 
 interface QuizQuestion {
   word: FullWord
@@ -19,7 +18,8 @@ interface QuizStats {
 }
 
 const Quiz = () => {
-  const { words, contexts, reviewWord } = useApp()
+  const { words, reviewWord } = useWords()
+  const { contexts } = useContexts()
   const [isQuizStarted, setIsQuizStarted] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)

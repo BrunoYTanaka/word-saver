@@ -1,9 +1,12 @@
-import { DB_VERSION } from '../../../../core/database'
-
+import { DB_VERSION } from '@/core/database'
 import { AlertStore } from '@/features/alerts'
-import { ContextStore, FullContext } from '@/features/vocabulary/contexts'
 import { SettingStore } from '@/features/settings'
-import { FullWord, WordStore } from '@/features/vocabulary/words'
+import {
+  FullWord,
+  FullContext,
+  WordStore,
+  ContextStore
+} from '@/features/vocabulary'
 
 class ExportService {
   async exportData() {
@@ -25,7 +28,7 @@ class ExportService {
     type: string
   }> {
     const words = await WordStore.getWordsByContext(contextId)
-    const context = await ContextStore.get<FullContext>(contextId)
+    const context = await ContextStore.get(contextId)
 
     return {
       context,

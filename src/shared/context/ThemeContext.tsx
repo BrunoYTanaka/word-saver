@@ -5,7 +5,7 @@ import {
   createContext,
   useCallback
 } from 'react'
-import { dbService } from '../../core/database'
+import { SettingStore } from '@/features/settings'
 
 const THEME_KEY = 'theme'
 
@@ -67,16 +67,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initTheme = async () => {
       try {
-        await dbService.init()
-        const settingsStore = await dbService.settings
-        const savedTheme = await settingsStore.getSetting(THEME_KEY)
+        const savedTheme = await SettingStore.getSetting(THEME_KEY)
         const initialTheme = savedTheme || THEMES.AUTO
 
         setTheme(initialTheme as ThemeType)
         applyTheme(initialTheme as ThemeType)
       } catch (error) {
         console.error('Error loading theme:', error)
-        // Fallback to system preference
         const systemPrefersDark = window.matchMedia(
           '(prefers-color-scheme: dark)'
         ).matches
@@ -138,8 +135,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     try {
       // Save to database
-      const settingsStore = await dbService.settings
-      await settingsStore.setSetting(THEME_KEY, newTheme)
+      await SettingStore.setSetting(THEME_KEY, newTheme)
 
       // Update state and apply
       setTheme(newTheme)

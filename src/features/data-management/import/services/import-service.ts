@@ -1,8 +1,8 @@
-import { FullAlert } from '../../../alerts/types/alert'
-import { FullContext } from '../../../vocabulary/contexts/types/context'
-import { FullWord } from '../../../vocabulary/words/types/word'
-import { STORES } from '../../../../core/database/config/database'
-import database from '../../../../core/database/core/database'
+import { FullAlert } from '@/features/alerts/types/alert'
+import { FullContext } from '@/features/vocabulary/contexts/types/context'
+import { FullWord } from '@/features/vocabulary/words/types/word'
+import { STORES } from '@/core/database/config/database'
+import database from '@/core/database/core/database'
 
 interface Data {
   words?: FullWord[]

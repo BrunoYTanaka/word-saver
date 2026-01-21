@@ -7,13 +7,13 @@ import {
   XCircle,
   Eye
 } from 'lucide-react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Card from '../../../../shared/ui/Card'
-import Button from '../../../../shared/ui/Button'
-import { FullWord } from '../../../vocabulary/words/types/word'
+import { useWords, useContexts, FullWord } from '@/features/vocabulary'
+import Card from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 
 const Flashcards = () => {
-  const { words, contexts, reviewWord } = useApp()
+  const { words, reviewWord } = useWords()
+  const { contexts } = useContexts()
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [showDefinition, setShowDefinition] = useState(false)
   const [selectedContexts, setSelectedContexts] = useState<string[]>([])

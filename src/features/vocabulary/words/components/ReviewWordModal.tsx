@@ -1,17 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Modal from '../../../../shared/ui/Modal'
-import Button from '../../../../shared/ui/Button'
-import Card from '../../../../shared/ui/Card'
-import { useModal } from '../../../../shared/context/ModalContext'
+import Modal from '@/shared/ui/Modal'
+import Button from '@/shared/ui/Button'
+import Card from '@/shared/ui/Card'
+import { useModal } from '@/shared/context/ModalContext'
 import { FullWord } from '../types/word'
+import { useWords } from '../hooks/useWords'
+import { useContexts } from '../../contexts'
 
 interface ReviewWordModalProps {
   contextIds: string[]
 }
 
 function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
-  const { words, contexts, reviewWord } = useApp()
+  const { words, reviewWord } = useWords()
+  const { contexts } = useContexts()
   const { closeModal } = useModal()
 
   const [currentWord, setCurrentWord] = useState<FullWord | null>(null)

@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react'
 import { FileUp, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
-import Modal from '../../../../shared/ui/Modal'
-import Button from '../../../../shared/ui/Button'
-import Card from '../../../../shared/ui/Card'
-import { useModal } from '../../../../shared/context/ModalContext'
+import Modal from '@/shared/ui/Modal'
+import Button from '@/shared/ui/Button'
+import Card from '@/shared/ui/Card'
+import { useModal } from '@/shared/context/ModalContext'
 import { fileService } from '../../file'
-import { useApp } from '../../../../shared/context/AppContext'
+import { useWords } from '@/features/vocabulary/words/hooks/useWords'
+import { useContexts } from '@/features/vocabulary/contexts/hooks/useContexts'
+import { useAlerts } from '@/features/alerts/hooks/useAlerts'
 
 interface ImportResult {
   success: boolean
@@ -23,7 +25,9 @@ interface ImportStats {
 
 const ImportDataModal = () => {
   const { closeModal } = useModal()
-  const { loadAllData } = useApp()
+  const { refreshWords } = useWords()
+  const { refreshContexts } = useContexts()
+  const { refreshAlerts } = useAlerts()
   const modalRef = useRef<HTMLDivElement>(null)
 
   const [importMode, setImportMode] = useState<'merge' | 'replace'>('merge')
@@ -127,7 +131,10 @@ const ImportDataModal = () => {
 
       setImportResult(result)
 
-      await loadAllData()
+      // Reload all data
+      await Promise.all([refreshWords(), refreshContexts(), refreshAlerts()])
+
+      scrollToSection('[data-section="result"]', 'center')
     } catch (error: unknown) {
       setImportResult({
         success: false,

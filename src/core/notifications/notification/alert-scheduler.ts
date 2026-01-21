@@ -1,5 +1,7 @@
 import { FullAlert } from '../../../features/alerts/types/alert'
-import { dbService } from '../../database'
+import { WordStore } from '@/features/vocabulary/words'
+import { ContextStore } from '@/features/vocabulary/contexts'
+import { AlertStore } from '@/features/alerts'
 import { CoreNotificationService } from './core-notification-service'
 
 export class AlertScheduler {
@@ -59,9 +61,8 @@ export class AlertScheduler {
   private async triggerAlert(alert: FullAlert): Promise<void> {
     try {
       // Get words from selected contexts
-      const wordsStore = await dbService.words
       const wordsPromises = alert.contextIds.map((contextId) =>
-        wordsStore.getWordsByContext(contextId)
+        WordStore.getWordsByContext(contextId)
       )
       const wordArrays = await Promise.all(wordsPromises)
       const allWords = wordArrays.flat()
@@ -72,12 +73,11 @@ export class AlertScheduler {
       }
 
       // Get context names
-      const contextsStore = await dbService.contexts
       const contexts = await Promise.all(
-        alert.contextIds.map((id) => contextsStore.get(id))
+        alert.contextIds.map((id) => ContextStore.get(id))
       )
       const contextNames = contexts
-        .map((ctx: any) => ctx?.name)
+        .map((ctx) => ctx?.name)
         .filter(Boolean)
         .join(', ')
 
@@ -107,8 +107,7 @@ export class AlertScheduler {
       )
 
       // Update alert last triggered
-      const alertsStore = await dbService.alerts
-      await alertsStore.updateAlertLastTriggered(alert.id)
+      await AlertStore.updateAlertLastTriggered(alert.id)
 
       // Reschedule for next occurrence
       if (alert.isActive) {
@@ -135,8 +134,7 @@ export class AlertScheduler {
     if (!this.notificationService.isEnabled()) return
 
     try {
-      const alertsStore = await dbService.alerts
-      const activeAlerts = await alertsStore.getActiveAlerts()
+      const activeAlerts = await AlertStore.getActiveAlerts()
 
       for (const alert of activeAlerts) {
         await this.scheduleAlert(alert)

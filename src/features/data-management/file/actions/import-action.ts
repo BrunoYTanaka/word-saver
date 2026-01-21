@@ -2,8 +2,8 @@ import { Settings } from '../../../settings/types/settings'
 import { FullAlert } from '../../../alerts/types/alert'
 import { FullContext } from '../../../vocabulary/contexts/types/context'
 import { FullWord } from '../../../vocabulary/words/types/word'
-import { dbService } from '../../../../core/database'
 import { validateImportData } from '../helpers/validate-import-data'
+import { ImportService } from '@/features/data-management/import'
 
 interface Options {
   mode?: 'merge' | 'replace'
@@ -40,8 +40,7 @@ class ImportAction {
       }
 
       // Import data to database
-      const importStore = await dbService.import
-      const result = await importStore.importData(data, mode)
+      const result = await ImportService.importData(data, mode)
 
       return {
         success: true,

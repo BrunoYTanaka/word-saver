@@ -1,23 +1,21 @@
 import { FileDown, FileUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useApp } from '../../../shared/context/AppContext'
-import Modal from '../../../shared/ui/Modal'
-import Button from '../../../shared/ui/Button'
-import Card from '../../../shared/ui/Card'
-import { useTheme } from '../../../shared/context/ThemeContext'
+import { useApp } from '@/shared/context/AppContext'
+import { useWords, useContexts } from '../../vocabulary'
+import { useAlerts } from '../../alerts/hooks/useAlerts'
+import Modal from '@/shared/ui/Modal'
+import Button from '@/shared/ui/Button'
+import Card from '@/shared/ui/Card'
+import { useTheme } from '@/shared/context/ThemeContext'
 import pckInfo from '../../../../package.json'
-import { useModal } from '../../../shared/context/ModalContext'
-import { cn } from '../../../shared/utils/cn'
+import { useModal } from '@/shared/context/ModalContext'
+import { cn } from '@/shared/utils/cn'
 
 const SettingsModal = () => {
-  const {
-    words,
-    contexts,
-    alerts,
-    deleteAllData,
-    isNotificationEnabled,
-    loadAllData
-  } = useApp()
+  const { isNotificationEnabled } = useApp()
+  const { words } = useWords()
+  const { contexts } = useContexts()
+  const { alerts } = useAlerts()
   const { closeModal, openModal } = useModal()
 
   const { isDark, toggleTheme } = useTheme()
@@ -57,8 +55,24 @@ const SettingsModal = () => {
       )
     ) {
       try {
-        await deleteAllData()
-        await loadAllData()
+        // Delete all data from stores
+        const wordStore = (
+          await import('../../vocabulary/words/stores/word-store')
+        ).default
+        const contextStore = (
+          await import('../../vocabulary/contexts/stores/context-store')
+        ).default
+        const alertStore = (await import('../../alerts/stores/alert-store'))
+          .default
+
+        await Promise.all([
+          wordStore.clear(),
+          contextStore.clear(),
+          alertStore.clear()
+        ])
+
+        // Refresh all data
+        window.location.reload()
       } catch (error) {
         console.error('Erro ao limpar dados:', error)
         alert('Erro ao limpar dados. Tente novamente.')

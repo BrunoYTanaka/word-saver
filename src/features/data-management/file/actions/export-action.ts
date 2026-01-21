@@ -2,11 +2,13 @@ import { Settings } from '../../../settings/types/settings'
 import { FullAlert } from '../../../alerts/types/alert'
 import { FullContext } from '../../../vocabulary/contexts/types/context'
 import { FullWord } from '../../../vocabulary/words/types/word'
-import { dbService } from '../../../../core/database'
 import { DB_NAME, DB_VERSION } from '../../../../core/database/config/database'
 import { countRecords } from '../helpers/count-records'
 import { downloadJSON } from '../helpers/download-json'
 import { generateFilename } from '../helpers/generate-filename'
+import { WordStore } from '@/features/vocabulary/words'
+import { ContextStore } from '@/features/vocabulary/contexts'
+import ExportService from '@/features/data-management/export/services/export-service'
 
 interface Metadata {
   appName: string
@@ -42,8 +44,7 @@ interface ExportWordsOnly {
 class ExportAction {
   async exportAllData(): Promise<ExportAllData> {
     try {
-      const exportStore = await dbService.export
-      const data = await exportStore.exportData()
+      const data = await ExportService.exportData()
       const exportData = {
         ...data,
         metadata: {
@@ -63,8 +64,7 @@ class ExportAction {
 
   async exportContextData(contextId: string): Promise<ExportContextData> {
     try {
-      const exportStore = await dbService.export
-      const contextData = await exportStore.exportContextData(contextId)
+      const contextData = await ExportService.exportContextData(contextId)
       const exportData = {
         ...contextData,
         metadata: {
@@ -89,20 +89,17 @@ class ExportAction {
       let words
 
       if (contextIds && contextIds.length > 0) {
-        const wordsStore = await dbService.words
         const wordArrays = await Promise.all(
-          contextIds.map((id) => wordsStore.getWordsByContext(id))
+          contextIds.map((id) => WordStore.getWordsByContext(id))
         )
         words = wordArrays.flat()
       } else {
-        const wordsStore = await dbService.words
-        words = await wordsStore.getAll()
+        words = await WordStore.getAll()
       }
 
-      const contextsStore = await dbService.contexts
-      const contexts = await contextsStore.getAll()
+      const contexts = await ContextStore.getAll()
       const contextMap = contexts.reduce(
-        (acc: Record<string, string>, ctx: any) => {
+        (acc: Record<string, string>, ctx) => {
           acc[ctx.id] = ctx.name
           return acc
         },
@@ -110,7 +107,7 @@ class ExportAction {
       )
 
       // Add context names to words for readability
-      const enrichedWords = words.map((word: any) => ({
+      const enrichedWords = words.map((word) => ({
         ...word,
         contextName: contextMap[word.contextId] || 'Desconhecido'
       }))
@@ -118,7 +115,7 @@ class ExportAction {
       return {
         words: enrichedWords,
         contexts: contextIds
-          ? contexts.filter((ctx: any) => contextIds.includes(ctx.id))
+          ? contexts.filter((ctx) => contextIds.includes(ctx.id))
           : contexts,
         metadata: {
           appName: DB_NAME,

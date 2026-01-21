@@ -1,16 +1,9 @@
 import { Word, FullWord } from '../types/word'
-import { STORES, IndexedDBAdapter, database } from '@/core/database'
+import { STORES, IndexedDBAdapter } from '@/core/database'
 
 class WordStore extends IndexedDBAdapter {
-  private dbReady: Promise<void>
-
   constructor() {
     super(STORES.WORDS)
-    this.dbReady = database.init().then(() => {})
-  }
-
-  private async ensureDB(): Promise<void> {
-    await this.dbReady
   }
 
   async getAll<T = FullWord>(): Promise<T[]> {

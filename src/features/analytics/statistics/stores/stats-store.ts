@@ -1,22 +1,14 @@
 import { Stats } from '../types/stats'
 import AlertStore from '@/features/alerts/stores/alert-store'
 import WordStore from '@/features/vocabulary/words/stores/word-store'
-import { STORES, IndexedDBAdapter, database } from '@/core/database'
+import { STORES, IndexedDBAdapter } from '@/core/database'
 
 class StatsStore extends IndexedDBAdapter {
-  private dbReady: Promise<void>
-
   constructor() {
     super(STORES.STATS)
-    this.dbReady = database.init().then(() => {})
-  }
-
-  private async ensureDB(): Promise<void> {
-    await this.dbReady
   }
 
   async getStats(): Promise<Stats> {
-    await this.ensureDB()
     const [words, alerts] = await Promise.all([
       WordStore.getAll(),
       AlertStore.getAll()

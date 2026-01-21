@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Modal from '../../../../shared/ui/Modal'
-import Input from '../../../../shared/ui/Input'
-import { useModal } from '../../../../shared/context/ModalContext'
+import { useContexts } from '../hooks/useContexts'
+import Modal from '@/shared/ui/Modal'
+import Input from '@/shared/ui/Input'
+import { useModal } from '@/shared/context/ModalContext'
 import { FullContext } from '../types/context'
-import { colors, icons } from '../context'
+import { colors, icons } from '../constants/context'
 
 interface EditContextFormData {
   name: string
@@ -22,7 +22,7 @@ interface EditContextModalProps {
 }
 
 const EditContextModal = ({ contextId }: EditContextModalProps) => {
-  const { contexts, updateContext, loading } = useApp()
+  const { contexts, updateContext, loading } = useContexts()
   const { closeModal } = useModal()
 
   const context = contexts.find((ctx) => ctx.id === contextId)

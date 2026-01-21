@@ -1,9 +1,10 @@
 import { Clock, Bell, Calendar, Repeat } from 'lucide-react'
 import { useState } from 'react'
-import { useApp } from '../../../shared/context/AppContext'
-import Modal from '../../../shared/ui/Modal'
-import Input from '../../../shared/ui/Input'
-import { useModal } from '../../../shared/context/ModalContext'
+import { useAlerts } from '../hooks/useAlerts'
+import { useContexts } from '../../vocabulary/contexts/hooks/useContexts'
+import Modal from '@/shared/ui/Modal'
+import Input from '@/shared/ui/Input'
+import { useModal } from '@/shared/context/ModalContext'
 
 interface SetAlertFormData {
   name: string
@@ -18,7 +19,8 @@ type ErrorTypes = {
 }
 
 const AddAlertModal = () => {
-  const { addAlert, contexts, loading } = useApp()
+  const { addAlert, loading } = useAlerts()
+  const { contexts } = useContexts()
   const { closeModal } = useModal()
 
   const [formData, setFormData] = useState<SetAlertFormData>({

@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Modal from '../../../../shared/ui/Modal'
-import Input from '../../../../shared/ui/Input'
-import Button from '../../../../shared/ui/Button'
-import { useModal } from '../../../../shared/context/ModalContext'
+import Modal from '@/shared/ui/Modal'
+import Input from '@/shared/ui/Input'
+import Button from '@/shared/ui/Button'
+import { useModal } from '@/shared/context/ModalContext'
+import { useWords } from '../hooks/useWords'
+import { useContexts } from '../../contexts'
 
 interface AddWordFormData {
   word: string
@@ -17,7 +18,8 @@ type ErrorTypes = {
 }
 
 function AddWordModal() {
-  const { addWord, contexts, loading } = useApp()
+  const { addWord, loading } = useWords()
+  const { contexts } = useContexts()
   const { openModal, closeModal } = useModal()
 
   const [formData, setFormData] = useState<AddWordFormData>({

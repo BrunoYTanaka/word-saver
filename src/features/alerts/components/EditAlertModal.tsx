@@ -1,11 +1,12 @@
 import { Clock, Bell, Calendar, Repeat } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useApp } from '../../../shared/context/AppContext'
-import Modal from '../../../shared/ui/Modal'
-import Input from '../../../shared/ui/Input'
-import Button from '../../../shared/ui/Button'
-import { useModal } from '../../../shared/context/ModalContext'
-import type { Alert, FullAlert } from '../types/alert'
+import { useAlerts } from '../hooks/useAlerts'
+import { useContexts } from '../../vocabulary/contexts/hooks/useContexts'
+import Modal from '@/shared/ui/Modal'
+import Input from '@/shared/ui/Input'
+import Button from '@/shared/ui/Button'
+import { useModal } from '@/shared/context/ModalContext'
+import { FullAlert } from '../types/alert'
 
 interface EditAlertFormData {
   name: string
@@ -25,7 +26,8 @@ interface EditAlertModalProps {
 }
 
 const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
-  const { alerts, updateAlert, contexts, loading } = useApp()
+  const { alerts, updateAlert, loading } = useAlerts()
+  const { contexts } = useContexts()
   const { closeModal } = useModal()
 
   const alert = alerts.find((a) => a.id === alertId)

@@ -1,22 +1,18 @@
 import { Context, FullContext } from '../types/context'
 import { FullWord } from '../../words/types/word'
-import { STORES, IndexedDBAdapter, database } from '@/core/database'
+import { STORES, IndexedDBAdapter } from '@/core/database'
 import WordStore from '../../words/stores/word-store'
 
 class ContextStore extends IndexedDBAdapter {
-  private dbReady: Promise<void>
-
   constructor() {
     super(STORES.CONTEXTS)
-    this.dbReady = database.init().then(() => {})
   }
 
-  private async ensureDB(): Promise<void> {
-    await this.dbReady
+  async get<T = FullContext>(id: string): Promise<T> {
+    return super.get<T>(id)
   }
 
   async getAll<T = FullContext>(): Promise<T[]> {
-    await this.ensureDB()
     return super.getAll<T>()
   }
 
@@ -32,7 +28,6 @@ class ContextStore extends IndexedDBAdapter {
   async getContextWithWordCount(): Promise<
     (FullContext & { wordCount: number })[]
   > {
-    await this.ensureDB()
     const contexts = await this.getAll<FullContext>()
     const words = await WordStore.getAll<FullWord>()
 
@@ -43,7 +38,6 @@ class ContextStore extends IndexedDBAdapter {
   }
 
   async clear(): Promise<void> {
-    await this.ensureDB()
     return super.clear()
   }
 }

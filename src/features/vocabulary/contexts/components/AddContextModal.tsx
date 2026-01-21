@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Modal from '../../../../shared/ui/Modal'
-import Input from '../../../../shared/ui/Input'
-import { useModal } from '../../../../shared/context/ModalContext'
-import { colors, icons } from '../context'
+import { useContexts } from '../hooks/useContexts'
+import Modal from '@/shared/ui/Modal'
+import Input from '@/shared/ui/Input'
+import { useModal } from '@/shared/context/ModalContext'
+import { colors, icons } from '../constants/context'
 
 interface AddContextFormData {
   name: string
@@ -16,7 +16,7 @@ type ErrorTypes = {
 }
 
 const AddContextModal = () => {
-  const { addContext, loading } = useApp()
+  const { addContext, loading } = useContexts()
   const { closeModal } = useModal()
 
   const [formData, setFormData] = useState<AddContextFormData>({

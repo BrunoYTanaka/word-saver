@@ -1,20 +1,12 @@
 import { Alert, FullAlert } from '../types/alert'
-import { STORES, IndexedDBAdapter, database } from '@/core/database'
+import { STORES, IndexedDBAdapter } from '@/core/database'
 
 class AlertStore extends IndexedDBAdapter {
-  private dbReady: Promise<void>
-
   constructor() {
     super(STORES.ALERTS)
-    this.dbReady = database.init().then(() => {})
-  }
-
-  private async ensureDB(): Promise<void> {
-    await this.dbReady
   }
 
   async getAll<T = FullAlert>(): Promise<T[]> {
-    await this.ensureDB()
     return super.getAll<T>()
   }
 
@@ -33,7 +25,6 @@ class AlertStore extends IndexedDBAdapter {
   }
 
   async getActiveAlerts(): Promise<FullAlert[]> {
-    await this.ensureDB()
     const alerts = await this.getAll<FullAlert>()
     return alerts.filter((alert: FullAlert) => alert.isActive)
   }
@@ -41,7 +32,6 @@ class AlertStore extends IndexedDBAdapter {
   async updateAlertLastTriggered(
     alertId: string
   ): Promise<IDBValidKey | undefined> {
-    await this.ensureDB()
     const alert = await this.get<FullAlert>(alertId)
     if (alert) {
       alert.lastTriggered = new Date().toISOString()
@@ -50,7 +40,6 @@ class AlertStore extends IndexedDBAdapter {
   }
 
   async clear(): Promise<void> {
-    await this.ensureDB()
     return super.clear()
   }
 }

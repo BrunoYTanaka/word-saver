@@ -1,5 +1,6 @@
 export { default as AddContextModal } from './components/AddContextModal'
 export { default as EditContextModal } from './components/EditContextModal'
 export { default as ContextStore } from './stores/context-store'
+export { useContexts } from './hooks/useContexts'
 export * from './types/context'
-export * from './context'
+export * from './constants/context'

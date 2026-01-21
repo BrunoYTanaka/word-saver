@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useApp } from '../../../../shared/context/AppContext'
-import Modal from '../../../../shared/ui/Modal'
-import Input from '../../../../shared/ui/Input'
-import Button from '../../../../shared/ui/Button'
+import Modal from '@/shared/ui/Modal'
+import Input from '@/shared/ui/Input'
+import Button from '@/shared/ui/Button'
 import { FullWord } from '../types/word'
-import { useModal } from '../../../../shared/context/ModalContext'
+import { useModal } from '@/shared/context/ModalContext'
+import { useWords } from '../hooks/useWords'
+import { useContexts } from '../../contexts'
 
 interface EditWordFormData {
   word: string
@@ -18,7 +19,8 @@ type ErrorTypes = {
 }
 
 function EditWordModal({ wordId }: { wordId: string }) {
-  const { updateWord, contexts, words, loading } = useApp()
+  const { updateWord, words } = useWords()
+  const { contexts, loading } = useContexts()
   const { openModal, closeModal } = useModal()
 
   const word = words.find((w) => w.id === wordId)

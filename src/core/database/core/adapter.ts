@@ -7,7 +7,12 @@ class IndexedDBAdapter {
     this.storeName = storeName
   }
 
+  async ensureDB(): Promise<void> {
+    await database.init()
+  }
+
   async add<T>(data: T): Promise<IDBValidKey> {
+    await this.ensureDB()
     return new Promise((resolve, reject) => {
       const transaction = database.db!.transaction(
         [this.storeName],
@@ -22,6 +27,7 @@ class IndexedDBAdapter {
   }
 
   async get<T>(id: string): Promise<T> {
+    await this.ensureDB()
     return new Promise((resolve, reject) => {
       const transaction = database.db!.transaction([this.storeName], 'readonly')
       const store = transaction.objectStore(this.storeName)
@@ -33,6 +39,7 @@ class IndexedDBAdapter {
   }
 
   async getAll<T>(): Promise<T[]> {
+    await this.ensureDB()
     return new Promise((resolve, reject) => {
       const transaction = database.db!.transaction([this.storeName], 'readonly')
       const store = transaction.objectStore(this.storeName)
@@ -44,6 +51,7 @@ class IndexedDBAdapter {
   }
 
   async update<T>(data: T): Promise<IDBValidKey> {
+    await this.ensureDB()
     return new Promise((resolve, reject) => {
       const transaction = database.db!.transaction(
         [this.storeName],
@@ -58,6 +66,7 @@ class IndexedDBAdapter {
   }
 
   async delete(id: IDBValidKey): Promise<void> {
+    await this.ensureDB()
     return new Promise((resolve, reject) => {
       const transaction = database.db!.transaction(
         [this.storeName],
