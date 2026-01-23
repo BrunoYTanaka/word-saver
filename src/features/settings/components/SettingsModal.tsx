@@ -1,6 +1,6 @@
 import { FileDown, FileUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useApp } from '@/shared/context/AppContext'
+import { useApp } from '@/shared/hooks'
 import { useWords, useContexts } from '../../vocabulary'
 import { useAlerts } from '../../alerts/hooks/useAlerts'
 import Modal from '@/shared/ui/Modal'

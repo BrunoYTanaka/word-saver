@@ -31,7 +31,6 @@ function Modal({
   const modalRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Size classes
   const sizeClasses = {
     sm: 'max-w-md',
     md: 'max-w-lg',
@@ -40,7 +39,6 @@ function Modal({
     full: 'max-w-full mx-4'
   }
 
-  // Handle escape key
   useEffect(() => {
     if (!isOpen || !closeOnEscape) return
 
@@ -54,7 +52,6 @@ function Modal({
     return () => document.removeEventListener('keydown', handleEscape)
   }, [isOpen, closeOnEscape, onClose])
 
-  // Handle body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -67,7 +64,6 @@ function Modal({
     }
   }, [isOpen])
 
-  // Focus management
   useEffect(() => {
     if (isOpen && modalRef.current) {
       // Focus the modal when it opens
@@ -75,7 +71,6 @@ function Modal({
     }
   }, [isOpen])
 
-  // Handle overlay click
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && event.target === overlayRef.current) {
       onClose()
@@ -149,7 +144,6 @@ function Modal({
   )
 }
 
-// Preset modal footers
 interface ModalFooterActionsProps {
   onCancel: () => void
   onConfirm: (

@@ -1,4 +1,5 @@
 import { FallbackProps } from 'react-error-boundary'
+import { Button } from '@/shared'
 
 function ErrorPage({ error }: FallbackProps) {
   return (
@@ -12,12 +13,9 @@ function ErrorPage({ error }: FallbackProps) {
             ? error.message
             : 'Ocorreu um erro inesperado'}
         </p>
-        <button
-          onClick={() => window.location.reload()}
-          className="bg-primary-600 hover:bg-primary-700 rounded-md px-4 py-2 text-white transition-colors"
-        >
+        <Button onClick={() => window.location.reload()} variant="outline">
           Recarregar página
-        </button>
+        </Button>
       </div>
     </div>
   )

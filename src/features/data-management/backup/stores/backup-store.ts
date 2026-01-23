@@ -9,11 +9,7 @@ class BackupStore extends IndexedDBAdapter {
     this.dbReady = database.init().then(() => {})
   }
 
-  private async ensureDB(): Promise<void> {
-    await this.dbReady
-  }
-
-  async createBackup(options: BackupOptions): Promise<BackupData> {
+  async createBackup(): Promise<BackupData> {
     await this.ensureDB()
 
     const backupData: BackupData = {

@@ -1,1 +1,1 @@
-export * from './globals'
+export type * from './globals'

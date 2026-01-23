@@ -20,7 +20,7 @@ interface ThemeContextType {
   isDark: boolean
   theme: ThemeType
   themes: typeof THEMES
-  isLoading: boolean
+  loading: boolean
   toggleTheme: () => void
   changeTheme: (newTheme: ThemeType) => void
   cycleTheme: () => void
@@ -39,9 +39,8 @@ const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType)
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<ThemeType>(THEMES.AUTO)
   const [isDark, setIsDark] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, setloading] = useState(true)
 
-  // Apply theme logic
   const applyTheme = useCallback((newTheme: ThemeType) => {
     let shouldBeDark = false
 
@@ -63,7 +62,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     applyThemeToDOM(shouldBeDark)
   }, [])
 
-  // Initialize theme from database
   useEffect(() => {
     const initTheme = async () => {
       try {
@@ -80,14 +78,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setIsDark(systemPrefersDark)
         applyThemeToDOM(systemPrefersDark)
       } finally {
-        setIsLoading(false)
+        setloading(false)
       }
     }
 
     initTheme()
   }, [applyTheme])
 
-  // Listen for system theme changes
   useEffect(() => {
     if (theme !== THEMES.AUTO) return
 
@@ -102,14 +99,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     mediaQuery.addEventListener('change', handleChange)
 
-    // Set initial value
     setIsDark(mediaQuery.matches)
     applyThemeToDOM(mediaQuery.matches)
 
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [theme])
 
-  // Apply theme to DOM
   const applyThemeToDOM = (dark: boolean) => {
     const root = document.documentElement
 
@@ -126,7 +121,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Change theme
   const changeTheme = async (newTheme: ThemeType) => {
     if (!Object.values(THEMES).includes(newTheme)) {
       console.error('Invalid theme:', newTheme)
@@ -134,29 +128,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      // Save to database
       await SettingStore.setSetting(THEME_KEY, newTheme)
 
-      // Update state and apply
       setTheme(newTheme)
       applyTheme(newTheme)
 
       console.log(`Theme changed to: ${newTheme}`)
     } catch (error) {
       console.error('Error saving theme:', error)
-      // Still apply the theme locally even if saving fails
       setTheme(newTheme)
       applyTheme(newTheme)
     }
   }
 
-  // Toggle between light and dark (for quick toggle button)
   const toggleTheme = () => {
     const newTheme = theme === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK
     changeTheme(newTheme)
   }
 
-  // Cycle through all themes (for settings)
   const cycleTheme = () => {
     const themes = Object.values(THEMES)
     const currentIndex = themes.indexOf(theme)
@@ -164,7 +153,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     changeTheme(themes[nextIndex])
   }
 
-  // Get theme display name
   const getThemeDisplayName = (themeValue = theme) => {
     switch (themeValue) {
       case THEMES.LIGHT:
@@ -178,7 +166,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Get theme icon
   const getThemeIcon = (themeValue = theme) => {
     switch (themeValue) {
       case THEMES.LIGHT:
@@ -192,7 +179,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Get effective theme (resolves auto to actual theme)
   const getEffectiveTheme = () => {
     if (theme === THEMES.AUTO) {
       return isDark ? THEMES.DARK : THEMES.LIGHT
@@ -201,25 +187,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   const value = {
-    // Current state
     theme,
     isDark,
-    isLoading,
-
-    // Theme constants
+    loading,
     themes: THEMES,
-
-    // Actions
     changeTheme,
     toggleTheme,
     cycleTheme,
-
-    // Utilities
     getThemeDisplayName,
     getThemeIcon,
     getEffectiveTheme,
-
-    // For theme selector components
     availableThemes: Object.values(THEMES).map((value) => ({
       value,
       label: getThemeDisplayName(value),
