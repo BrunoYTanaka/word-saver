@@ -1,7 +1,7 @@
 import { Clock, Bell, Calendar, Repeat } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useAlerts } from '../hooks/useAlerts'
-import { useContexts } from '../../vocabulary/contexts/hooks/useContexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { updateAlert } from '@/store/slices/alertsSlice'
 import Modal from '@/shared/ui/Modal'
 import Input from '@/shared/ui/Input'
 import Button from '@/shared/ui/Button'
@@ -26,8 +26,9 @@ interface EditAlertModalProps {
 }
 
 const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
-  const { alerts, updateAlert, loading } = useAlerts()
-  const { contexts } = useContexts()
+  const dispatch = useAppDispatch()
+  const { alerts, loading } = useAppSelector((state) => state.alerts)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const { closeModal } = useModal()
 
   const alert = alerts.find((a) => a.id === alertId)
@@ -150,7 +151,7 @@ const EditAlertModal = ({ alertId }: EditAlertModalProps) => {
     }
 
     try {
-      await updateAlert(updatedAlertData)
+      await dispatch(updateAlert(updatedAlertData)).unwrap()
       // Close modal after successful update
       handleClose()
     } catch (error) {

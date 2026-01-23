@@ -1,5 +1,4 @@
 export { default as AddAlertModal } from './components/AddAlertModal'
 export { default as EditAlertModal } from './components/EditAlertModal'
 export { default as AlertStore } from './stores/alert-store'
-export { useAlerts } from './hooks/useAlerts'
 export * from './types/alert'

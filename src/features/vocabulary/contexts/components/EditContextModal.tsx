@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useContexts } from '../hooks/useContexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { updateContext } from '@/store/slices/contextsSlice'
 import Modal from '@/shared/ui/Modal'
 import Input from '@/shared/ui/Input'
 import { useModal } from '@/shared/context/ModalContext'
@@ -22,10 +23,11 @@ interface EditContextModalProps {
 }
 
 const EditContextModal = ({ contextId }: EditContextModalProps) => {
-  const { contexts, updateContext, loading } = useContexts()
+  const dispatch = useAppDispatch()
+  const { contexts, loading } = useAppSelector((state) => state.contexts)
   const { closeModal } = useModal()
 
-  const context = contexts.find((ctx) => ctx.id === contextId)
+  const context = contexts.find((ctx: FullContext) => ctx.id === contextId)
   const [formData, setFormData] = useState<EditContextFormData>({
     name: context?.name || '',
     color: context?.color || '',
@@ -82,7 +84,7 @@ const EditContextModal = ({ contextId }: EditContextModalProps) => {
     }
 
     try {
-      await updateContext(updatedContextData)
+      await dispatch(updateContext(updatedContextData)).unwrap()
     } catch (error) {
       console.error('Error updating context:', error)
     } finally {

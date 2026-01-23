@@ -3,8 +3,8 @@ import Modal from '@/shared/ui/Modal'
 import Input from '@/shared/ui/Input'
 import Button from '@/shared/ui/Button'
 import { useModal } from '@/shared/context/ModalContext'
-import { useWords } from '../hooks/useWords'
-import { useContexts } from '../../contexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { addWord } from '@/store/slices/wordsSlice'
 
 interface AddWordFormData {
   word: string
@@ -18,8 +18,9 @@ type ErrorTypes = {
 }
 
 function AddWordModal() {
-  const { addWord, loading } = useWords()
-  const { contexts } = useContexts()
+  const dispatch = useAppDispatch()
+  const { loading } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const { openModal, closeModal } = useModal()
 
   const [formData, setFormData] = useState<AddWordFormData>({
@@ -79,7 +80,7 @@ function AddWordModal() {
     }
 
     try {
-      await addWord(wordData)
+      await dispatch(addWord(wordData)).unwrap()
     } catch (error) {
       console.error('Error adding word:', error)
     } finally {

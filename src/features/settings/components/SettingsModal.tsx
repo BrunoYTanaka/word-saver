@@ -1,8 +1,7 @@
 import { FileDown, FileUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useApp } from '@/shared/hooks'
-import { useWords, useContexts } from '../../vocabulary'
-import { useAlerts } from '../../alerts/hooks/useAlerts'
+import { useAppSelector } from '@/store/hooks'
 import Modal from '@/shared/ui/Modal'
 import Button from '@/shared/ui/Button'
 import Card from '@/shared/ui/Card'
@@ -13,9 +12,9 @@ import { cn } from '@/shared/utils/cn'
 
 const SettingsModal = () => {
   const { isNotificationEnabled } = useApp()
-  const { words } = useWords()
-  const { contexts } = useContexts()
-  const { alerts } = useAlerts()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
+  const { alerts } = useAppSelector((state) => state.alerts)
   const { closeModal, openModal } = useModal()
 
   const { isDark, toggleTheme } = useTheme()

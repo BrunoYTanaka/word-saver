@@ -1,7 +1,7 @@
 import { Clock, Bell, Calendar, Repeat } from 'lucide-react'
 import { useState } from 'react'
-import { useAlerts } from '../hooks/useAlerts'
-import { useContexts } from '../../vocabulary/contexts/hooks/useContexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { addAlert } from '@/store/slices/alertsSlice'
 import Modal from '@/shared/ui/Modal'
 import Input from '@/shared/ui/Input'
 import { useModal } from '@/shared/context/ModalContext'
@@ -19,8 +19,9 @@ type ErrorTypes = {
 }
 
 const AddAlertModal = () => {
-  const { addAlert, loading } = useAlerts()
-  const { contexts } = useContexts()
+  const dispatch = useAppDispatch()
+  const { loading } = useAppSelector((state) => state.alerts)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const { closeModal } = useModal()
 
   const [formData, setFormData] = useState<SetAlertFormData>({
@@ -122,7 +123,7 @@ const AddAlertModal = () => {
     }
 
     try {
-      await addAlert(formData)
+      await dispatch(addAlert(formData)).unwrap()
       // Modal will be closed by the context action
     } catch (error) {
       console.error('Error creating alert:', error)

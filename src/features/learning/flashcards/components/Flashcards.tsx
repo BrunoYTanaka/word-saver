@@ -7,13 +7,16 @@ import {
   XCircle,
   Eye
 } from 'lucide-react'
-import { useWords, useContexts, FullWord } from '@/features/vocabulary'
+import { FullWord } from '@/features/vocabulary'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { reviewWord as reviewWordAction } from '@/store/slices/wordsSlice'
 import Card from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 
 const Flashcards = () => {
-  const { words, reviewWord } = useWords()
-  const { contexts } = useContexts()
+  const dispatch = useAppDispatch()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [showDefinition, setShowDefinition] = useState(false)
   const [selectedContexts, setSelectedContexts] = useState<string[]>([])
@@ -91,7 +94,7 @@ const Flashcards = () => {
     }))
 
     nextCard()
-    reviewWord(currentWord.id)
+    dispatch(reviewWordAction(currentWord.id))
   }
 
   const resetSession = () => {

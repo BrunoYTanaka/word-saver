@@ -1,15 +1,14 @@
 import { FileText } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useWords } from '@/features/vocabulary/words/hooks/useWords'
-import { useContexts } from '@/features/vocabulary/contexts/hooks/useContexts'
+import { useAppSelector } from '@/store/hooks'
 import Modal from '@/shared/ui/Modal'
 import Card from '@/shared/ui/Card'
 import { fileService } from '../../file'
 import { useModal } from '@/shared/context/ModalContext'
 
 const ExportDataModal = () => {
-  const { words } = useWords()
-  const { contexts } = useContexts()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const { closeModal } = useModal()
 
   const [exportType, setExportType] = useState('full')

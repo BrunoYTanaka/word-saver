@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useContexts } from '../hooks/useContexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { addContext } from '@/store/slices/contextsSlice'
 import Modal from '@/shared/ui/Modal'
 import Input from '@/shared/ui/Input'
 import { useModal } from '@/shared/context/ModalContext'
@@ -16,7 +17,8 @@ type ErrorTypes = {
 }
 
 const AddContextModal = () => {
-  const { addContext, loading } = useContexts()
+  const dispatch = useAppDispatch()
+  const { loading } = useAppSelector((state) => state.contexts)
   const { closeModal } = useModal()
 
   const [formData, setFormData] = useState<AddContextFormData>({
@@ -63,7 +65,7 @@ const AddContextModal = () => {
     }
 
     try {
-      await addContext(contextData)
+      await dispatch(addContext(contextData)).unwrap()
     } catch (error) {
       console.error('Error adding context:', error)
     } finally {

@@ -5,9 +5,10 @@ import Button from '@/shared/ui/Button'
 import Card from '@/shared/ui/Card'
 import { useModal } from '@/shared/context/ModalContext'
 import { fileService } from '../../file'
-import { useWords } from '@/features/vocabulary/words/hooks/useWords'
-import { useContexts } from '@/features/vocabulary/contexts/hooks/useContexts'
-import { useAlerts } from '@/features/alerts/hooks/useAlerts'
+import { useAppDispatch } from '@/store/hooks'
+import { fetchWords } from '@/store/slices/wordsSlice'
+import { fetchContexts } from '@/store/slices/contextsSlice'
+import { fetchAlerts } from '@/store/slices/alertsSlice'
 
 interface ImportResult {
   success: boolean
@@ -24,10 +25,8 @@ interface ImportStats {
 }
 
 const ImportDataModal = () => {
+  const dispatch = useAppDispatch()
   const { closeModal } = useModal()
-  const { refreshWords } = useWords()
-  const { refreshContexts } = useContexts()
-  const { refreshAlerts } = useAlerts()
   const modalRef = useRef<HTMLDivElement>(null)
 
   const [importMode, setImportMode] = useState<'merge' | 'replace'>('merge')
@@ -132,7 +131,11 @@ const ImportDataModal = () => {
       setImportResult(result)
 
       // Reload all data
-      await Promise.all([refreshWords(), refreshContexts(), refreshAlerts()])
+      await Promise.all([
+        dispatch(fetchWords()).unwrap(),
+        dispatch(fetchContexts()).unwrap(),
+        dispatch(fetchAlerts()).unwrap()
+      ])
 
       scrollToSection('[data-section="result"]', 'center')
     } catch (error: unknown) {

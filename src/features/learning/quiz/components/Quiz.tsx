@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Play, RotateCcw, CheckCircle, XCircle } from 'lucide-react'
-import { useWords, useContexts, FullWord } from '@/features/vocabulary'
+import { FullWord } from '@/features/vocabulary'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { reviewWord as reviewWordAction } from '@/store/slices/wordsSlice'
 import Card from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 
@@ -18,8 +20,9 @@ interface QuizStats {
 }
 
 const Quiz = () => {
-  const { words, reviewWord } = useWords()
-  const { contexts } = useContexts()
+  const dispatch = useAppDispatch()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const [isQuizStarted, setIsQuizStarted] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
@@ -109,7 +112,7 @@ const Quiz = () => {
     }))
 
     // Mark word as reviewed
-    reviewWord(questions[currentQuestionIndex].word.id)
+    dispatch(reviewWordAction(questions[currentQuestionIndex].word.id))
 
     setTimeout(() => {
       if (currentQuestionIndex < questions.length - 1) {

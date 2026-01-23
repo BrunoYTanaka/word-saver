@@ -4,8 +4,8 @@ import Input from '@/shared/ui/Input'
 import Button from '@/shared/ui/Button'
 import { FullWord } from '../types/word'
 import { useModal } from '@/shared/context/ModalContext'
-import { useWords } from '../hooks/useWords'
-import { useContexts } from '../../contexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { updateWord } from '@/store/slices/wordsSlice'
 
 interface EditWordFormData {
   word: string
@@ -19,8 +19,9 @@ type ErrorTypes = {
 }
 
 function EditWordModal({ wordId }: { wordId: string }) {
-  const { updateWord, words } = useWords()
-  const { contexts, loading } = useContexts()
+  const dispatch = useAppDispatch()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts, loading } = useAppSelector((state) => state.contexts)
   const { openModal, closeModal } = useModal()
 
   const word = words.find((w) => w.id === wordId)
@@ -93,7 +94,7 @@ function EditWordModal({ wordId }: { wordId: string }) {
     }
 
     try {
-      await updateWord(updatedWordData)
+      await dispatch(updateWord(updatedWordData)).unwrap()
       closeModal('EDIT_WORD')
     } catch (error) {
       console.error('Error updating word:', error)

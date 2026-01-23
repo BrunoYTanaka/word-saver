@@ -9,16 +9,14 @@ import {
   Award,
   BarChart3
 } from 'lucide-react'
-import { useWords } from '@/features/vocabulary/words/hooks/useWords'
-import { useContexts } from '@/features/vocabulary/contexts/hooks/useContexts'
-import { useAlerts } from '@/features/alerts/hooks/useAlerts'
+import { useAppSelector } from '@/store/hooks'
 import Card from '@/shared/ui/Card'
 import { FullWord } from '@/features/vocabulary/words/types/word'
 
 const Statistics = () => {
-  const { words } = useWords()
-  const { contexts } = useContexts()
-  const { alerts } = useAlerts()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
+  const { alerts } = useAppSelector((state) => state.alerts)
 
   const stats = useMemo(() => {
     const now = new Date()

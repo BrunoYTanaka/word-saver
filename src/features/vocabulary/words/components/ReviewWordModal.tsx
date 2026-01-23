@@ -4,16 +4,17 @@ import Button from '@/shared/ui/Button'
 import Card from '@/shared/ui/Card'
 import { useModal } from '@/shared/context/ModalContext'
 import { FullWord } from '../types/word'
-import { useWords } from '../hooks/useWords'
-import { useContexts } from '../../contexts'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { reviewWord as reviewWordAction } from '@/store/slices/wordsSlice'
 
 interface ReviewWordModalProps {
   contextIds: string[]
 }
 
 function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
-  const { words, reviewWord } = useWords()
-  const { contexts } = useContexts()
+  const dispatch = useAppDispatch()
+  const { words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
   const { closeModal } = useModal()
 
   const [currentWord, setCurrentWord] = useState<FullWord | null>(null)
@@ -50,7 +51,7 @@ function ReviewWordModal({ contextIds }: ReviewWordModalProps) {
   const handleShowDefinition = async () => {
     setShowDefinition(true)
     setIsReviewing(true)
-    await reviewWord(currentWord!.id)
+    await dispatch(reviewWordAction(currentWord!.id)).unwrap()
   }
 
   const handleNextWord = () => {

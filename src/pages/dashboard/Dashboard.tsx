@@ -14,13 +14,17 @@ import Table from '@/shared/ui/Table'
 import Tab from '@/shared/ui/Tab'
 import { formatDate } from '@/shared/utils/format-date'
 import { useModal } from '@/shared/context/ModalContext'
-import { useAlerts, useContexts, useStats, useWords } from '../../features'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { deleteWord } from '@/store/slices/wordsSlice'
+import { deleteContext } from '@/store/slices/contextsSlice'
+import { deleteAlert } from '@/store/slices/alertsSlice'
 
 const Dashboard = () => {
-  const { loading, words, deleteWord } = useWords()
-  const { contexts, deleteContext } = useContexts()
-  const { alerts, deleteAlert } = useAlerts()
-  const { stats } = useStats()
+  const dispatch = useAppDispatch()
+  const { loading, words } = useAppSelector((state) => state.words)
+  const { contexts } = useAppSelector((state) => state.contexts)
+  const { alerts } = useAppSelector((state) => state.alerts)
+  const { stats } = useAppSelector((state) => state.stats)
 
   const { openModal } = useModal()
 
@@ -139,7 +143,9 @@ const Dashboard = () => {
       label: 'Palavras',
       content: (
         <Table
-          onDelete={deleteWord}
+          onDelete={async (wordId) => {
+            await dispatch(deleteWord(wordId)).unwrap()
+          }}
           onEdit={(wordId) => openModal('EDIT_WORD', { wordId })}
           data={data}
           columns={[
@@ -172,7 +178,9 @@ const Dashboard = () => {
       label: 'Contextos',
       content: (
         <Table
-          onDelete={deleteContext}
+          onDelete={async (contextId) => {
+            await dispatch(deleteContext(contextId)).unwrap()
+          }}
           onEdit={(contextId) => openModal('EDIT_CONTEXT', { contextId })}
           data={contexts.map((context) => ({
             id: context.id,
@@ -194,7 +202,9 @@ const Dashboard = () => {
       label: 'Alertas',
       content: (
         <Table
-          onDelete={deleteAlert}
+          onDelete={async (alertId) => {
+            await dispatch(deleteAlert(alertId)).unwrap()
+          }}
           onEdit={(alertId) => openModal('EDIT_ALERT', { alertId })}
           data={alerts.map((alert) => ({
             id: alert.id,
