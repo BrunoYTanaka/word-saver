@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import notificationService from '@/core/notifications'
 import { database } from '@/core'
+import { fetchWords } from './wordsSlice'
+import { fetchContexts } from './contextsSlice'
+import { fetchAlerts } from './alertsSlice'
+import { fetchStats } from './statsSlice'
 
 export interface AppState {
   loading: boolean
@@ -20,9 +24,16 @@ const initialState: AppState = {
 
 export const initializeApp = createAsyncThunk(
   'app/initialize',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       await database.init()
+
+      await Promise.all([
+        dispatch(fetchWords()),
+        dispatch(fetchContexts()),
+        dispatch(fetchAlerts()),
+        dispatch(fetchStats())
+      ])
 
       const isNotificationEnabled = await notificationService.init()
 
