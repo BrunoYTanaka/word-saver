@@ -84,23 +84,16 @@ npm run serve
 
 ## 📁 Project Structure
 
+For a detailed overview of the project architecture, see [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ```
 src/
-├── components/           # React components
-│   ├── Layout/          # Layout components (Header, Navigation)
-│   ├── Modals/          # Modal dialogs
-│   ├── PWA/             # PWA-specific components
-│   └── UI/              # Reusable UI components
-├── context/             # React Context providers
-├── hooks/               # Custom React hooks
-├── pages/               # Page components
-├── services/            # Business logic
-│   ├── db/             # IndexedDB operations
-│   ├── file/           # File operations
-│   └── notification/   # Notification system
-├── types/              # TypeScript type definitions
-├── utils/              # Utility functions
-└── global/             # Global styles and CSS tokens
+├── app/                # Application configuration and routing
+├── shared/             # Shared resources (UI, layout, hooks, utils)
+├── core/               # Infrastructure layer (database, PWA, notifications)
+├── features/           # Feature modules (vocabulary, learning, analytics, etc.)
+├── store/              # Redux state management
+└── pages/              # Page compositions
 ```
 
 ## 🎨 Design System
