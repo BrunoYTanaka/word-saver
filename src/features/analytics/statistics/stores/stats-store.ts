@@ -1,6 +1,7 @@
 import { Stats } from '../types/stats'
-import AlertStore from '@/features/alerts/stores/alert-store'
-import WordStore from '@/features/vocabulary/words/stores/word-store'
+import { AlertStore } from '@/features/alerts'
+import { WordStore } from '@/features/vocabulary'
+import { ContextStore } from '@/features/vocabulary'
 import { STORES, IndexedDBAdapter } from '@/core/database'
 
 class StatsStore extends IndexedDBAdapter {
@@ -9,9 +10,10 @@ class StatsStore extends IndexedDBAdapter {
   }
 
   async getStats(): Promise<Stats> {
-    const [words, alerts] = await Promise.all([
+    const [words, alerts, contexts] = await Promise.all([
       WordStore.getAll(),
-      AlertStore.getAll()
+      AlertStore.getAll(),
+      ContextStore.getAll()
     ])
 
     const totalWords = words.length
@@ -45,7 +47,7 @@ class StatsStore extends IndexedDBAdapter {
 
     return {
       totalWords,
-      totalContexts: 0, // Placeholder - implementar depois
+      totalContexts: contexts.length,
       activeAlerts,
       reviewedWords,
       totalReviews,

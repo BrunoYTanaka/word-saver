@@ -4,11 +4,12 @@ import Modal from '@/shared/ui/Modal'
 import Button from '@/shared/ui/Button'
 import Card from '@/shared/ui/Card'
 import { useModal } from '@/shared/context/ModalContext'
-import { fileService } from '../../file'
+import importService from '../services/import-service'
 import { useAppDispatch } from '@/store/hooks'
 import { fetchWords } from '@/store/slices/wordsSlice'
 import { fetchContexts } from '@/store/slices/contextsSlice'
 import { fetchAlerts } from '@/store/slices/alertsSlice'
+import { fetchStats } from '@/store/slices/statsSlice'
 
 interface ImportResult {
   success: boolean
@@ -100,7 +101,7 @@ const ImportDataModal = () => {
   }
 
   const generatePreviewStats = (data: unknown) => {
-    const dataObj = data as Record<string, unknown> // Type-safe data access
+    const dataObj = data as Record<string, unknown>
     const stats: ImportStats = {
       words: Array.isArray(dataObj.words) ? dataObj.words.length : 0,
       contexts: Array.isArray(dataObj.contexts) ? dataObj.contexts.length : 0,
@@ -123,18 +124,18 @@ const ImportDataModal = () => {
     setErrors([])
 
     try {
-      const result = await fileService.import.importData(jsonData, {
+      const result = await importService.importData(jsonData, {
         mode: importMode,
         validateData: true
       })
 
       setImportResult(result)
 
-      // Reload all data
       await Promise.all([
         dispatch(fetchWords()).unwrap(),
         dispatch(fetchContexts()).unwrap(),
-        dispatch(fetchAlerts()).unwrap()
+        dispatch(fetchAlerts()).unwrap(),
+        dispatch(fetchStats()).unwrap()
       ])
 
       scrollToSection('[data-section="result"]', 'center')

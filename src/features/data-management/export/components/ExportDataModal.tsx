@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useAppSelector } from '@/store/hooks'
 import Modal from '@/shared/ui/Modal'
 import Card from '@/shared/ui/Card'
-import { fileService } from '../../file'
+import exportService from '../services/export-service'
 import { useModal } from '@/shared/context/ModalContext'
 
 const ExportDataModal = () => {
@@ -20,7 +20,6 @@ const ExportDataModal = () => {
     selectedWords: 0
   })
 
-  // Calculate stats when modal opens or selections change
   useEffect(() => {
     const totalWords = words.length
     const totalContexts = contexts.length
@@ -70,25 +69,25 @@ const ExportDataModal = () => {
 
       switch (exportType) {
         case 'full':
-          result = await fileService.export.quickExportAll()
+          result = await exportService.quickExportAll()
           break
 
         case 'context':
           if (selectedContexts.length === 1) {
             const contextId = selectedContexts[0]
             const context = contexts.find((ctx) => ctx.id === contextId)
-            result = await fileService.export.quickExportContext(
+            result = await exportService.quickExportContext(
               contextId,
               context?.name || ''
             )
           } else {
             // Multiple contexts - export as words only
-            result = await fileService.export.quickExportWords(selectedContexts)
+            result = await exportService.quickExportWords(selectedContexts)
           }
           break
 
         case 'words-only':
-          result = await fileService.export.quickExportWords(
+          result = await exportService.quickExportWords(
             selectedContexts.length > 0 ? selectedContexts : null
           )
           break

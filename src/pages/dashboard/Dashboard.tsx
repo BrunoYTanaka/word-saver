@@ -87,7 +87,7 @@ const Dashboard = () => {
   const statCards = [
     {
       title: 'Total de Palavras',
-      value: stats?.totalWords ?? 0,
+      value: words.length > 0 ? words.length : 0,
       icon: BookOpen,
       color: 'text-primary',
       bgColor: 'bg-primary-soft',
@@ -96,7 +96,7 @@ const Dashboard = () => {
     },
     {
       title: 'Contextos',
-      value: stats?.totalContexts ?? 0,
+      value: contexts.length > 0 ? contexts.length : 0,
       icon: Archive,
       color: 'text-success',
       bgColor: 'bg-success-soft',
@@ -105,7 +105,7 @@ const Dashboard = () => {
     },
     {
       title: 'Alertas Ativos',
-      value: stats?.activeAlerts ?? 0,
+      value: alerts.length > 0 ? alerts.length : 0,
       icon: Bell,
       color: 'text-warning',
       bgColor: 'bg-warning-soft',
@@ -416,7 +416,7 @@ const Dashboard = () => {
       )}
 
       {/* Empty State for New Users */}
-      {(!stats || stats.totalWords === 0) && (
+      {(!words || words.length === 0) && (
         <Card className="py-12 text-center">
           <div className="mx-auto max-w-md">
             <BookOpen className="mx-auto mb-6 size-16 text-gray-300 dark:text-gray-600" />

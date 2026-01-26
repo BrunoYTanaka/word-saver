@@ -1,7 +1,7 @@
-import { Settings } from '../../../settings/types/settings'
-import { FullAlert } from '../../../alerts/types/alert'
-import { FullWord } from '../../../vocabulary/words/types/word'
-import { FullContext } from '../../../vocabulary/contexts/types/context'
+import { Settings } from '@/features/settings'
+import { FullAlert } from '@/features/alerts'
+import { FullWord } from '@/features/vocabulary'
+import { FullContext } from '@/features/vocabulary'
 
 interface Data {
   words?: FullWord[]
@@ -17,7 +17,6 @@ export function validateImportData(data: Data): {
   const errors: string[] = []
   let isValid = true
 
-  // Check if data is an object
   if (!data || typeof data !== 'object') {
     return {
       isValid: false,
@@ -25,7 +24,6 @@ export function validateImportData(data: Data): {
     }
   }
 
-  // Validate words structure
   if (data.words && Array.isArray(data.words)) {
     data.words.forEach((word, index) => {
       if (!word.id || !word.word || !word.definition) {
@@ -39,7 +37,6 @@ export function validateImportData(data: Data): {
     })
   }
 
-  // Validate contexts structure
   if (data.contexts && Array.isArray(data.contexts)) {
     data.contexts.forEach((context, index) => {
       if (!context.id || !context.name) {
@@ -51,7 +48,6 @@ export function validateImportData(data: Data): {
     })
   }
 
-  // Validate alerts structure
   if (data.alerts && Array.isArray(data.alerts)) {
     data.alerts.forEach((alert, index) => {
       if (!alert.id || !alert.frequency || !alert.time) {
