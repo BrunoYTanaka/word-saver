@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import wordStore from '../../features/vocabulary/words/stores/word-store'
+import wordStore from '../../features/vocabulary/words/repositories/word-store'
 import { FullWord, Word } from '../../features/vocabulary/words/types/word'
 
 export interface WordsState {

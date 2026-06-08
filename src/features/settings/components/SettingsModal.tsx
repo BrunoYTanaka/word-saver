@@ -35,13 +35,14 @@ const SettingsModal = () => {
       try {
         // Delete all data from stores
         const wordStore = (
-          await import('../../vocabulary/words/stores/word-store')
+          await import('../../vocabulary/words/repositories/word-store')
         ).default
         const contextStore = (
-          await import('../../vocabulary/contexts/stores/context-store')
+          await import('../../vocabulary/contexts/repositories/context-store')
         ).default
-        const alertStore = (await import('../../alerts/stores/alert-store'))
-          .default
+        const alertStore = (
+          await import('../../alerts/repositories/alert-store')
+        ).default
 
         await Promise.all([
           wordStore.clear(),

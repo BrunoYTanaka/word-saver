@@ -3,9 +3,9 @@ import { FullAlert, AlertStore } from '@/features/alerts'
 import { FullContext, ContextStore } from '@/features/vocabulary'
 import { FullWord, WordStore } from '@/features/vocabulary'
 import { DB_NAME, DB_VERSION } from '@/core/database'
-import { countRecords } from '../helpers/count-records'
-import { downloadJSON } from '../helpers/download-json'
-import { generateFilename } from '../helpers/generate-filename'
+import { countRecords } from '../utils/count-records'
+import { downloadJSON } from '../utils/download-json'
+import { generateFilename } from '../utils/generate-filename'
 
 interface Metadata {
   appName: string

@@ -1,4 +1,4 @@
-import { Settings } from '../types/settings'
+import { SettingRow, Settings } from '../types/settings'
 import { STORES, IndexedDBAdapter } from '@/core/database'
 
 class SettingStore extends IndexedDBAdapter {
@@ -7,19 +7,19 @@ class SettingStore extends IndexedDBAdapter {
   }
 
   async getSetting(key: string): Promise<string | null> {
-    const result = await this.get<Settings>(key)
+    const result = await this.get<SettingRow>(key)
     return result ? result.value : null
   }
 
   async setSetting(key: string, value: string) {
-    return this.update<Settings>({ key, value })
+    return this.update<SettingRow>({ key, value } as SettingRow)
   }
 
-  async getSettings() {
-    const settings = await this.getAll<Settings>()
+  async getSettings(): Promise<Settings> {
+    const rows = await this.getAll<SettingRow>()
 
-    return settings.reduce((acc, setting) => {
-      acc[setting.key] = setting.value
+    return rows.reduce<Settings>((acc, row) => {
+      acc[row.key] = row.value
       return acc
     }, {})
   }

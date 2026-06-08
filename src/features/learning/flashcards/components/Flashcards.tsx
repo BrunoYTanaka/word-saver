@@ -110,7 +110,7 @@ const Flashcards = () => {
     setSelectedContexts([])
   }
 
-  if (filteredWords.length === 0) {
+  if (words.length === 0) {
     return (
       <div className="flex min-h-[80vh] items-center justify-center p-4">
         <Card className="max-w-md text-center">

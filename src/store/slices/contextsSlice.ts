@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import contextStore from '@/features/vocabulary/contexts/stores/context-store'
-import wordStore from '@/features/vocabulary/words/stores/word-store'
+import contextStore from '@/features/vocabulary/contexts/repositories/context-store'
+import wordStore from '@/features/vocabulary/words/repositories/word-store'
 import {
   FullContext,
   Context
