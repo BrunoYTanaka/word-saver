@@ -1,5 +1,7 @@
 import Dashboard from '@/pages/dashboard/Dashboard'
-import { Flashcards, Quiz, Statistics } from '@/features'
+import FlashcardsPage from '@/pages/flashcards/FlashcardsPage'
+import QuizPage from '@/pages/quiz/QuizPage'
+import StatisticsPage from '@/pages/statistics/StatisticsPage'
 import { AppRoutes, RouteConfig } from './types'
 
 export const routesConfig: RouteConfig[] = [
@@ -12,21 +14,21 @@ export const routesConfig: RouteConfig[] = [
   },
   {
     path: AppRoutes.FLASHCARDS,
-    component: Flashcards,
+    component: FlashcardsPage,
     protected: true,
     title: 'Flashcards',
     description: 'Sistema de cartões de memorização'
   },
   {
     path: AppRoutes.QUIZ,
-    component: Quiz,
+    component: QuizPage,
     protected: true,
     title: 'Quiz',
     description: 'Teste seus conhecimentos'
   },
   {
     path: AppRoutes.STATISTICS,
-    component: Statistics,
+    component: StatisticsPage,
     protected: true,
     title: 'Estatísticas',
     description: 'Acompanhe seu progresso detalhado'
