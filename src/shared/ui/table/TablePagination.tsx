@@ -7,7 +7,7 @@ import {
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
 
-interface WordsTablePaginationProps {
+interface TablePaginationProps {
   currentPage: number
   totalPages: number
   pageSize: number
@@ -15,17 +15,19 @@ interface WordsTablePaginationProps {
   filteredRows: number
   onPageChange: (page: number) => void
   onPageSizeChange: (size: number) => void
+  rowLabel?: string
 }
 
-export function WordsTablePagination({
+export function TablePagination({
   currentPage,
   totalPages,
   pageSize,
   totalRows,
   filteredRows,
   onPageChange,
-  onPageSizeChange
-}: WordsTablePaginationProps) {
+  onPageSizeChange,
+  rowLabel = 'resultado'
+}: TablePaginationProps) {
   const start = totalPages === 0 ? 0 : (currentPage - 1) * pageSize + 1
   const end = Math.min(currentPage * pageSize, filteredRows)
 
@@ -52,20 +54,19 @@ export function WordsTablePagination({
 
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      {/* Info */}
       <div className="flex items-center gap-3 text-sm text-muted-foreground">
         <span>
           {filteredRows === 0
-            ? 'Nenhuma palavra'
+            ? `Nenhum ${rowLabel}`
             : `Mostrando ${start}–${end} de ${filteredRows}`}
           {filteredRows !== totalRows && ` (filtrado de ${totalRows})`}
         </span>
         <div className="flex items-center gap-1.5">
-          <label htmlFor="page-size" className="text-xs">
+          <label htmlFor="table-page-size" className="text-xs">
             Itens:
           </label>
           <select
-            id="page-size"
+            id="table-page-size"
             value={pageSize}
             onChange={(e) => onPageSizeChange(Number(e.target.value))}
             className="rounded border border-border bg-background px-1.5 py-0.5 text-xs text-foreground outline-none"
@@ -79,7 +80,6 @@ export function WordsTablePagination({
         </div>
       </div>
 
-      {/* Controls */}
       {totalPages > 1 && (
         <div className="flex items-center gap-1">
           <button
@@ -98,7 +98,6 @@ export function WordsTablePagination({
           >
             <ChevronLeft className="size-3.5" />
           </button>
-
           {getPageNumbers().map((p) => (
             <button
               key={p}
@@ -113,7 +112,6 @@ export function WordsTablePagination({
               {p}
             </button>
           ))}
-
           <button
             type="button"
             onClick={() => onPageChange(currentPage + 1)}

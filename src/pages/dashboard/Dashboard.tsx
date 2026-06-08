@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   BookOpen,
   Archive,
@@ -11,17 +11,11 @@ import { useNavigate } from 'react-router-dom'
 import Card from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 import CountCard from '@/shared/ui/CountCard'
-import Table from '@/shared/ui/Table'
-import Tab from '@/shared/ui/Tab'
-import { formatDate } from '@/shared/utils/format-date'
 import { useModal } from '@/shared/context/ModalContext'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { deleteContext } from '@/store/slices/contextsSlice'
-import { deleteAlert } from '@/store/slices/alertsSlice'
+import { useAppSelector } from '@/store/hooks'
 import { useApp } from '../../shared'
 
 const Dashboard = () => {
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { initialized } = useApp()
   const { loading, words } = useAppSelector((state) => state.words)
@@ -37,34 +31,24 @@ const Dashboard = () => {
     const alertParam = urlParams.get('alert')
 
     if (reviewParam && initialized) {
-      console.log(
-        'Opening from notification - Review contexts:',
-        reviewParam,
-        'Alert:',
-        alertParam
-      )
-
       const alert = alerts.find((a) => a.id === alertParam)
       if (alert) {
-        const contextIds = reviewParam.split(',').filter(Boolean)
         openModal('REVIEW_WORD', {
-          contextIds
+          contextIds: reviewParam.split(',').filter(Boolean)
         })
       }
-
       window.history.replaceState({}, '', window.location.pathname)
     }
   }, [alerts, openModal, initialized])
 
-  // Loading state
   if (loading && !stats) {
     return (
       <div className="space-y-6">
         <div className="animate-pulse">
-          <div className="mb-6 h-8 w-1/3 rounded bg-surface-muted"></div>
+          <div className="mb-6 h-8 w-1/3 rounded bg-surface-muted" />
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 rounded-lg bg-surface-muted"></div>
+              <div key={i} className="h-32 rounded-lg bg-surface-muted" />
             ))}
           </div>
         </div>
@@ -72,11 +56,10 @@ const Dashboard = () => {
     )
   }
 
-  // Stats cards data
   const statCards = [
     {
       title: 'Total de Palavras',
-      value: words.length > 0 ? words.length : 0,
+      value: words.length,
       icon: BookOpen,
       color: 'text-primary',
       bgColor: 'bg-primary-soft',
@@ -84,7 +67,7 @@ const Dashboard = () => {
     },
     {
       title: 'Contextos',
-      value: contexts.length > 0 ? contexts.length : 0,
+      value: contexts.length,
       icon: Archive,
       color: 'text-success',
       bgColor: 'bg-success-soft',
@@ -92,7 +75,7 @@ const Dashboard = () => {
     },
     {
       title: 'Alertas Ativos',
-      value: alerts.length > 0 ? alerts.length : 0,
+      value: alerts.length,
       icon: Bell,
       color: 'text-warning',
       bgColor: 'bg-warning-soft',
@@ -100,111 +83,29 @@ const Dashboard = () => {
     }
   ]
 
-  // Quick actions
   const quickActions = [
     {
       title: 'Adicionar Palavra',
       description: 'Criar uma nova palavra para estudar',
       icon: BookOpen,
-      action: () => navigate('/words'),
-      color: 'primary'
+      action: () => navigate('/words')
     },
     {
       title: 'Criar Contexto',
       description: 'Organizar palavras por categoria',
       icon: Archive,
-      action: () => openModal('ADD_CONTEXT'),
-      color: 'secondary'
+      action: () => openModal('ADD_CONTEXT')
     },
     {
       title: 'Configurar Alerta',
       description: 'Lembrete para revisar palavras',
       icon: Bell,
-      action: () => openModal('ADD_ALERT'),
-      color: 'outline'
-    }
-  ]
-
-  const tabs = [
-    {
-      id: 'contexts',
-      label: 'Contextos',
-      content: (
-        <Table
-          onDelete={async (contextId) => {
-            await dispatch(deleteContext(contextId)).unwrap()
-          }}
-          onEdit={(contextId) => openModal('EDIT_CONTEXT', { contextId })}
-          data={contexts.map((context) => ({
-            id: context.id,
-            name: context.name,
-            color: context.color,
-            wordCount: context.wordCount || 0
-          }))}
-          columns={[
-            { title: 'Nome', field: 'name' },
-            { title: 'Cor', field: 'color' },
-            { title: 'Número de Palavras', field: 'wordCount' },
-            { title: 'Ações', field: 'actions' }
-          ]}
-        />
-      )
-    },
-    {
-      id: 'alerts',
-      label: 'Alertas',
-      content: (
-        <Table
-          onDelete={async (alertId) => {
-            await dispatch(deleteAlert(alertId)).unwrap()
-          }}
-          onEdit={(alertId) => openModal('EDIT_ALERT', { alertId })}
-          data={alerts.map((alert) => ({
-            id: alert.id,
-            name: alert.name,
-            // frequency: alert.frequency === 'daily' ? 'Diário' : 'Semanal',
-            days: alert.days
-              .map((day: number) => {
-                switch (day) {
-                  case 0:
-                    return 'Dom'
-                  case 1:
-                    return 'Seg'
-                  case 2:
-                    return 'Ter'
-                  case 3:
-                    return 'Qua'
-                  case 4:
-                    return 'Qui'
-                  case 5:
-                    return 'Sex'
-                  case 6:
-                    return 'Sáb'
-                  default:
-                    return ''
-                }
-              })
-              .join(', '),
-            time: alert.time,
-            lastTriggered: formatDate(alert.lastTriggered),
-            createdAt: formatDate(alert.createdAt)
-          }))}
-          columns={[
-            { title: 'Nome', field: 'name' },
-            { title: 'Dias', field: 'days' },
-            { title: 'Hora', field: 'time' },
-            { title: 'Criado Em', field: 'createdAt' },
-            { title: 'Último Acionamento', field: 'lastTriggered' },
-            { title: 'Ações', field: 'actions' }
-          ]}
-        />
-      )
+      action: () => openModal('ADD_ALERT')
     }
   ]
 
   return (
     <div className="space-y-8">
-      {/* Welcome Section */}
       <div className="text-left sm:text-center">
         <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
@@ -212,11 +113,11 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats */}
       <div className="grid grid-cols-3 rounded-lg bg-surface shadow dark:border dark:border-border">
-        {statCards.map((stat, index) => {
-          return <CountCard key={index} {...stat} number={stat.value} />
-        })}
+        {statCards.map((stat, index) => (
+          <CountCard key={index} {...stat} number={stat.value} />
+        ))}
       </div>
 
       {/* Quick Actions */}
@@ -249,9 +150,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Activity & Progress */}
+      {/* Progress + Recent Contexts */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Progress Overview */}
         <Card>
           <Card.Header>
             <Card.Title>Progresso da Semana</Card.Title>
@@ -269,7 +169,6 @@ const Dashboard = () => {
                   {stats?.recentWords || 0}
                 </span>
               </div>
-
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Target className="size-4 text-primary" />
@@ -281,7 +180,6 @@ const Dashboard = () => {
                   {stats?.recentReviews || 0}
                 </span>
               </div>
-
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Calendar className="size-4 text-accent" />
@@ -297,7 +195,6 @@ const Dashboard = () => {
           </Card.Content>
         </Card>
 
-        {/* Recent Contexts */}
         <Card>
           <Card.Header>
             <Card.Title>Contextos Recentes</Card.Title>
@@ -346,12 +243,8 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {(contexts.length > 0 || alerts.length > 0) && (
-        <Tab tabs={tabs} defaultTab="contexts" variant="underlined" size="md" />
-      )}
-
-      {/* Empty State for New Users */}
-      {(!words || words.length === 0) && (
+      {/* Empty State */}
+      {words.length === 0 && (
         <Card className="py-12 text-center">
           <div className="mx-auto max-w-md">
             <BookOpen className="mx-auto mb-6 size-16 text-gray-300 dark:text-gray-600" />

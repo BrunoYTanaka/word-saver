@@ -1,0 +1,5 @@
+export { SortableRow } from './SortableRow'
+export { DeletePopover } from './DeletePopover'
+export { TablePagination } from './TablePagination'
+export { TableHead } from './TableHead'
+export { TableBody } from './TableBody'
