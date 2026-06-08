@@ -91,15 +91,25 @@ function SortableRow({
       className="group border-b border-border transition-colors hover:bg-surface-muted"
     >
       {/* Drag handle */}
-      <td className="w-8 px-2 py-3">
+      <td
+        style={{ width: '2rem', minWidth: '2rem', padding: '0.75rem 0.5rem' }}
+      >
         <button
           type="button"
           {...attributes}
           {...listeners}
-          className="cursor-grab text-muted-foreground opacity-0 transition-opacity active:cursor-grabbing group-hover:opacity-100"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            color: '#9ca3af',
+            cursor: 'grab'
+          }}
           tabIndex={-1}
+          title="Arraste para reordenar"
         >
-          <GripVertical className="size-4" />
+          <GripVertical
+            style={{ width: '1rem', height: '1rem', flexShrink: 0 }}
+          />
         </button>
       </td>
       {children}
@@ -894,7 +904,7 @@ export function WordsTableView({
               {table.getHeaderGroups().map((hg) => (
                 <tr key={hg.id} className="border-b border-border">
                   {/* drag handle col */}
-                  <th className="w-8 px-2 py-3" />
+                  <th style={{ width: '2rem', minWidth: '2rem' }} />
                   {hg.headers.map((header) => {
                     if (header.id === 'color' || header.id === 'actions') {
                       return <th key={header.id} className="w-10 px-2 py-3" />
