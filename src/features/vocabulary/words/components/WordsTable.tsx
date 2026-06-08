@@ -848,7 +848,7 @@ export function WordsTableView({
         size: 60,
         enableSorting: false,
         cell: ({ row }) => (
-          <td className="p-3">
+          <td className="sticky right-0 bg-surface p-3">
             <div className="relative flex items-center justify-end">
               <button
                 type="button"
@@ -906,8 +906,16 @@ export function WordsTableView({
                   {/* drag handle col */}
                   <th style={{ width: '2rem', minWidth: '2rem' }} />
                   {hg.headers.map((header) => {
-                    if (header.id === 'color' || header.id === 'actions') {
+                    if (header.id === 'color') {
                       return <th key={header.id} className="w-10 px-2 py-3" />
+                    }
+                    if (header.id === 'actions') {
+                      return (
+                        <th
+                          key={header.id}
+                          className="sticky right-0 w-12 bg-surface px-2 py-3"
+                        />
+                      )
                     }
                     const col = header.column
                     const sorted = col.getIsSorted()
