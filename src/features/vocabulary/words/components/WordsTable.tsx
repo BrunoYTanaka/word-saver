@@ -537,8 +537,8 @@ interface WordsTableViewProps {
   onGlobalFilterChange: (v: string) => void
   selectedContextIds: string[]
   onPendingChange: (changes: PendingChange[]) => void
-  onRowsChange: (rows: FullWord[]) => void
-  onAddRow: () => void
+  /** Increment to trigger adding a new blank row */
+  addRowSignal?: number
 }
 
 export function WordsTableView({
@@ -550,24 +550,39 @@ export function WordsTableView({
   onGlobalFilterChange,
   selectedContextIds,
   onPendingChange,
-  onRowsChange,
-  onAddRow: _onAddRow
+  addRowSignal = 0
 }: WordsTableViewProps) {
-  const [rows, setRows] = useState<FullWord[]>([])
-  const [originalRows, setOriginalRows] = useState<FullWord[]>([])
+  const [rows, setRows] = useState<FullWord[]>(() =>
+    [...wordsProp].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  )
+  // originalRows is fixed at mount — never changes unless component remounts
+  const [originalRows] = useState<FullWord[]>(() =>
+    [...wordsProp].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  )
   const [editing, setEditing] = useState<EditingCell | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [sorting, setSorting] = useState<SortingState>([])
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize })
 
+  // Handle external "add row" signal
+  const prevSignal = useRef(addRowSignal)
   useEffect(() => {
-    const sorted = [...wordsProp].sort(
-      (a, b) => (a.order ?? 0) - (b.order ?? 0)
-    )
-    setRows(sorted)
-    setOriginalRows(sorted)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wordsProp])
+    if (addRowSignal === prevSignal.current) return
+    prevSignal.current = addRowSignal
+    const newWord: FullWord = {
+      id: crypto.randomUUID(),
+      word: '',
+      definition: '',
+      contextId: contexts[0]?.id ?? '',
+      tags: [],
+      createdAt: new Date().toISOString(),
+      reviewCount: 0,
+      lastReviewed: null,
+      difficulty: 'medium',
+      order: 0
+    }
+    setRows((prev) => [newWord, ...prev])
+  }, [addRowSignal, contexts])
 
   useEffect(() => {
     setPagination((p) => ({ ...p, pageSize, pageIndex: 0 }))
@@ -597,7 +612,6 @@ export function WordsTableView({
       }
     })
     onPendingChange(changes)
-    onRowsChange(rows)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows])
 

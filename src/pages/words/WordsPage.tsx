@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useBlocker } from 'react-router-dom'
 import { BookOpen } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { addWord, updateWord, deleteWord } from '@/store/slices/wordsSlice'
-import type { FullWord } from '@/features/vocabulary/words/types/word'
 import {
   WordsTableView,
   type PendingChange
@@ -31,8 +29,11 @@ export default function WordsPage() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [selectedContextIds, setSelectedContextIds] = useState<string[]>([])
   const [pendingChanges, setPendingChanges] = useState<PendingChange[]>([])
-  const [currentRows, setCurrentRows] = useState<FullWord[]>([])
   const [isSaving, setIsSaving] = useState(false)
+  // Incrementing resetKey remounts the table (discard / post-save)
+  const [resetKey, setResetKey] = useState(0)
+  // Incrementing addRowSignal tells the table to prepend a blank row
+  const [addRowSignal, setAddRowSignal] = useState(0)
 
   // Debounce search
   useEffect(() => {
@@ -46,35 +47,22 @@ export default function WordsPage() {
     setStoredPageSize(size)
   }
 
-  // Block navigation when there are pending changes
-  const blocker = useBlocker(pendingChanges.length > 0)
-
+  // Warn before browser/tab close when there are pending changes
   useEffect(() => {
-    if (blocker.state === 'blocked') {
-      const confirmed = window.confirm(
-        'Há alterações não salvas. Deseja sair sem salvar?'
-      )
-      if (confirmed) blocker.proceed()
-      else blocker.reset()
+    const handler = (e: BeforeUnloadEvent) => {
+      if (pendingChanges.length > 0) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
     }
-  }, [blocker])
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [pendingChanges.length])
 
-  // Add new blank row
+  // Signal the table to prepend a blank row
   const handleAddRow = useCallback(() => {
-    const newWord: FullWord = {
-      id: crypto.randomUUID(),
-      word: '',
-      definition: '',
-      contextId: contexts[0]?.id ?? '',
-      tags: [],
-      createdAt: new Date().toISOString(),
-      reviewCount: 0,
-      lastReviewed: null,
-      difficulty: 'medium',
-      order: 0
-    }
-    setCurrentRows((prev) => [newWord, ...prev])
-  }, [contexts])
+    setAddRowSignal((s) => s + 1)
+  }, [])
 
   // Context filter
   const handleContextToggle = (id: string) => {
@@ -97,11 +85,11 @@ export default function WordsPage() {
       for (const change of pendingChanges) {
         if (change.type === 'create' && change.word.word.trim()) {
           const {
-            id,
-            createdAt,
-            reviewCount,
-            lastReviewed,
-            difficulty,
+            id: _id,
+            createdAt: _createdAt,
+            reviewCount: _reviewCount,
+            lastReviewed: _lastReviewed,
+            difficulty: _difficulty,
             ...wordInput
           } = change.word
           await dispatch(
@@ -114,6 +102,8 @@ export default function WordsPage() {
         }
       }
       setPendingChanges([])
+      // Remount table so originalRows reflects the freshly saved Redux state
+      setResetKey((k) => k + 1)
     } catch (err) {
       console.error('Erro ao salvar alterações:', err)
     } finally {
@@ -121,11 +111,10 @@ export default function WordsPage() {
     }
   }
 
-  // Discard all pending changes (resets to Redux state)
+  // Discard — remount table from current Redux state
   const handleDiscard = () => {
     setPendingChanges([])
-    // Force re-render by resetting rows key — handled by WordsTableView re-mount via key
-    setCurrentRows([...words].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)))
+    setResetKey((k) => k + 1)
   }
 
   const activeFilterCount =
@@ -165,14 +154,10 @@ export default function WordsPage() {
         activeFilterCount={activeFilterCount}
       />
 
-      {/* Table */}
+      {/* Table — key forces remount on discard/save */}
       <WordsTableView
-        key={isSaving ? 'saving' : 'idle'}
-        words={
-          currentRows.length > 0 || pendingChanges.length > 0
-            ? currentRows
-            : words
-        }
+        key={resetKey}
+        words={words}
         contexts={contexts}
         pageSize={pageSize}
         onPageSizeChange={handlePageSizeChange}
@@ -180,8 +165,7 @@ export default function WordsPage() {
         onGlobalFilterChange={setDebouncedSearch}
         selectedContextIds={selectedContextIds}
         onPendingChange={setPendingChanges}
-        onRowsChange={setCurrentRows}
-        onAddRow={handleAddRow}
+        addRowSignal={addRowSignal}
       />
 
       {/* Save bar */}
