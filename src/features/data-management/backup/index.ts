@@ -1,2 +1,2 @@
-export { default as BackupStore } from './stores/backup-store'
+export { default as BackupStore } from './repositories/backup-store'
 export * from './types/backup'

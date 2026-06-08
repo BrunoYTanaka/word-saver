@@ -2,7 +2,7 @@ import { Settings } from '@/features/settings'
 import { FullAlert } from '@/features/alerts'
 import { FullContext } from '@/features/vocabulary'
 import { FullWord } from '@/features/vocabulary'
-import { validateImportData } from '../helpers/validate-import-data'
+import { validateImportData } from '../utils/validate-import-data'
 import { database, STORES } from '@/core'
 
 interface Options {

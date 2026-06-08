@@ -92,7 +92,6 @@ const Dashboard = () => {
       color: 'text-primary',
       bgColor: 'bg-primary-soft',
       textColor: 'text-success'
-      // text: '+5% desde ontem'
     },
     {
       title: 'Contextos',
@@ -101,7 +100,6 @@ const Dashboard = () => {
       color: 'text-success',
       bgColor: 'bg-success-soft',
       textColor: 'text-destructive'
-      // text: '-3% desde ontem'
     },
     {
       title: 'Alertas Ativos',
@@ -110,7 +108,6 @@ const Dashboard = () => {
       color: 'text-warning',
       bgColor: 'bg-warning-soft',
       textColor: 'text-muted-foreground'
-      // text: '0% desde ontem'
     }
   ]
 
@@ -349,16 +346,7 @@ const Dashboard = () => {
         {/* Recent Contexts */}
         <Card>
           <Card.Header>
-            <div className="flex items-center justify-between">
-              <Card.Title>Contextos Recentes</Card.Title>
-              {/* <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => openModal('ADD_CONTEXT')}
-              >
-                Ver Todos
-              </Button> */}
-            </div>
+            <Card.Title>Contextos Recentes</Card.Title>
           </Card.Header>
           <Card.Content>
             {contexts.length === 0 ? (
@@ -398,13 +386,6 @@ const Dashboard = () => {
                     </span>
                   </div>
                 ))}
-                {/* {contexts.length > 3 && (
-                  <div className="pt-2 text-center">
-                    <Button variant="ghost" size="sm">
-                      Ver mais {contexts.length - 3} contextos
-                    </Button>
-                  </div>
-                )} */}
               </div>
             )}
           </Card.Content>

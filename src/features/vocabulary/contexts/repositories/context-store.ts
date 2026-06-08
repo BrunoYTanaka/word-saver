@@ -1,7 +1,7 @@
 import { Context, FullContext } from '../types/context'
 import { FullWord } from '../../words/types/word'
 import { STORES, IndexedDBAdapter } from '@/core/database'
-import WordStore from '../../words/stores/word-store'
+import WordStore from '../../words/repositories/word-store'
 
 class ContextStore extends IndexedDBAdapter {
   constructor() {
@@ -33,7 +33,8 @@ class ContextStore extends IndexedDBAdapter {
 
     return contexts.map((context) => ({
       ...context,
-      wordCount: words.filter((word) => word.contextId === context.id).length
+      wordCount: words.filter((word: FullWord) => word.contextId === context.id)
+        .length
     }))
   }
 

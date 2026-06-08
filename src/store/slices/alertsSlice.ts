@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import alertStore from '@/features/alerts/stores/alert-store'
+import alertStore from '@/features/alerts/repositories/alert-store'
 import notificationService from '@/core/notifications'
 import { FullAlert, Alert } from '@/features/alerts/types/alert'
 

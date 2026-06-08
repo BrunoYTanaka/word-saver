@@ -78,12 +78,12 @@ src/
 │   │   ├── words/
 │   │   │   ├── components/       # Componentes de palavras
 │   │   │   ├── hooks/            # Hooks customizados
-│   │   │   ├── stores/           # Redux stores
+│   │   │   ├── repositories/     # Repositórios (acesso ao IndexedDB)
 │   │   │   └── types/            # Tipos TypeScript
 │   │   ├── contexts/
 │   │   │   ├── components/       # Componentes de contextos
 │   │   │   ├── hooks/            # Hooks customizados
-│   │   │   ├── stores/           # Redux stores
+│   │   │   ├── repositories/     # Repositórios (acesso ao IndexedDB)
 │   │   │   └── types/            # Tipos TypeScript
 │   │   └── index.ts
 │   │
@@ -102,7 +102,7 @@ src/
 │   │   ├── statistics/
 │   │   │   ├── components/       # Componentes de estatísticas
 │   │   │   ├── hooks/            # Hooks customizados
-│   │   │   ├── stores/           # Redux stores
+│   │   │   ├── repositories/     # Repositórios (acesso ao IndexedDB)
 │   │   │   ├── types/            # Tipos TypeScript
 │   │   │   └── index.ts
 │   │   ├── progress/             # Progresso de aprendizado
@@ -112,7 +112,7 @@ src/
 │   │
 │   ├── alerts/                   # 🔔 Alertas e Notificações
 │   │   ├── components/           # AddAlertModal, EditAlertModal
-│   │   ├── stores/               # Redux stores
+│   │   ├── repositories/         # Repositórios (acesso ao IndexedDB)
 │   │   │   └── alert-store.ts
 │   │   ├── types/                # Tipos TypeScript
 │   │   │   └── alert.ts
@@ -121,12 +121,14 @@ src/
 │   ├── data-management/          # 💾 Gestão de Dados
 │   │   ├── export/
 │   │   │   ├── components/       # ExportDataModal
+│   │   │   ├── utils/            # count-records, download-json, generate-filename
 │   │   │   └── index.ts
 │   │   ├── import/
 │   │   │   ├── components/       # ImportDataModal
+│   │   │   ├── utils/            # validate-import-data
 │   │   │   └── index.ts
 │   │   ├── backup/               # Backup de dados
-│   │   │   ├── stores/           # Redux stores
+│   │   │   ├── repositories/     # Repositórios (acesso ao IndexedDB)
 │   │   │   ├── types/            # Tipos TypeScript
 │   │   │   └── index.ts
 │   │   ├── file/                 # Operações de arquivo
@@ -135,7 +137,7 @@ src/
 │   │
 │   ├── settings/                 # ⚙️ Configurações
 │   │   ├── components/           # SettingsModal
-│   │   ├── stores/               # Redux stores
+│   │   ├── repositories/         # Repositórios (acesso ao IndexedDB)
 │   │   ├── types/                # Tipos TypeScript
 │   │   └── index.ts
 │   │
@@ -247,7 +249,7 @@ import { NotificationService } from '@/core/notifications'
    └── meu-feature/
        ├── components/
        ├── hooks/
-       ├── stores/
+       ├── repositories/
        ├── types/
        └── index.ts
    ```
