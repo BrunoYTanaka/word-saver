@@ -6,9 +6,10 @@ import {
   Home,
   BarChart3,
   Zap,
-  Brain
+  Brain,
+  BookOpen
 } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import Button from '../ui/Button'
 import { useModal } from '../context/ModalContext'
@@ -17,13 +18,23 @@ const Header = () => {
   const { toggleTheme, isDark } = useTheme()
   const { openModal } = useModal()
   const location = useLocation()
+  const navigate = useNavigate()
 
   const desktopNavItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
+    { icon: BookOpen, label: 'Palavras', path: '/words' },
     { icon: Zap, label: 'Flashcards', path: '/flashcards' },
     { icon: Brain, label: 'Quiz', path: '/quiz' },
     { icon: BarChart3, label: 'Estatísticas', path: '/statistics' }
   ]
+
+  const handleNewWord = () => {
+    if (location.pathname === '/words') {
+      openModal('ADD_WORD')
+    } else {
+      navigate('/words')
+    }
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface">
@@ -73,7 +84,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => openModal('ADD_WORD')}
+              onClick={handleNewWord}
               icon={<Plus />}
               className="hidden sm:flex"
             >
@@ -84,7 +95,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => openModal('ADD_WORD')}
+              onClick={handleNewWord}
               icon={<Plus />}
               className="sm:hidden"
             />

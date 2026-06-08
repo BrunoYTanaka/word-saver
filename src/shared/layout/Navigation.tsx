@@ -1,4 +1,4 @@
-import { Home, BarChart3, Zap, Brain } from 'lucide-react'
+import { Home, BarChart3, Zap, Brain, BookOpen } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
 const Navigation = () => {
@@ -9,6 +9,11 @@ const Navigation = () => {
       icon: Home,
       label: 'Dashboard',
       path: '/dashboard'
+    },
+    {
+      icon: BookOpen,
+      label: 'Palavras',
+      path: '/words'
     },
     {
       icon: Zap,

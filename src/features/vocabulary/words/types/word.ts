@@ -12,4 +12,6 @@ export interface FullWord extends Word {
   reviewCount: number
   lastReviewed: string | null
   difficulty: 'easy' | 'medium' | 'hard'
+  color?: string
+  order?: number
 }

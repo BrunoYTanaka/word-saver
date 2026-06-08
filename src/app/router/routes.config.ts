@@ -2,6 +2,7 @@ import Dashboard from '@/pages/dashboard/Dashboard'
 import FlashcardsPage from '@/pages/flashcards/FlashcardsPage'
 import QuizPage from '@/pages/quiz/QuizPage'
 import StatisticsPage from '@/pages/statistics/StatisticsPage'
+import WordsPage from '@/pages/words/WordsPage'
 import { AppRoutes, RouteConfig } from './types'
 
 export const routesConfig: RouteConfig[] = [
@@ -11,6 +12,13 @@ export const routesConfig: RouteConfig[] = [
     protected: true,
     title: 'Dashboard',
     description: 'Visão geral do seu progresso de aprendizado'
+  },
+  {
+    path: AppRoutes.WORDS,
+    component: WordsPage,
+    protected: true,
+    title: 'Palavras',
+    description: 'Gerencie seu vocabulário'
   },
   {
     path: AppRoutes.FLASHCARDS,

@@ -33,3 +33,31 @@ export function useStorageUsage(): StorageInfo {
 
   return { storageInfo, calculateStorageUsage }
 }
+
+export function useStorage<T>(
+  key: string,
+  initialValue: T
+): [T, (value: T) => void] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    try {
+      const item = localStorage.getItem(key)
+      return item ? (JSON.parse(item) as T) : initialValue
+    } catch {
+      return initialValue
+    }
+  })
+
+  const setValue = useCallback(
+    (value: T) => {
+      try {
+        setStoredValue(value)
+        localStorage.setItem(key, JSON.stringify(value))
+      } catch (err) {
+        console.error('useStorage error:', err)
+      }
+    },
+    [key]
+  )
+
+  return [storedValue, setValue]
+}

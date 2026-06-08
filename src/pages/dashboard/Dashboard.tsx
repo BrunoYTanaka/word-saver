@@ -7,6 +7,7 @@ import {
   Calendar,
   Target
 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Card from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 import CountCard from '@/shared/ui/CountCard'
@@ -15,13 +16,13 @@ import Tab from '@/shared/ui/Tab'
 import { formatDate } from '@/shared/utils/format-date'
 import { useModal } from '@/shared/context/ModalContext'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { deleteWord } from '@/store/slices/wordsSlice'
 import { deleteContext } from '@/store/slices/contextsSlice'
 import { deleteAlert } from '@/store/slices/alertsSlice'
 import { useApp } from '../../shared'
 
 const Dashboard = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { initialized } = useApp()
   const { loading, words } = useAppSelector((state) => state.words)
   const { contexts } = useAppSelector((state) => state.contexts)
@@ -54,18 +55,6 @@ const Dashboard = () => {
       window.history.replaceState({}, '', window.location.pathname)
     }
   }, [alerts, openModal, initialized])
-
-  const data = useMemo(
-    () =>
-      words.map((word) => ({
-        id: word.id,
-        word: word.word,
-        definition: word.definition,
-        context: contexts.find((c) => c.id === word.contextId)?.name || 'N/A',
-        reviewCount: word.reviewCount ?? 0
-      })),
-    [words, contexts]
-  )
 
   // Loading state
   if (loading && !stats) {
@@ -117,7 +106,7 @@ const Dashboard = () => {
       title: 'Adicionar Palavra',
       description: 'Criar uma nova palavra para estudar',
       icon: BookOpen,
-      action: () => openModal('ADD_WORD'),
+      action: () => navigate('/words'),
       color: 'primary'
     },
     {
@@ -137,41 +126,6 @@ const Dashboard = () => {
   ]
 
   const tabs = [
-    {
-      id: 'words',
-      label: 'Palavras',
-      content: (
-        <Table
-          onDelete={async (wordId) => {
-            await dispatch(deleteWord(wordId)).unwrap()
-          }}
-          onEdit={(wordId) => openModal('EDIT_WORD', { wordId })}
-          data={data}
-          columns={[
-            {
-              title: 'Palavras',
-              field: 'word'
-            },
-            {
-              title: 'Definições',
-              field: 'definition'
-            },
-            {
-              title: 'Contextos',
-              field: 'context'
-            },
-            {
-              title: 'N. de Revisões',
-              field: 'reviewCount'
-            },
-            {
-              title: 'Ações',
-              field: 'actions'
-            }
-          ]}
-        />
-      )
-    },
     {
       id: 'contexts',
       label: 'Contextos',
@@ -392,8 +346,8 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {words.length > 0 && (
-        <Tab tabs={tabs} defaultTab="words" variant="underlined" size="md" />
+      {(contexts.length > 0 || alerts.length > 0) && (
+        <Tab tabs={tabs} defaultTab="contexts" variant="underlined" size="md" />
       )}
 
       {/* Empty State for New Users */}
@@ -408,7 +362,7 @@ const Dashboard = () => {
               Comece adicionando sua primeira palavra para começar a estudar de
               forma organizada.
             </p>
-            <Button variant="primary" onClick={() => openModal('ADD_WORD')}>
+            <Button variant="primary" onClick={() => navigate('/words')}>
               Adicionar Primeira Palavra
             </Button>
           </div>

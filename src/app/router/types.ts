@@ -16,6 +16,7 @@ export interface RouterContextType {
 export enum AppRoutes {
   ROOT = '/',
   DASHBOARD = '/dashboard',
+  WORDS = '/words',
   FLASHCARDS = '/flashcards',
   QUIZ = '/quiz',
   STATISTICS = '/statistics'
