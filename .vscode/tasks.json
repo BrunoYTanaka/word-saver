@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "inAgents": true,
+      "runOptions": { "runOn": "worktreeCreated" }
+    },
+    {
+      "label": "Start dev server",
+      "type": "shell",
+      "command": "npm run dev",
+      "inAgents": true
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "npm run build",
+      "inAgents": true
+    },
+    {
+      "label": "Run tests",
+      "type": "shell",
+      "command": "npm run test",
+      "inAgents": true
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "inAgents": true
+    },
+    {
+      "label": "Type check",
+      "type": "shell",
+      "command": "npm run typecheck",
+      "inAgents": true
+    }
+  ]
+}
