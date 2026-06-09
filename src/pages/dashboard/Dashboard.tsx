@@ -22,24 +22,15 @@ const Dashboard = () => {
   const { contexts } = useAppSelector((state) => state.contexts)
   const { alerts } = useAppSelector((state) => state.alerts)
   const { stats } = useAppSelector((state) => state.stats)
-
   const { openModal } = useModal()
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const reviewParam = urlParams.get('review')
-    const alertParam = urlParams.get('alert')
-
     if (reviewParam && initialized) {
-      const alert = alerts.find((a) => a.id === alertParam)
-      if (alert) {
-        openModal('REVIEW_WORD', {
-          contextIds: reviewParam.split(',').filter(Boolean)
-        })
-      }
       window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [alerts, openModal, initialized])
+  }, [initialized])
 
   if (loading && !stats) {
     return (
@@ -89,12 +80,6 @@ const Dashboard = () => {
       description: 'Criar uma nova palavra para estudar',
       icon: BookOpen,
       action: () => navigate('/words')
-    },
-    {
-      title: 'Criar Contexto',
-      description: 'Organizar palavras por categoria',
-      icon: Archive,
-      action: () => openModal('ADD_CONTEXT')
     },
     {
       title: 'Configurar Alerta',
@@ -203,16 +188,9 @@ const Dashboard = () => {
             {contexts.length === 0 ? (
               <div className="py-8 text-center">
                 <Archive className="mx-auto mb-4 size-12 text-gray-300 dark:text-gray-600" />
-                <p className="mb-4 text-gray-500 dark:text-gray-400">
+                <p className="text-gray-500 dark:text-gray-400">
                   Nenhum contexto criado ainda
                 </p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => openModal('ADD_CONTEXT')}
-                >
-                  Criar Primeiro Contexto
-                </Button>
               </div>
             ) : (
               <div className="space-y-3">

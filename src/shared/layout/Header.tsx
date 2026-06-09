@@ -28,14 +28,6 @@ const Header = () => {
     { icon: BarChart3, label: 'Estatísticas', path: '/statistics' }
   ]
 
-  const handleNewWord = () => {
-    if (location.pathname === '/words') {
-      openModal('ADD_WORD')
-    } else {
-      navigate('/words')
-    }
-  }
-
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface">
       <div className="container mx-auto max-w-7xl">
@@ -84,7 +76,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={handleNewWord}
+              onClick={() => navigate('/words')}
               icon={<Plus />}
               className="hidden sm:flex"
             >
@@ -95,7 +87,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={handleNewWord}
+              onClick={() => navigate('/words')}
               icon={<Plus />}
               className="sm:hidden"
             />

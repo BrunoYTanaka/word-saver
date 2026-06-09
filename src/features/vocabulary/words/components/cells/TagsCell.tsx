@@ -1,5 +1,6 @@
 import { useRef, useEffect, KeyboardEvent, useState } from 'react'
 import { X } from 'lucide-react'
+import { Tooltip } from '@/shared/ui/Tooltip'
 
 interface TagsCellProps {
   value: string[]
@@ -90,24 +91,36 @@ export function TagsCell({
     )
   }
 
+  const VISIBLE_TAGS = 3
+  const visibleTags = value.slice(0, VISIBLE_TAGS)
+  const hiddenCount = value.length - VISIBLE_TAGS
+
   return (
-    <div
-      onDoubleClick={onEdit}
-      title="Duplo clique para editar"
-      className="flex cursor-pointer flex-wrap gap-1"
-    >
-      {value.length > 0 ? (
-        value.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full bg-primary-soft px-2 py-0.5 text-xs text-primary"
-          >
-            {tag}
-          </span>
-        ))
-      ) : (
-        <span className="text-sm italic text-muted-foreground">—</span>
-      )}
-    </div>
+    <Tooltip content={value.length > 0 ? value.join(', ') : ''}>
+      <div
+        onDoubleClick={onEdit}
+        className="flex w-full cursor-pointer flex-wrap gap-1 overflow-hidden"
+      >
+        {value.length > 0 ? (
+          <>
+            {visibleTags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-primary-soft px-2 py-0.5 text-xs text-primary"
+              >
+                {tag}
+              </span>
+            ))}
+            {hiddenCount > 0 && (
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                +{hiddenCount}
+              </span>
+            )}
+          </>
+        ) : (
+          <span className="text-sm italic text-muted-foreground">—</span>
+        )}
+      </div>
+    </Tooltip>
   )
 }

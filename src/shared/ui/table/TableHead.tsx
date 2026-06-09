@@ -14,20 +14,31 @@ export function TableHead<TData>({
   return (
     <thead>
       {headerGroups.map((hg) => (
-        <tr key={hg.id} className="border-b border-border">
+        <tr key={hg.id}>
           {/* drag handle placeholder */}
-          <th style={{ width: '2rem', minWidth: '2rem' }} />
+          <th
+            style={{ width: '2rem', minWidth: '2rem' }}
+            className="border-b border-border"
+          />
           {hg.headers.map((header) => {
             if (customColumns.includes(header.id)) {
               if (header.id === 'actions') {
                 return (
                   <th
                     key={header.id}
-                    className="sticky right-0 w-12 bg-surface px-2 py-3"
-                  />
+                    style={{ width: '4rem', minWidth: '4rem' }}
+                    className="sticky right-0 border-b border-border bg-surface px-2 py-3 text-center text-sm font-normal text-muted-foreground"
+                  >
+                    Ações
+                  </th>
                 )
               }
-              return <th key={header.id} className="w-10 px-2 py-3" />
+              return (
+                <th
+                  key={header.id}
+                  className="w-10 border-b border-border px-2 py-3"
+                />
+              )
             }
 
             const col = header.column
@@ -36,7 +47,7 @@ export function TableHead<TData>({
             return (
               <th
                 key={header.id}
-                className="px-4 py-3"
+                className="border-b border-border px-4 py-3"
                 style={{ width: header.getSize() }}
               >
                 {header.isPlaceholder ? null : col.getCanSort() ? (

@@ -18,9 +18,9 @@ interface WordsTableViewProps {
   pageSize: number
   onPageSizeChange: (size: number) => void
   globalFilter: string
-  onGlobalFilterChange: (v: string) => void
   selectedContextIds: string[]
   onPendingChange: (changes: PendingChange[]) => void
+  onDeleteWord: (id: string) => void
   /** Increment to trigger adding a new blank row */
   addRowSignal?: number
 }
@@ -40,9 +40,9 @@ export function WordsTableView({
   pageSize,
   onPageSizeChange,
   globalFilter,
-  onGlobalFilterChange: _onGlobalFilterChange,
   selectedContextIds,
   onPendingChange,
+  onDeleteWord,
   addRowSignal = 0
 }: WordsTableViewProps) {
   const state = useWordsTable({
@@ -52,7 +52,8 @@ export function WordsTableView({
     globalFilter,
     selectedContextIds,
     addRowSignal,
-    onPendingChange
+    onPendingChange,
+    onDeleteWord
   })
 
   const columns = useWordsTableColumns({
@@ -92,7 +93,7 @@ export function WordsTableView({
         onDragEnd={state.handleDragEnd}
       >
         <div className="overflow-auto rounded-lg border border-border bg-surface shadow-sm">
-          <table className="w-full min-w-[640px] table-auto border-collapse text-left">
+          <table className="w-full min-w-[640px] table-auto border-separate border-spacing-0 text-left">
             <TableHead
               headerGroups={table.getHeaderGroups()}
               customColumns={['color', 'actions']}

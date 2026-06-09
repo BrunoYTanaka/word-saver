@@ -33,11 +33,19 @@ export const fetchWords = createAsyncThunk(
 
 export const addWord = createAsyncThunk(
   'words/add',
-  async (wordData: Word, { rejectWithValue, dispatch }) => {
+  async (wordData: Word, { rejectWithValue }) => {
     try {
-      await wordStore.addWord(wordData)
-
-      dispatch(fetchWords())
+      const id = crypto.randomUUID()
+      const fullWord: FullWord = {
+        id,
+        createdAt: new Date().toISOString(),
+        reviewCount: 0,
+        lastReviewed: null,
+        difficulty: 'medium',
+        ...wordData
+      }
+      await wordStore.add(fullWord)
+      return fullWord
     } catch (error) {
       console.error('Error adding word:', error)
       return rejectWithValue(
@@ -119,8 +127,9 @@ const wordsSlice = createSlice({
         state.loading = true
         state.error = null
       })
-      .addCase(addWord.fulfilled, (state) => {
+      .addCase(addWord.fulfilled, (state, action) => {
         state.loading = false
+        state.words = [action.payload, ...state.words]
       })
       .addCase(addWord.rejected, (state, action) => {
         state.loading = false

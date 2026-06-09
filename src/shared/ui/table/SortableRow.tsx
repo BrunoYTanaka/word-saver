@@ -27,10 +27,11 @@ export function SortableRow({ id, rowColor, children }: SortableRowProps) {
         opacity: isDragging ? 0.5 : 1,
         backgroundColor: rowColor ? `${rowColor}18` : undefined
       }}
-      className="group border-b border-border transition-colors hover:bg-surface-muted"
+      className="group transition-colors hover:bg-surface-muted"
     >
       <td
         style={{ width: '2rem', minWidth: '2rem', padding: '0.75rem 0.5rem' }}
+        className="border-b border-border"
       >
         <button
           type="button"

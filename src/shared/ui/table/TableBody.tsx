@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { flexRender, type Row } from '@tanstack/react-table'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { SortableRow } from './SortableRow'
@@ -41,13 +42,20 @@ export function TableBody<TData extends { id: string; color?: string }>({
             >
               {row.getVisibleCells().map((cell) => {
                 if (selfRenderedColumns.includes(cell.column.id)) {
-                  return flexRender(
-                    cell.column.columnDef.cell,
-                    cell.getContext()
+                  return (
+                    <Fragment key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Fragment>
                   )
                 }
                 return (
-                  <td key={cell.id} className="px-4 py-3">
+                  <td
+                    key={cell.id}
+                    className="border-b border-border px-4 py-3"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 )

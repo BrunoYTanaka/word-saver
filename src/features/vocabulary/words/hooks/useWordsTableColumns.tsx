@@ -1,14 +1,13 @@
 import { useMemo } from 'react'
-import { Trash2 } from 'lucide-react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { FullWord } from '../types/word'
 import type { FullContext } from '@/features/vocabulary'
-import { DeletePopover } from '@/shared/ui/table'
 import { TextCell } from '../components/cells/TextCell'
 import { TextareaCell } from '../components/cells/TextareaCell'
 import { SelectCell } from '../components/cells/SelectCell'
 import { TagsCell } from '../components/cells/TagsCell'
 import { ColorCell } from '../components/cells/ColorCell'
+import { ActionCell } from '../components/cells/ActionCell'
 import type { EditingCell } from './useWordsTable'
 
 interface UseWordsTableColumnsOptions {
@@ -42,7 +41,7 @@ export function useWordsTableColumns({
         size: 40,
         enableSorting: false,
         cell: ({ row }) => (
-          <td className="px-2 py-3">
+          <td className="border-b border-border px-2 py-3">
             <ColorCell
               value={row.original.color}
               onChange={(color) => updateRow(row.original.id, { color })}
@@ -57,7 +56,10 @@ export function useWordsTableColumns({
           const isEd =
             editing?.rowId === row.original.id && editing.field === 'word'
           return (
-            <td className="px-4 py-3">
+            <td
+              className="border-b border-border px-4 py-3"
+              style={{ maxWidth: '200px' }}
+            >
               <TextCell
                 value={row.original.word}
                 isEditing={isEd}
@@ -80,7 +82,10 @@ export function useWordsTableColumns({
           const isEd =
             editing?.rowId === row.original.id && editing.field === 'definition'
           return (
-            <td className="px-4 py-3">
+            <td
+              className="border-b border-border px-4 py-3"
+              style={{ maxWidth: '360px' }}
+            >
               <TextareaCell
                 value={row.original.definition ?? ''}
                 isEditing={isEd}
@@ -102,7 +107,10 @@ export function useWordsTableColumns({
           const isEd =
             editing?.rowId === row.original.id && editing.field === 'contextId'
           return (
-            <td className="px-4 py-3">
+            <td
+              className="border-b border-border px-4 py-3"
+              style={{ maxWidth: '160px' }}
+            >
               <SelectCell
                 value={row.original.contextId}
                 isEditing={isEd}
@@ -125,7 +133,10 @@ export function useWordsTableColumns({
           const isEd =
             editing?.rowId === row.original.id && editing.field === 'tags'
           return (
-            <td className="px-4 py-3">
+            <td
+              className="border-b border-border px-4 py-3"
+              style={{ maxWidth: '200px' }}
+            >
               <TagsCell
                 value={row.original.tags ?? []}
                 isEditing={isEd}
@@ -141,28 +152,17 @@ export function useWordsTableColumns({
       },
       {
         id: 'actions',
-        header: '',
-        size: 60,
+        header: 'Ações',
+        size: 64,
         enableSorting: false,
         cell: ({ row }) => (
-          <td className="sticky right-0 bg-surface p-3">
-            <div className="relative flex items-center justify-end">
-              <button
-                type="button"
-                title="Excluir"
-                onClick={() => setDeletingId(row.original.id)}
-                className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-destructive hover:text-destructive-foreground"
-              >
-                <Trash2 className="size-4" />
-              </button>
-              {deletingId === row.original.id && (
-                <DeletePopover
-                  onConfirm={() => deleteRow(row.original.id)}
-                  onCancel={() => setDeletingId(null)}
-                />
-              )}
-            </div>
-          </td>
+          <ActionCell
+            rowId={row.original.id}
+            isDeletingThis={deletingId === row.original.id}
+            onDeleteClick={() => setDeletingId(row.original.id)}
+            onConfirm={() => deleteRow(row.original.id)}
+            onCancel={() => setDeletingId(null)}
+          />
         )
       }
     ],

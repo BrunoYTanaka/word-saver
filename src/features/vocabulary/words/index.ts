@@ -1,5 +1,2 @@
-export { default as AddWordModal } from './components/AddWordModal'
-export { default as EditWordModal } from './components/EditWordModal'
-export { default as ReviewWordModal } from './components/ReviewWordModal'
 export { default as WordStore } from './repositories/word-store'
 export * from './types/word'

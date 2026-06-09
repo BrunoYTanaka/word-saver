@@ -33,6 +33,7 @@ interface UseWordsTableOptions {
   selectedContextIds: string[]
   addRowSignal: number
   onPendingChange: (changes: PendingChange[]) => void
+  onDeleteWord: (id: string) => void
 }
 
 export function useWordsTable({
@@ -42,7 +43,8 @@ export function useWordsTable({
   globalFilter,
   selectedContextIds,
   addRowSignal,
-  onPendingChange
+  onPendingChange,
+  onDeleteWord
 }: UseWordsTableOptions) {
   const [rows, setRows] = useState<FullWord[]>(() =>
     [...initialWords].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -74,6 +76,7 @@ export function useWordsTable({
     }
     setRows((prev) => [newWord, ...prev])
     setPageIndex(0)
+    setEditing({ rowId: newWord.id, field: 'word' })
   }, [addRowSignal, contexts])
 
   // Reset page on filter/context change
@@ -93,11 +96,6 @@ export function useWordsTable({
         if (JSON.stringify(orig) !== JSON.stringify(row)) {
           changes.push({ type: 'update', word: row })
         }
-      }
-    })
-    originalRows.forEach((orig) => {
-      if (!rows.find((r) => r.id === orig.id)) {
-        changes.push({ type: 'delete', word: orig })
       }
     })
     onPendingChange(changes)
@@ -190,10 +188,15 @@ export function useWordsTable({
     setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...updates } : r)))
   }, [])
 
-  const deleteRow = useCallback((id: string) => {
-    setRows((prev) => prev.filter((r) => r.id !== id))
-    setDeletingId(null)
-  }, [])
+  const deleteRow = useCallback(
+    (id: string) => {
+      const isExisting = originalRows.some((r) => r.id === id)
+      if (isExisting) onDeleteWord(id)
+      setRows((prev) => prev.filter((r) => r.id !== id))
+      setDeletingId(null)
+    },
+    [originalRows, onDeleteWord]
+  )
 
   const stopEdit = useCallback(() => setEditing(null), [])
 

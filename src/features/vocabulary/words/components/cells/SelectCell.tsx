@@ -1,5 +1,6 @@
 import { useRef, useEffect, KeyboardEvent } from 'react'
 import type { FullContext } from '@/features/vocabulary'
+import { Tooltip } from '@/shared/ui/Tooltip'
 
 interface SelectCellProps {
   value: string
@@ -42,7 +43,8 @@ export function SelectCell({
     }
   }
 
-  const contextName = contexts.find((c) => c.id === value)?.name ?? (
+  const resolvedContext = contexts.find((c) => c.id === value)
+  const contextName = resolvedContext?.name ?? (
     <span className="italic text-muted-foreground">—</span>
   )
 
@@ -67,20 +69,19 @@ export function SelectCell({
   }
 
   return (
-    <span
-      onDoubleClick={onEdit}
-      title="Duplo clique para editar"
-      className="flex cursor-pointer items-center gap-2 text-sm"
-    >
-      {value && contexts.find((c) => c.id === value)?.color && (
-        <span
-          className="inline-block size-3 shrink-0 rounded-full"
-          style={{
-            backgroundColor: contexts.find((c) => c.id === value)?.color
-          }}
-        />
-      )}
-      {contextName}
-    </span>
+    <Tooltip content={resolvedContext?.name ?? ''}>
+      <span
+        onDoubleClick={onEdit}
+        className="flex w-full cursor-pointer items-center gap-2 overflow-hidden text-sm"
+      >
+        {resolvedContext?.color && (
+          <span
+            className="inline-block size-3 shrink-0 rounded-full"
+            style={{ backgroundColor: resolvedContext.color }}
+          />
+        )}
+        <span className="truncate">{contextName}</span>
+      </span>
+    </Tooltip>
   )
 }

@@ -1,5 +1,5 @@
 import { STORES, IndexedDBAdapter, database } from '@/core/database'
-import { BackupData, BackupOptions } from '../types/backup'
+import { BackupData } from '../types/backup'
 
 class BackupStore extends IndexedDBAdapter {
   private dbReady: Promise<void>
@@ -25,7 +25,7 @@ class BackupStore extends IndexedDBAdapter {
     return backupData
   }
 
-  async restoreBackup(backupData: BackupData): Promise<void> {
+  async restoreBackup(_backupData: BackupData): Promise<void> {
     await this.ensureDB()
     // Implementar lógica de restore
   }

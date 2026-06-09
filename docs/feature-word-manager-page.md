@@ -24,10 +24,10 @@ Adicionada ao `AppRoutes` e ao `routesConfig`. Incluída na navegação lateral/
 
 ## Dependências
 
-| Pacote | Uso |
-|---|---|
-| `@tanstack/react-table` | Engine da tabela (sorting, filtering, pagination) |
-| `@dnd-kit/core` + `@dnd-kit/sortable` | Drag & drop de linhas |
+| Pacote                                | Uso                                               |
+| ------------------------------------- | ------------------------------------------------- |
+| `@tanstack/react-table`               | Engine da tabela (sorting, filtering, pagination) |
+| `@dnd-kit/core` + `@dnd-kit/sortable` | Drag & drop de linhas                             |
 
 ---
 
@@ -56,6 +56,7 @@ Adicionada ao `AppRoutes` e ao `routesConfig`. Incluída na navegação lateral/
 ### 1. Tabela Interativa
 
 #### Edição Inline
+
 - **Double click** em qualquer célula entra em modo de edição
 - **Tab** avança para a próxima célula editável na mesma linha
 - **Enter** confirma e sai do modo de edição
@@ -64,16 +65,17 @@ Adicionada ao `AppRoutes` e ao `routesConfig`. Incluída na navegação lateral/
 
 #### Tipos de Coluna
 
-| Coluna | Tipo | Comportamento de Edição |
-|---|---|---|
-| `word` | `text` | Input de texto simples, obrigatório |
-| `definition` | `textarea` | Textarea expansível, opcional |
-| `contextId` | `select` | Dropdown com contextos existentes + opção "＋ Criar contexto" inline |
-| `tags` | `tags` | Input com chips, separados por vírgula ou Enter |
-| `rowColor` | `color` | Color picker compacto que pinta o fundo da linha |
-| Ações | — | Botão de exclusão |
+| Coluna       | Tipo       | Comportamento de Edição                                              |
+| ------------ | ---------- | -------------------------------------------------------------------- |
+| `word`       | `text`     | Input de texto simples, obrigatório                                  |
+| `definition` | `textarea` | Textarea expansível, opcional                                        |
+| `contextId`  | `select`   | Dropdown com contextos existentes + opção "＋ Criar contexto" inline |
+| `tags`       | `tags`     | Input com chips, separados por vírgula ou Enter                      |
+| `rowColor`   | `color`    | Color picker compacto que pinta o fundo da linha                     |
+| Ações        | —          | Botão de exclusão                                                    |
 
 #### Cor da Linha
+
 - Coluna especial com um swatch colorido clicável
 - Abre um color picker inline (paleta de cores predefinidas + custom hex)
 - A cor selecionada aplica um fundo sutil na linha inteira
@@ -87,6 +89,7 @@ Adicionada ao `AppRoutes` e ao `routesConfig`. Incluída na navegação lateral/
 - Múltiplas linhas podem ser adicionadas antes de salvar
 
 #### Paste de Planilha
+
 - Ao colar (`Ctrl+V`) na tabela, detecta conteúdo com tabulações (`\t`)
 - Distribui automaticamente nas colunas: `word \t definition \t tags`
 - Cria múltiplas linhas de uma vez, compatível com Excel e Google Sheets
@@ -192,8 +195,8 @@ Nenhuma mudança breaking no modelo `FullWord`. Adições opcionais:
 ```ts
 interface FullWord {
   // campos existentes...
-  color?: string   // cor de destaque da linha (hex ou CSS var)
-  order?: number   // posição após drag & drop
+  color?: string // cor de destaque da linha (hex ou CSS var)
+  order?: number // posição após drag & drop
 }
 ```
 

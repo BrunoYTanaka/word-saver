@@ -1,10 +1,10 @@
 export interface BackupData {
-  words: any[]
-  contexts: any[]
-  alerts: any[]
-  settings: any[]
-  flashcards?: any[]
-  quiz?: any[]
+  words: unknown[]
+  contexts: unknown[]
+  alerts: unknown[]
+  settings: unknown[]
+  flashcards?: unknown[]
+  quiz?: unknown[]
   timestamp: string
   version: string
 }

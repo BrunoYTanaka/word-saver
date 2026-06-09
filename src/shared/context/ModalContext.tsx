@@ -1,26 +1,16 @@
 import { createContext, useContext, useState } from 'react'
-import AddWordModal from '@/features/vocabulary/words/components/AddWordModal'
-import EditWordModal from '@/features/vocabulary/words/components/EditWordModal'
-import AddContextModal from '@/features/vocabulary/contexts/components/AddContextModal'
-import EditContextModal from '@/features/vocabulary/contexts/components/EditContextModal'
 import AddAlertModal from '@/features/alerts/components/AddAlertModal'
 import EditAlertModal from '@/features/alerts/components/EditAlertModal'
 import SettingsModal from '@/features/settings/components/SettingsModal'
 import ExportDataModal from '@/features/data-management/export/components/ExportDataModal'
 import ImportDataModal from '@/features/data-management/import/components/ImportDataModal'
-import ReviewWordModal from '@/features/vocabulary/words/components/ReviewWordModal'
 
 type ModalPropsMap = {
-  ADD_WORD: undefined
-  EDIT_WORD: { wordId: string }
-  ADD_CONTEXT: undefined
-  EDIT_CONTEXT: { contextId: string }
   ADD_ALERT: undefined
   EDIT_ALERT: { alertId: string }
   SETTINGS: undefined
   EXPORT_DATA: undefined
   IMPORT_DATA: undefined
-  REVIEW_WORD: { contextIds: string[]; alertId?: string }
 }
 
 type ModalType = keyof ModalPropsMap
@@ -60,20 +50,11 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
     <ModalContext.Provider value={{ openModal, closeModal, isOpen, getProps }}>
       {children}
 
-      {isOpen('ADD_WORD') && <AddWordModal />}
-      {isOpen('EDIT_WORD') && <EditWordModal {...getProps('EDIT_WORD')!} />}
-      {isOpen('ADD_CONTEXT') && <AddContextModal />}
-      {isOpen('EDIT_CONTEXT') && (
-        <EditContextModal {...getProps('EDIT_CONTEXT')!} />
-      )}
       {isOpen('ADD_ALERT') && <AddAlertModal />}
       {isOpen('EDIT_ALERT') && <EditAlertModal {...getProps('EDIT_ALERT')!} />}
       {isOpen('SETTINGS') && <SettingsModal />}
       {isOpen('EXPORT_DATA') && <ExportDataModal />}
       {isOpen('IMPORT_DATA') && <ImportDataModal />}
-      {isOpen('REVIEW_WORD') && (
-        <ReviewWordModal {...getProps('REVIEW_WORD')!} />
-      )}
     </ModalContext.Provider>
   )
 }

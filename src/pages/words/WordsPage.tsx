@@ -77,6 +77,18 @@ export default function WordsPage() {
     setSelectedContextIds([])
   }
 
+  // Delete word immediately (no pending change needed — already confirmed)
+  const handleDeleteWord = useCallback(
+    async (id: string) => {
+      try {
+        await dispatch(deleteWord(id)).unwrap()
+      } catch (err) {
+        console.error('Erro ao remover palavra:', err)
+      }
+    },
+    [dispatch]
+  )
+
   // Save all pending changes
   const handleSave = async () => {
     if (pendingChanges.length === 0) return
@@ -84,21 +96,15 @@ export default function WordsPage() {
     try {
       for (const change of pendingChanges) {
         if (change.type === 'create' && change.word.word.trim()) {
-          const {
-            id: _id,
-            createdAt: _createdAt,
-            reviewCount: _reviewCount,
-            lastReviewed: _lastReviewed,
-            difficulty: _difficulty,
-            ...wordInput
-          } = change.word
-          await dispatch(
-            addWord({ ...wordInput, word: change.word.word })
-          ).unwrap()
+          const wordInput = {
+            word: change.word.word,
+            definition: change.word.definition,
+            contextId: change.word.contextId,
+            tags: change.word.tags
+          }
+          await dispatch(addWord(wordInput)).unwrap()
         } else if (change.type === 'update') {
           await dispatch(updateWord(change.word)).unwrap()
-        } else if (change.type === 'delete') {
-          await dispatch(deleteWord(change.word.id)).unwrap()
         }
       }
       setPendingChanges([])
@@ -162,9 +168,9 @@ export default function WordsPage() {
         pageSize={pageSize}
         onPageSizeChange={handlePageSizeChange}
         globalFilter={debouncedSearch}
-        onGlobalFilterChange={setDebouncedSearch}
         selectedContextIds={selectedContextIds}
         onPendingChange={setPendingChanges}
+        onDeleteWord={handleDeleteWord}
         addRowSignal={addRowSignal}
       />
 

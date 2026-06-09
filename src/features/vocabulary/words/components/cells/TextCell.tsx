@@ -1,5 +1,6 @@
 import { useRef, useEffect, KeyboardEvent } from 'react'
 import { cn } from '@/shared/utils/cn'
+import { Tooltip } from '@/shared/ui/Tooltip'
 
 interface TextCellProps {
   value: string
@@ -65,15 +66,16 @@ export function TextCell({
   }
 
   return (
-    <span
-      onDoubleClick={onEdit}
-      title="Duplo clique para editar"
-      className={cn(
-        'block cursor-pointer truncate text-sm text-foreground',
-        !value && 'text-muted-foreground italic'
-      )}
-    >
-      {value || placeholder}
-    </span>
+    <Tooltip content={value}>
+      <span
+        onDoubleClick={onEdit}
+        className={cn(
+          'block w-full cursor-pointer truncate text-sm text-foreground',
+          !value && 'text-muted-foreground italic'
+        )}
+      >
+        {value || placeholder}
+      </span>
+    </Tooltip>
   )
 }
