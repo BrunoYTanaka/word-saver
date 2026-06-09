@@ -1,11 +1,12 @@
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 import {
   BookOpen,
   Archive,
   Bell,
   TrendingUp,
   Calendar,
-  Target
+  Target,
+  Plus
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import Card from '@/shared/ui/Card'
@@ -13,24 +14,37 @@ import Button from '@/shared/ui/Button'
 import CountCard from '@/shared/ui/CountCard'
 import { useModal } from '@/shared/context/ModalContext'
 import { useAppSelector } from '@/store/hooks'
-import { useApp } from '../../shared'
+import OnboardingChecklist from './components/OnboardingChecklist'
+import DifficultyBreakdown from './components/DifficultyBreakdown'
+import WordsToReview from './components/WordsToReview'
 
 const Dashboard = () => {
   const navigate = useNavigate()
-  const { initialized } = useApp()
   const { loading, words } = useAppSelector((state) => state.words)
   const { contexts } = useAppSelector((state) => state.contexts)
   const { alerts } = useAppSelector((state) => state.alerts)
   const { stats } = useAppSelector((state) => state.stats)
   const { openModal } = useModal()
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const reviewParam = urlParams.get('review')
-    if (reviewParam && initialized) {
-      window.history.replaceState({}, '', window.location.pathname)
+  const heroMessage = useMemo(() => {
+    if (words.length === 0) {
+      return {
+        title: 'Bem-vindo ao Word Saver! 👋',
+        subtitle:
+          'Comece criando um contexto e adicionando suas primeiras palavras.'
+      }
     }
-  }, [initialized])
+    if (alerts.length > 0) {
+      return {
+        title: 'Hora de revisar! 🔔',
+        subtitle: `Você tem ${words.length} palavras salvas em ${contexts.length} contextos.`
+      }
+    }
+    return {
+      title: 'Olá! 👋',
+      subtitle: `Você tem ${words.length} palavras salvas em ${contexts.length} contextos.`
+    }
+  }, [words.length, contexts.length, alerts.length])
 
   if (loading && !stats) {
     return (
@@ -78,8 +92,18 @@ const Dashboard = () => {
     {
       title: 'Adicionar Palavra',
       description: 'Criar uma nova palavra para estudar',
-      icon: BookOpen,
+      icon: Plus,
       action: () => navigate('/words')
+    },
+    {
+      title: 'Iniciar Revisão',
+      description: 'Revisar palavras com flashcards',
+      icon: Target,
+      action: () =>
+        openModal('REVIEW_WORD', {
+          contextIds: contexts.map((c) => c.id)
+        }),
+      disabled: words.length === 0
     },
     {
       title: 'Configurar Alerta',
@@ -92,11 +116,12 @@ const Dashboard = () => {
   return (
     <div className="space-y-8">
       <div className="text-left sm:text-center">
-        <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Acompanhe seu progresso na memorização de palavras
-        </p>
+        <h1 className="mb-2 text-3xl font-bold">{heroMessage.title}</h1>
+        <p className="text-muted-foreground">{heroMessage.subtitle}</p>
       </div>
+
+      {/* Onboarding */}
+      <OnboardingChecklist />
 
       {/* Stats */}
       <div className="grid grid-cols-3 rounded-lg bg-surface shadow dark:border dark:border-border">
@@ -111,12 +136,17 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {quickActions.map((action, index) => {
             const Icon = action.icon
+            const isDisabled = action.disabled
             return (
               <Card
                 key={index}
-                onClick={action.action}
-                clickable
-                className="hover:bg-surface-hover"
+                onClick={isDisabled ? undefined : action.action}
+                clickable={!isDisabled}
+                className={
+                  isDisabled
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'hover:bg-surface-hover'
+                }
               >
                 <div className="text-center">
                   <div className="mb-4 inline-flex size-12 items-center justify-center rounded-lg bg-surface-muted">
@@ -134,6 +164,9 @@ const Dashboard = () => {
           })}
         </div>
       </div>
+
+      {/* Words to review */}
+      <WordsToReview />
 
       {/* Progress + Recent Contexts */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -176,6 +209,14 @@ const Dashboard = () => {
                   {stats?.averageReviewsPerWord || 0}
                 </span>
               </div>
+              {words.length > 0 && (
+                <div className="border-t border-border pt-4">
+                  <p className="mb-3 text-sm font-medium text-foreground">
+                    Distribuição por dificuldade
+                  </p>
+                  <DifficultyBreakdown />
+                </div>
+              )}
             </div>
           </Card.Content>
         </Card>
@@ -187,21 +228,26 @@ const Dashboard = () => {
           <Card.Content>
             {contexts.length === 0 ? (
               <div className="py-8 text-center">
-                <Archive className="mx-auto mb-4 size-12 text-gray-300 dark:text-gray-600" />
-                <p className="text-gray-500 dark:text-gray-400">
+                <Archive className="text-muted-foreground/40 mx-auto mb-4 size-12" />
+                <p className="text-muted-foreground">
                   Nenhum contexto criado ainda
                 </p>
               </div>
             ) : (
               <div className="space-y-3">
-                {contexts.slice(0, 3).map((context) => (
+                {contexts.slice(0, 5).map((context) => (
                   <div
                     key={context.id}
                     className="flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
+                      {context.icon && (
+                        <span className="text-lg leading-none">
+                          {context.icon}
+                        </span>
+                      )}
                       <div
-                        className="size-4 rounded-full"
+                        className="size-3 shrink-0 rounded-full"
                         style={{
                           backgroundColor: context.color || 'var(--primary)'
                         }}
@@ -225,11 +271,11 @@ const Dashboard = () => {
       {words.length === 0 && (
         <Card className="py-12 text-center">
           <div className="mx-auto max-w-md">
-            <BookOpen className="mx-auto mb-6 size-16 text-gray-300 dark:text-gray-600" />
-            <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <BookOpen className="text-muted-foreground/40 mx-auto mb-6 size-16" />
+            <h3 className="mb-2 text-xl font-semibold text-foreground">
               Bem-vindo ao Word Saver!
             </h3>
-            <p className="mb-6 text-gray-600 dark:text-gray-400">
+            <p className="mb-6 text-muted-foreground">
               Comece adicionando sua primeira palavra para começar a estudar de
               forma organizada.
             </p>
