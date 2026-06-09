@@ -85,27 +85,31 @@ export class CoreNotificationService {
     }
   }
 
-  // Handle notification click
+  // Handle notification click — dispatch in-app event so React Router handles navigation
   private handleNotificationClick(data: NotificationData): void {
     console.log('Handling notification click:', data)
 
-    if (data.type === 'word-review' && data.contextIds && data.alertId) {
-      const reviewParams = data.contextIds.join(',')
-      const reviewUrl = `${window.location.origin}/?review=${reviewParams}&alert=${data.alertId}`
+    if (window.focus) {
+      window.focus()
+    }
 
-      console.log('Navigating to review URL:', reviewUrl)
+    if (data.type === 'word-review' && data.contextIds?.length) {
+      const event = new CustomEvent('word-saver:review', {
+        detail: {
+          contextIds: data.contextIds,
+          alertId: data.alertId
+        }
+      })
 
-      // Focus window and navigate
-      if (window.focus) {
-        window.focus()
-      }
-
-      window.location.href = reviewUrl
-    } else {
-      console.log('Focusing window for non-review notification')
-      // For other types, just focus the window
-      if (window.focus) {
-        window.focus()
+      window.dispatchEvent(event)
+      if (!window.__WORD_SAVER_REVIEW_LISTENER__) {
+        const params = new URLSearchParams({
+          review: data.contextIds.join(',')
+        })
+        if (data.alertId) params.set('alert', data.alertId)
+        window.location.href = `${
+          window.location.origin
+        }/dashboard?${params.toString()}`
       }
     }
   }

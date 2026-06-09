@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,11 +16,24 @@ import Button from '@/shared/ui/Button'
 
 const Flashcards = () => {
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { words } = useAppSelector((state) => state.words)
   const { contexts } = useAppSelector((state) => state.contexts)
+  const initialContexts =
+    searchParams.get('contexts')?.split(',').filter(Boolean) ?? []
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [showDefinition, setShowDefinition] = useState(false)
-  const [selectedContexts, setSelectedContexts] = useState<string[]>([])
+  const [selectedContexts, setSelectedContexts] =
+    useState<string[]>(initialContexts)
+
+  useEffect(() => {
+    if (initialContexts.length > 0) {
+      const next = new URLSearchParams(searchParams)
+      next.delete('contexts')
+      setSearchParams(next, { replace: true })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [filteredWords, setFilteredWords] = useState<FullWord[]>([])
   const [finished, setFinished] = useState(false)
   const [isReviewing, setIsReviewing] = useState(false)

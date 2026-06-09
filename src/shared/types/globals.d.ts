@@ -51,6 +51,14 @@ declare global {
 
   interface WindowEventMap {
     beforeinstallprompt: BeforeInstallPromptEvent
+    'word-saver:review': CustomEvent<{
+      contextIds: string[]
+      alertId?: string
+    }>
+  }
+
+  interface Window {
+    __WORD_SAVER_REVIEW_LISTENER__?: boolean
   }
 }
 

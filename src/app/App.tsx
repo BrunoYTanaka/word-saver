@@ -6,7 +6,9 @@ import { ModalProvider } from '../shared/context/ModalContext'
 import Layout from '../shared/layout/Layout'
 import { Router } from './router'
 import { PWAInstallPrompt, PWAStatus } from '../core/pwa'
+import { NotificationDebug } from '../core/notifications'
 import { AppInitializer } from './AppInitializer'
+import NotificationNavigator from './NotificationNavigator'
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <AppInitializer>
           <ModalProvider>
             <BrowserRouter>
+              <NotificationNavigator />
               <Layout>
                 <Router />
               </Layout>
@@ -22,6 +25,7 @@ function App() {
           </ModalProvider>
           <PWAInstallPrompt />
           <PWAStatus />
+          {import.meta.env.DEV && <NotificationDebug />}
         </AppInitializer>
       </ThemeProvider>
     </Provider>

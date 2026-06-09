@@ -118,6 +118,11 @@ export class AlertScheduler {
     }
   }
 
+  // Public method to trigger an alert immediately (used by debug/testing)
+  async triggerAlertNow(alert: FullAlert): Promise<void> {
+    return this.triggerAlert(alert)
+  }
+
   // Cancel scheduled alert
   cancelAlert(alertId: string): boolean {
     const timeoutId = this.scheduledAlerts.get(alertId)
