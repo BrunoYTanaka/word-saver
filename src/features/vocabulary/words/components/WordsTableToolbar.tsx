@@ -118,6 +118,26 @@ export function WordsTableToolbar({
     if (e.key === 'Escape') setEditingCtx(null)
   }
 
+  // Save on blur (clicking outside the edit form)
+  const handleEditBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (e.currentTarget.contains(e.relatedTarget)) return
+    if (editName.trim()) {
+      handleEditSave()
+    } else {
+      setEditingCtx(null)
+    }
+  }
+
+  // Save or cancel new context on blur
+  const handleNewContextBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (e.currentTarget.contains(e.relatedTarget)) return
+    if (newName.trim()) {
+      handleCreate()
+    } else {
+      setShowNewContext(false)
+    }
+  }
+
   const handleDeleteConfirm = async () => {
     if (!confirmDelete || deleting) return
     setDeleting(true)
@@ -184,6 +204,7 @@ export function WordsTableToolbar({
             return (
               <div
                 key={ctx.id}
+                onBlur={handleEditBlur}
                 className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-2 py-1"
               >
                 <div className="flex items-center gap-1">
@@ -291,7 +312,10 @@ export function WordsTableToolbar({
 
         {/* Inline new context form */}
         {showNewContext ? (
-          <div className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-2 py-1">
+          <div
+            onBlur={handleNewContextBlur}
+            className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-2 py-1"
+          >
             {/* Color picker swatches */}
             <div className="flex items-center gap-1">
               {colors.map((c) => (
