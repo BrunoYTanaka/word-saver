@@ -9,6 +9,7 @@ src/
 ├── app/                          # Configuração da aplicação
 │   ├── App.tsx                   # Componente raiz da aplicação
 │   ├── AppInitializer.tsx        # Inicialização e bootstrap
+│   ├── NotificationNavigator.tsx # Listener de eventos de revisão (notificações)
 │   └── router/                   # Sistema de rotas
 │       ├── index.ts
 │       ├── Router.tsx            # Componente de roteamento
@@ -62,11 +63,15 @@ src/
 │   │   │   └── schemas.ts        # Schemas e object stores
 │   │   └── index.ts
 │   ├── notifications/            # Sistema de notificações
-│   │   └── notification/
-│   │       ├── alert-scheduler.ts           # Agendamento de alertas
-│   │       ├── core-notification-service.ts # Serviço central de notificações
-│   │       ├── types.ts                     # Tipos de notificações
-│   │       └── index.ts
+│   │   ├── notification/
+│   │   │   ├── alert-scheduler.ts           # Agendamento de alertas
+│   │   │   ├── core-notification-service.ts # Serviço central de notificações
+│   │   │   ├── types.ts                     # Tipos de notificações
+│   │   │   └── index.ts
+│   │   ├── debug/                # Painel de debug (apenas em desenvolvimento)
+│   │   │   ├── NotificationDebug.tsx
+│   │   │   └── index.ts
+│   │   └── index.ts
 │   ├── pwa/                      # Funcionalidades PWA
 │   │   ├── PWAInstallPrompt.tsx  # Prompt de instalação do app
 │   │   ├── PWAStatus.tsx         # Indicador de status do PWA
@@ -151,7 +156,11 @@ src/
 │
 └── pages/                        # Páginas — composição e orquestração de features
     ├── dashboard/
-    │   └── Dashboard.tsx         # Página composta: stats, ações rápidas, tabelas
+    │   ├── Dashboard.tsx         # Página composta: stats, ações rápidas, tabelas
+    │   └── components/           # Componentes específicos do dashboard
+    │       ├── OnboardingChecklist.tsx
+    │       ├── DifficultyBreakdown.tsx
+    │       └── WordsToReview.tsx
     ├── flashcards/
     │   └── FlashcardsPage.tsx    # Wrapper da feature Flashcards
     ├── quiz/
