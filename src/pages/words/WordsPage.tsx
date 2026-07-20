@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { BookOpen } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { addWord, updateWord, deleteWord } from '@/store/slices/wordsSlice'
+import { addContext } from '@/store/slices/contextsSlice'
+import { colors } from '@/features/vocabulary/contexts/constants/context'
 import {
   WordsTableView,
   type PendingChange
@@ -10,12 +13,14 @@ import { WordsTableToolbar } from '@/features/vocabulary/words/components/WordsT
 import { WordsTableSaveBar } from '@/features/vocabulary/words/components/WordsTableSaveBar'
 import { useStorage } from '@/shared/hooks'
 import { isEditableTarget } from '@/shared/utils'
+import type { FullWord } from '@/features/vocabulary/words/types/word'
 
 const PAGE_SIZE_KEY = 'words-page-size'
 const DEFAULT_PAGE_SIZE = 25
 
 export default function WordsPage() {
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { words } = useAppSelector((state) => state.words)
   const { contexts } = useAppSelector((state) => state.contexts)
 
@@ -66,6 +71,17 @@ export default function WordsPage() {
     setAddRowSignal((s) => s + 1)
   }, [])
 
+  // Entry points elsewhere in the app (header, dashboard) link here with
+  // ?add=1 to actually trigger the add-row flow, not just land on the page
+  useEffect(() => {
+    if (!searchParams.get('add')) return
+    handleAddRow()
+    const next = new URLSearchParams(searchParams)
+    next.delete('add')
+    setSearchParams(next, { replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Context filter
   const handleContextToggle = (id: string) => {
     setSelectedContextIds((prev) =>
@@ -86,6 +102,47 @@ export default function WordsPage() {
         await dispatch(deleteWord(id)).unwrap()
       } catch (err) {
         console.error('Erro ao remover palavra:', err)
+      }
+    },
+    [dispatch]
+  )
+
+  // Auto-save a brand-new row the moment the user leaves it — no manual
+  // "Salvar Alterações" needed just to create a word. Reuses the row's own
+  // client-generated id so no reconciliation is needed afterwards.
+  const handleAutoSaveNewWord = useCallback(
+    async (word: FullWord): Promise<FullWord | null> => {
+      try {
+        return await dispatch(
+          addWord({
+            id: word.id,
+            word: word.word,
+            definition: word.definition,
+            contextId: word.contextId,
+            tags: word.tags
+          })
+        ).unwrap()
+      } catch (err) {
+        console.error('Erro ao salvar palavra automaticamente:', err)
+        return null
+      }
+    },
+    [dispatch]
+  )
+
+  // Create a context on the fly from the word table's context combobox
+  const handleCreateContext = useCallback(
+    async (name: string): Promise<string | null> => {
+      const trimmed = name.trim()
+      if (!trimmed) return null
+      try {
+        const color = colors[Math.floor(Math.random() * colors.length)]
+        return await dispatch(
+          addContext({ name: trimmed, color, icon: '📚' })
+        ).unwrap()
+      } catch (err) {
+        console.error('Erro ao criar contexto:', err)
+        return null
       }
     },
     [dispatch]
@@ -195,6 +252,8 @@ export default function WordsPage() {
         selectedContextIds={selectedContextIds}
         onPendingChange={setPendingChanges}
         onDeleteWord={handleDeleteWord}
+        onAutoSaveWord={handleAutoSaveNewWord}
+        onCreateContext={handleCreateContext}
         addRowSignal={addRowSignal}
       />
 

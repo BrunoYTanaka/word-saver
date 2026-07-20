@@ -35,6 +35,7 @@ interface UseWordsTableOptions {
   addRowSignal: number
   onPendingChange: (changes: PendingChange[]) => void
   onDeleteWord: (id: string) => void
+  onAutoSaveWord: (word: FullWord) => Promise<FullWord | null>
 }
 
 export function useWordsTable({
@@ -45,12 +46,13 @@ export function useWordsTable({
   selectedContextIds,
   addRowSignal,
   onPendingChange,
-  onDeleteWord
+  onDeleteWord,
+  onAutoSaveWord
 }: UseWordsTableOptions) {
   const [rows, setRows] = useState<FullWord[]>(() =>
     [...initialWords].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   )
-  const [originalRows] = useState<FullWord[]>(() =>
+  const [originalRows, setOriginalRows] = useState<FullWord[]>(() =>
     [...initialWords].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   )
   const [editing, setEditing] = useState<EditingCell | null>(null)
@@ -105,6 +107,37 @@ export function useWordsTable({
     onPendingChange(changes)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows])
+
+  // Auto-save a new row the moment the user leaves it (Tab past the last
+  // field, click away, or open another row) — no manual "Salvar Alterações"
+  // needed just to create a word. Existing rows still go through the normal
+  // pending-changes/save flow.
+  const latestRef = useRef({ rows, originalRows })
+  useEffect(() => {
+    latestRef.current = { rows, originalRows }
+  })
+
+  const prevEditingRowId = useRef<string | null>(null)
+  useEffect(() => {
+    const leftRowId = prevEditingRowId.current
+    const enteredRowId = editing?.rowId ?? null
+    prevEditingRowId.current = enteredRowId
+    if (!leftRowId || leftRowId === enteredRowId) return
+
+    const { rows: currentRows, originalRows: currentOriginal } =
+      latestRef.current
+    const isNew = !currentOriginal.some((r) => r.id === leftRowId)
+    const row = currentRows.find((r) => r.id === leftRowId)
+    if (!isNew || !row || !row.word.trim()) return
+
+    onAutoSaveWord(row).then((saved) => {
+      if (!saved) return
+      setRows((prev) =>
+        prev.map((r) => (r.id === leftRowId ? { ...saved, order: r.order } : r))
+      )
+      setOriginalRows((prev) => [...prev, { ...saved, order: row.order }])
+    })
+  }, [editing, onAutoSaveWord])
 
   // Clipboard paste (tab-separated)
   useEffect(() => {

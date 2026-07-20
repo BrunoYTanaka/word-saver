@@ -27,6 +27,8 @@ interface WordsTableViewProps {
   selectedContextIds: string[]
   onPendingChange: (changes: PendingChange[]) => void
   onDeleteWord: (id: string) => void
+  onAutoSaveWord: (word: FullWord) => Promise<FullWord | null>
+  onCreateContext: (name: string) => Promise<string | null>
   /** Increment to trigger adding a new blank row */
   addRowSignal?: number
 }
@@ -50,6 +52,8 @@ export function WordsTableView({
   selectedContextIds,
   onPendingChange,
   onDeleteWord,
+  onAutoSaveWord,
+  onCreateContext,
   addRowSignal = 0
 }: WordsTableViewProps) {
   const state = useWordsTable({
@@ -60,7 +64,8 @@ export function WordsTableView({
     selectedContextIds,
     addRowSignal,
     onPendingChange,
-    onDeleteWord
+    onDeleteWord,
+    onAutoSaveWord
   })
 
   const columns = useWordsTableColumns({
@@ -74,7 +79,8 @@ export function WordsTableView({
     deleteRow: state.deleteRow,
     setDeletingId: state.setDeletingId,
     selectedIds: state.selectedIds,
-    toggleRowSelected: state.toggleRowSelected
+    toggleRowSelected: state.toggleRowSelected,
+    onCreateContext
   })
 
   const table = useReactTable({

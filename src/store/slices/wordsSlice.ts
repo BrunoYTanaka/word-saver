@@ -33,16 +33,16 @@ export const fetchWords = createAsyncThunk(
 
 export const addWord = createAsyncThunk(
   'words/add',
-  async (wordData: Word, { rejectWithValue }) => {
+  async (wordData: Word & { id?: string }, { rejectWithValue }) => {
     try {
-      const id = crypto.randomUUID()
+      const { id, ...rest } = wordData
       const fullWord: FullWord = {
-        id,
+        id: id ?? crypto.randomUUID(),
         createdAt: new Date().toISOString(),
         reviewCount: 0,
         lastReviewed: null,
         difficulty: 'medium',
-        ...wordData
+        ...rest
       }
       await wordStore.add(fullWord)
       return fullWord

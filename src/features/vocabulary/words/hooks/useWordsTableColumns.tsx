@@ -4,7 +4,7 @@ import type { FullWord } from '../types/word'
 import type { FullContext } from '@/features/vocabulary'
 import { TextCell } from '../components/cells/TextCell'
 import { TextareaCell } from '../components/cells/TextareaCell'
-import { SelectCell } from '../components/cells/SelectCell'
+import { ContextComboboxCell } from '../components/cells/ContextComboboxCell'
 import { TagsCell } from '../components/cells/TagsCell'
 import { ColorCell } from '../components/cells/ColorCell'
 import { ActionCell } from '../components/cells/ActionCell'
@@ -23,6 +23,7 @@ interface UseWordsTableColumnsOptions {
   setDeletingId: (id: string | null) => void
   selectedIds: Set<string>
   toggleRowSelected: (id: string) => void
+  onCreateContext: (name: string) => Promise<string | null>
 }
 
 export function useWordsTableColumns({
@@ -36,7 +37,8 @@ export function useWordsTableColumns({
   deleteRow,
   setDeletingId,
   selectedIds,
-  toggleRowSelected
+  toggleRowSelected,
+  onCreateContext
 }: UseWordsTableColumnsOptions): ColumnDef<FullWord>[] {
   return useMemo(
     () => [
@@ -129,7 +131,7 @@ export function useWordsTableColumns({
               className="border-b border-border px-4 py-3"
               style={{ maxWidth: '160px' }}
             >
-              <SelectCell
+              <ContextComboboxCell
                 value={row.original.contextId}
                 isEditing={isEd}
                 contexts={contexts}
@@ -138,6 +140,7 @@ export function useWordsTableColumns({
                 onCommit={stopEdit}
                 onCancel={stopEdit}
                 onTabNext={() => editNextCell(row.original.id, 'contextId')}
+                onCreateContext={onCreateContext}
               />
             </td>
           )
@@ -195,7 +198,8 @@ export function useWordsTableColumns({
       deleteRow,
       setDeletingId,
       selectedIds,
-      toggleRowSelected
+      toggleRowSelected,
+      onCreateContext
     ]
   )
 }

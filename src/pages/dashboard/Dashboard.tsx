@@ -93,7 +93,7 @@ const Dashboard = () => {
       title: 'Adicionar Palavra',
       description: 'Criar uma nova palavra para estudar',
       icon: Plus,
-      action: () => navigate('/words')
+      action: () => navigate('/words?add=1')
     },
     {
       title: 'Iniciar Revisão',
@@ -279,7 +279,7 @@ const Dashboard = () => {
               Comece adicionando sua primeira palavra para começar a estudar de
               forma organizada.
             </p>
-            <Button variant="primary" onClick={() => navigate('/words')}>
+            <Button variant="primary" onClick={() => navigate('/words?add=1')}>
               Adicionar Primeira Palavra
             </Button>
           </div>

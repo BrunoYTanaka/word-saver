@@ -78,7 +78,7 @@ const Header = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => navigate('/words')}
+              onClick={() => navigate('/words?add=1')}
               icon={<Plus />}
               className="hidden sm:flex"
             >
@@ -94,7 +94,7 @@ const Header = () => {
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => navigate('/words')}
+                onClick={() => navigate('/words?add=1')}
                 icon={<Plus />}
               />
             </Tooltip>

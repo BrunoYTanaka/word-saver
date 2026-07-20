@@ -41,9 +41,11 @@ export const addContext = createAsyncThunk(
   'contexts/add',
   async (contextData: Context, { rejectWithValue, dispatch }) => {
     try {
-      await contextStore.addContext(contextData)
+      const id = await contextStore.addContext(contextData)
 
       dispatch(fetchContexts())
+
+      return id as string
     } catch (error) {
       console.error('Error adding context:', error)
       return rejectWithValue(

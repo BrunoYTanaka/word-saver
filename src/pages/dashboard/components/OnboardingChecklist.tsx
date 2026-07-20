@@ -28,7 +28,7 @@ const OnboardingChecklist = () => {
         description: 'Salve uma palavra com sua definição para começar.',
         icon: Plus,
         done: words.length > 0,
-        action: () => navigate('/words')
+        action: () => navigate('/words?add=1')
       },
       {
         title: 'Configure um alerta de revisão',
