@@ -161,6 +161,13 @@ const AddAlertModal = () => {
       closeOnEscape={!loading}
     >
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Limitation notice */}
+        <div className="border-warning/30 rounded-lg border bg-warning-soft p-3 text-sm text-warning">
+          ⚠️ Este app não tem servidor: os alertas só disparam enquanto o Word
+          Saver estiver aberto em uma aba do navegador. Com o app fechado, a
+          notificação não é enviada.
+        </div>
+
         {/* Alert Name */}
         <div>
           <div className="mb-2 flex items-center gap-2">

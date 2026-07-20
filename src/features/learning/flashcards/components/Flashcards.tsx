@@ -43,12 +43,14 @@ const Flashcards = () => {
     total: 0
   })
 
-  // Randomize words on initial load
+  // Randomize words on initial load (Fisher-Yates)
   const shuffleArray = (array: FullWord[]) => {
-    return array
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value)
+    const result = [...array]
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[result[i], result[j]] = [result[j], result[i]]
+    }
+    return result
   }
 
   // Filter words based on selected contexts

@@ -1,9 +1,11 @@
-import Dashboard from '@/pages/dashboard/Dashboard'
-import FlashcardsPage from '@/pages/flashcards/FlashcardsPage'
-import QuizPage from '@/pages/quiz/QuizPage'
-import StatisticsPage from '@/pages/statistics/StatisticsPage'
-import WordsPage from '@/pages/words/WordsPage'
+import { lazy } from 'react'
 import { AppRoutes, RouteConfig } from './types'
+
+const Dashboard = lazy(() => import('@/pages/dashboard/Dashboard'))
+const FlashcardsPage = lazy(() => import('@/pages/flashcards/FlashcardsPage'))
+const QuizPage = lazy(() => import('@/pages/quiz/QuizPage'))
+const StatisticsPage = lazy(() => import('@/pages/statistics/StatisticsPage'))
+const WordsPage = lazy(() => import('@/pages/words/WordsPage'))
 
 export const routesConfig: RouteConfig[] = [
   {

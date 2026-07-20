@@ -89,24 +89,27 @@ export default function WordsPage() {
     [dispatch]
   )
 
-  // Save all pending changes
+  // Save all pending changes (fired concurrently — each is an independent IndexedDB write)
   const handleSave = async () => {
     if (pendingChanges.length === 0) return
     setIsSaving(true)
     try {
-      for (const change of pendingChanges) {
-        if (change.type === 'create' && change.word.word.trim()) {
-          const wordInput = {
-            word: change.word.word,
-            definition: change.word.definition,
-            contextId: change.word.contextId,
-            tags: change.word.tags
+      await Promise.all(
+        pendingChanges.map((change) => {
+          if (change.type === 'create' && change.word.word.trim()) {
+            const wordInput = {
+              word: change.word.word,
+              definition: change.word.definition,
+              contextId: change.word.contextId,
+              tags: change.word.tags
+            }
+            return dispatch(addWord(wordInput)).unwrap()
+          } else if (change.type === 'update') {
+            return dispatch(updateWord(change.word)).unwrap()
           }
-          await dispatch(addWord(wordInput)).unwrap()
-        } else if (change.type === 'update') {
-          await dispatch(updateWord(change.word)).unwrap()
-        }
-      }
+          return Promise.resolve()
+        })
+      )
       setPendingChanges([])
       // Remount table so originalRows reflects the freshly saved Redux state
       setResetKey((k) => k + 1)

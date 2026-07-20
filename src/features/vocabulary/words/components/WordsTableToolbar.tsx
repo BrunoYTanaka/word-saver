@@ -9,7 +9,6 @@ import {
   updateContext,
   deleteContext
 } from '@/store/slices/contextsSlice'
-import { fetchWords } from '@/store/slices/wordsSlice'
 import { colors } from '@/features/vocabulary/contexts/constants/context'
 import { ContextMenu } from '@/shared/ui/ContextMenu'
 
@@ -143,8 +142,6 @@ export function WordsTableToolbar({
     setDeleting(true)
     try {
       await dispatch(deleteContext(confirmDelete.id)).unwrap()
-      // Sync words state — deleteContext removes associated words from DB
-      await dispatch(fetchWords())
       setConfirmDelete(null)
     } catch (err) {
       console.error(err)

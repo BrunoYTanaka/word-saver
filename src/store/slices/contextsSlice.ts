@@ -6,6 +6,7 @@ import {
   Context
 } from '@/features/vocabulary/contexts/types/context'
 import { FullWord } from '@/features/vocabulary/words/types/word'
+import { fetchWords } from './wordsSlice'
 
 export interface ContextsState {
   loading: boolean
@@ -71,7 +72,7 @@ export const updateContext = createAsyncThunk(
 
 export const deleteContext = createAsyncThunk(
   'contexts/delete',
-  async (contextId: string, { rejectWithValue }) => {
+  async (contextId: string, { rejectWithValue, dispatch }) => {
     try {
       const words = await wordStore.getWordsByContext(contextId)
       await Promise.all(
@@ -79,6 +80,7 @@ export const deleteContext = createAsyncThunk(
       )
 
       await contextStore.delete(contextId)
+      dispatch(fetchWords())
       return contextId
     } catch (error) {
       console.error('Error deleting context:', error)
