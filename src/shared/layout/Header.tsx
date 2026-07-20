@@ -13,6 +13,7 @@ import {
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import Button from '../ui/Button'
+import { Tooltip } from '../ui/Tooltip'
 import { useModal } from '../context/ModalContext'
 
 const Header = () => {
@@ -85,40 +86,54 @@ const Header = () => {
             </Button>
 
             {/* Mobile Add Button */}
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => navigate('/words')}
-              icon={<Plus />}
+            <Tooltip
+              content="Nova Palavra"
+              placement="bottom"
               className="sm:hidden"
-            />
+            >
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => navigate('/words')}
+                icon={<Plus />}
+              />
+            </Tooltip>
 
             {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              icon={isDark ? <Sun /> : <Moon />}
-              aria-label="Alternar tema"
-            />
+            <Tooltip
+              content={isDark ? 'Tema claro' : 'Tema escuro'}
+              placement="bottom"
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleTheme}
+                icon={isDark ? <Sun /> : <Moon />}
+                aria-label="Alternar tema"
+              />
+            </Tooltip>
 
             {/* Settings */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => openModal('SETTINGS')}
-              icon={<Settings />}
-              aria-label="Configurações"
-            />
+            <Tooltip content="Configurações" placement="bottom">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => openModal('SETTINGS')}
+                icon={<Settings />}
+                aria-label="Configurações"
+              />
+            </Tooltip>
 
             {/* Help */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/help')}
-              icon={<HelpCircle />}
-              aria-label="Ajuda"
-            />
+            <Tooltip content="Ajuda" placement="bottom">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/help')}
+                icon={<HelpCircle />}
+                aria-label="Ajuda"
+              />
+            </Tooltip>
           </div>
         </div>
       </div>
