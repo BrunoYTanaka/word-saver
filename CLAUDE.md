@@ -18,6 +18,10 @@ Test files are named `test.tsx` (not `*.test.tsx`) and sit next to the component
 
 Pre-commit hook runs `lint-staged` (eslint --fix + prettier) automatically on staged files.
 
+## Git
+
+Do not add a `Co-Authored-By` trailer (Copilot, Claude, or any other AI tool) to commit messages.
+
 ## Architecture
 
 Word Saver is a **PWA with no backend** — all persistence is local via IndexedDB. No HTTP data calls.
