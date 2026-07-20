@@ -102,6 +102,34 @@
   --ghost-hover: rgba(255, 255, 255, 0.05);
   --outline-hover: rgba(255, 255, 255, 0.08);
 }
+
+/* Scrollbar styling — replaces the native OS scrollbar with theme tokens */
+
+/* Firefox: scrollbar-color/-width are inherited, so setting them once on
+   html covers every scrollable element in the app */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Chrome, Safari, Edge */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--surface-hover);
+}
+
 /*
   1. Use a more-intuitive box-sizing model.
 */

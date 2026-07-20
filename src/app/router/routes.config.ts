@@ -6,6 +6,7 @@ const FlashcardsPage = lazy(() => import('@/pages/flashcards/FlashcardsPage'))
 const QuizPage = lazy(() => import('@/pages/quiz/QuizPage'))
 const StatisticsPage = lazy(() => import('@/pages/statistics/StatisticsPage'))
 const WordsPage = lazy(() => import('@/pages/words/WordsPage'))
+const HelpPage = lazy(() => import('@/pages/help/HelpPage'))
 
 export const routesConfig: RouteConfig[] = [
   {
@@ -42,5 +43,12 @@ export const routesConfig: RouteConfig[] = [
     protected: true,
     title: 'Estatísticas',
     description: 'Acompanhe seu progresso detalhado'
+  },
+  {
+    path: AppRoutes.HELP,
+    component: HelpPage,
+    protected: true,
+    title: 'Ajuda',
+    description: 'Como usar o Word Saver'
   }
 ]

@@ -19,5 +19,6 @@ export enum AppRoutes {
   WORDS = '/words',
   FLASHCARDS = '/flashcards',
   QUIZ = '/quiz',
-  STATISTICS = '/statistics'
+  STATISTICS = '/statistics',
+  HELP = '/help'
 }

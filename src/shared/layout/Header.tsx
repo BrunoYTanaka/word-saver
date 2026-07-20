@@ -7,7 +7,8 @@ import {
   BarChart3,
   Zap,
   Brain,
-  BookOpen
+  BookOpen,
+  HelpCircle
 } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
@@ -108,6 +109,15 @@ const Header = () => {
               onClick={() => openModal('SETTINGS')}
               icon={<Settings />}
               aria-label="Configurações"
+            />
+
+            {/* Help */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/help')}
+              icon={<HelpCircle />}
+              aria-label="Ajuda"
             />
           </div>
         </div>
