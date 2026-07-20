@@ -21,6 +21,7 @@ interface WordsTableToolbarProps {
   contexts: FullContext[]
   onAddRow: () => void
   activeFilterCount: number
+  searchInputRef?: React.RefObject<HTMLInputElement>
 }
 
 export function WordsTableToolbar({
@@ -31,7 +32,8 @@ export function WordsTableToolbar({
   onClearFilters,
   contexts,
   onAddRow,
-  activeFilterCount
+  activeFilterCount,
+  searchInputRef
 }: WordsTableToolbarProps) {
   const dispatch = useAppDispatch()
 
@@ -169,10 +171,12 @@ export function WordsTableToolbar({
         <div className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 sm:w-72">
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
+            ref={searchInputRef}
             type="text"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Buscar palavra ou definição…"
+            title="Buscar (atalho: /)"
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
           />
           {searchTerm && (

@@ -4,9 +4,15 @@ import {
   getSortedRowModel
 } from '@tanstack/react-table'
 import { DndContext, closestCenter } from '@dnd-kit/core'
-import { TableHead, TableBody, TablePagination } from '@/shared/ui/table'
+import {
+  TableHead,
+  TableBody,
+  TablePagination,
+  HeaderCheckbox
+} from '@/shared/ui/table'
 import { useWordsTable, type PendingChange } from '../hooks/useWordsTable'
 import { useWordsTableColumns } from '../hooks/useWordsTableColumns'
+import { WordsTableBulkBar } from './WordsTableBulkBar'
 import type { FullWord } from '../types/word'
 import type { FullContext } from '@/features/vocabulary'
 
@@ -26,6 +32,7 @@ interface WordsTableViewProps {
 }
 
 const SELF_RENDERED = [
+  'select',
   'color',
   'actions',
   'word',
@@ -65,7 +72,9 @@ export function WordsTableView({
     editNextCell: state.editNextCell,
     updateRow: state.updateRow,
     deleteRow: state.deleteRow,
-    setDeletingId: state.setDeletingId
+    setDeletingId: state.setDeletingId,
+    selectedIds: state.selectedIds,
+    toggleRowSelected: state.toggleRowSelected
   })
 
   const table = useReactTable({
@@ -96,7 +105,15 @@ export function WordsTableView({
           <table className="w-full min-w-[640px] table-auto border-separate border-spacing-0 text-left">
             <TableHead
               headerGroups={table.getHeaderGroups()}
-              customColumns={['color', 'actions']}
+              customColumns={['select', 'color', 'actions']}
+              headerCheckbox={
+                <HeaderCheckbox
+                  checked={state.isAllPageSelected}
+                  indeterminate={state.isPageSelectionIndeterminate}
+                  onChange={state.toggleSelectAllOnPage}
+                  label="Selecionar todas as linhas desta página"
+                />
+              }
             />
             <TableBody
               rows={table.getRowModel().rows}
@@ -118,6 +135,17 @@ export function WordsTableView({
         onPageChange={(p) => state.setPageIndex(p - 1)}
         onPageSizeChange={onPageSizeChange}
         rowLabel="palavra"
+      />
+
+      <WordsTableBulkBar
+        selectedCount={state.selectedIds.size}
+        contexts={contexts}
+        onMoveToContext={state.bulkMoveToContext}
+        onClearSelection={state.clearSelection}
+        deleteConfirming={state.bulkDeleteConfirming}
+        onRequestDelete={state.requestBulkDelete}
+        onConfirmDelete={state.confirmBulkDelete}
+        onCancelDelete={state.cancelBulkDelete}
       />
     </div>
   )

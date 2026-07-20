@@ -33,7 +33,7 @@ export const PWAStatus: React.FC = () => {
       )}
 
       {/* Update Available */}
-      {!isUpdateAvailable && updateApp && (
+      {isUpdateAvailable && updateApp && (
         <div className="rounded-lg bg-primary px-4 py-2 text-primary-foreground shadow-lg">
           <div className="flex items-center gap-3">
             <div>

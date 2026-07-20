@@ -36,15 +36,17 @@ export function WordsTableSaveBar({
           >
             Descartar
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={onSave}
-            loading={isSaving}
-            icon={<Save />}
-          >
-            Salvar Alterações
-          </Button>
+          <span title="Salvar (Ctrl/Cmd+S)">
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={onSave}
+              loading={isSaving}
+              icon={<Save />}
+            >
+              Salvar Alterações
+            </Button>
+          </span>
         </div>
       </div>
     </div>

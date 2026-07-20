@@ -28,6 +28,7 @@ export function ActionCell({
           ref={btnRef}
           type="button"
           title="Excluir palavra"
+          aria-label="Excluir palavra"
           onClick={onDeleteClick}
           className="rounded-md p-1 text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
         >

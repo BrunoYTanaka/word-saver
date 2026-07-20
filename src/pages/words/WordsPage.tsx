@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { BookOpen } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { addWord, updateWord, deleteWord } from '@/store/slices/wordsSlice'
@@ -9,6 +9,7 @@ import {
 import { WordsTableToolbar } from '@/features/vocabulary/words/components/WordsTableToolbar'
 import { WordsTableSaveBar } from '@/features/vocabulary/words/components/WordsTableSaveBar'
 import { useStorage } from '@/shared/hooks'
+import { isEditableTarget } from '@/shared/utils'
 
 const PAGE_SIZE_KEY = 'words-page-size'
 const DEFAULT_PAGE_SIZE = 25
@@ -34,6 +35,7 @@ export default function WordsPage() {
   const [resetKey, setResetKey] = useState(0)
   // Incrementing addRowSignal tells the table to prepend a blank row
   const [addRowSignal, setAddRowSignal] = useState(0)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   // Debounce search
   useEffect(() => {
@@ -90,7 +92,7 @@ export default function WordsPage() {
   )
 
   // Save all pending changes (fired concurrently — each is an independent IndexedDB write)
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     if (pendingChanges.length === 0) return
     setIsSaving(true)
     try {
@@ -118,7 +120,25 @@ export default function WordsPage() {
     } finally {
       setIsSaving(false)
     }
-  }
+  }, [pendingChanges, dispatch])
+
+  // Keyboard shortcuts: Ctrl/Cmd+S saves (intercepts the browser's native
+  // save dialog even while a cell is focused); "/" focuses the search input.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        if (pendingChanges.length > 0 && !isSaving) handleSave()
+        return
+      }
+      if (e.key === '/' && !isEditableTarget(e.target)) {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [pendingChanges.length, isSaving, handleSave])
 
   // Discard — remount table from current Redux state
   const handleDiscard = () => {
@@ -161,6 +181,7 @@ export default function WordsPage() {
         contexts={contexts}
         onAddRow={handleAddRow}
         activeFilterCount={activeFilterCount}
+        searchInputRef={searchInputRef}
       />
 
       {/* Table — key forces remount on discard/save */}

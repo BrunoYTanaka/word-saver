@@ -1,6 +1,8 @@
 import { FileDown, FileUp } from 'lucide-react'
 import { useApp, useStorageUsage } from '@/shared/hooks'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { setNotificationEnabled } from '@/store/slices/appSlice'
+import notificationService from '@/core/notifications'
 import Modal from '@/shared/ui/Modal'
 import Button from '@/shared/ui/Button'
 import Card from '@/shared/ui/Card'
@@ -10,6 +12,7 @@ import { useModal } from '@/shared/context/ModalContext'
 import { cn } from '@/shared/utils/cn'
 
 const SettingsModal = () => {
+  const dispatch = useAppDispatch()
   const { isNotificationEnabled } = useApp()
   const { words } = useAppSelector((state) => state.words)
   const { contexts } = useAppSelector((state) => state.contexts)
@@ -17,6 +20,14 @@ const SettingsModal = () => {
   const { closeModal, openModal } = useModal()
   const { isDark, toggleTheme } = useTheme()
   const { storageInfo } = useStorageUsage()
+
+  const handleToggleNotifications = async () => {
+    // Browser notification permission can't be revoked via JS — the toggle
+    // can only move disabled -> requesting; once granted it's read-only here.
+    if (isNotificationEnabled) return
+    const permission = await notificationService.requestPermission()
+    dispatch(setNotificationEnabled(permission === 'granted'))
+  }
 
   const appInfo = {
     version: pckInfo.version,
@@ -151,9 +162,15 @@ const SettingsModal = () => {
                   </div>
                 </div>
                 <button
+                  onClick={handleToggleNotifications}
                   role="switch"
                   aria-checked={isNotificationEnabled}
                   aria-label="Alternar notificações"
+                  title={
+                    isNotificationEnabled
+                      ? 'Gerencie pelas configurações do navegador'
+                      : 'Ativar notificações'
+                  }
                   className={cn(
                     'relative inline-flex h-6 w-11 items-center rounded-full border-0 transition-colors focus:outline-none focus:ring-2 focus:ring-primary',
                     isNotificationEnabled

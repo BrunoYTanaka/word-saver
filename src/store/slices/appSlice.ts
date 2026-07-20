@@ -60,6 +60,9 @@ const appSlice = createSlice({
     },
     setSelectedContext: (state, action: PayloadAction<string | null>) => {
       state.selectedContextId = action.payload
+    },
+    setNotificationEnabled: (state, action: PayloadAction<boolean>) => {
+      state.isNotificationEnabled = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -80,7 +83,12 @@ const appSlice = createSlice({
   }
 })
 
-export const { setLoading, setError, clearError, setSelectedContext } =
-  appSlice.actions
+export const {
+  setLoading,
+  setError,
+  clearError,
+  setSelectedContext,
+  setNotificationEnabled
+} = appSlice.actions
 
 export default appSlice.reducer

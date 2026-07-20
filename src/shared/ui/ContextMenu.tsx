@@ -51,6 +51,7 @@ export function ContextMenu({ x, y, items, onClose }: ContextMenuProps) {
   return createPortal(
     <div
       ref={menuRef}
+      role="menu"
       style={{ position: 'fixed', left: x, top: y, zIndex: 9999 }}
       className="min-w-[140px] overflow-hidden rounded-lg border border-border bg-surface py-1 shadow-lg"
     >
@@ -58,6 +59,7 @@ export function ContextMenu({ x, y, items, onClose }: ContextMenuProps) {
         <button
           key={i}
           type="button"
+          role="menuitem"
           onClick={() => {
             item.onClick()
             onClose()

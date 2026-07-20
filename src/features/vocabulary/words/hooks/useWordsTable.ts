@@ -10,6 +10,7 @@ import {
   type DragEndEvent
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable'
+import { isEditableTarget } from '@/shared/utils'
 import type { FullWord } from '../types/word'
 import type { FullContext } from '@/features/vocabulary'
 
@@ -56,6 +57,8 @@ export function useWordsTable({
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [sorting, setSorting] = useState<SortingState>([])
   const [pageIndex, setPageIndex] = useState(0)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [bulkDeleteConfirming, setBulkDeleteConfirming] = useState(false)
 
   // Handle addRowSignal
   const prevSignal = useRef(addRowSignal)
@@ -79,9 +82,10 @@ export function useWordsTable({
     setEditing({ rowId: newWord.id, field: 'word' })
   }, [addRowSignal, contexts])
 
-  // Reset page on filter/context change
+  // Reset page and selection on filter/context change
   useEffect(() => {
     setPageIndex(0)
+    setSelectedIds(new Set())
   }, [globalFilter, selectedContextIds, pageSize])
 
   // Compute pending changes whenever rows change
@@ -183,6 +187,91 @@ export function useWordsTable({
     safePageIndex * pageSize + pageSize
   )
 
+  // Selection
+  const selectedOnPageCount = pagedRows.reduce(
+    (count, row) => count + (selectedIds.has(row.id) ? 1 : 0),
+    0
+  )
+  const isAllPageSelected =
+    pagedRows.length > 0 && selectedOnPageCount === pagedRows.length
+  const isPageSelectionIndeterminate =
+    selectedOnPageCount > 0 && selectedOnPageCount < pagedRows.length
+
+  const toggleRowSelected = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }, [])
+
+  const toggleSelectAllOnPage = useCallback(() => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      const allSelected = pagedRows.every((row) => next.has(row.id))
+      pagedRows.forEach((row) => {
+        if (allSelected) next.delete(row.id)
+        else next.add(row.id)
+      })
+      return next
+    })
+  }, [pagedRows])
+
+  const clearSelection = useCallback(() => {
+    setSelectedIds(new Set())
+  }, [])
+
+  const bulkMoveToContext = useCallback(
+    (contextId: string) => {
+      setRows((prev) =>
+        prev.map((r) => (selectedIds.has(r.id) ? { ...r, contextId } : r))
+      )
+    },
+    [selectedIds]
+  )
+
+  const requestBulkDelete = useCallback(() => setBulkDeleteConfirming(true), [])
+  const cancelBulkDelete = useCallback(() => setBulkDeleteConfirming(false), [])
+
+  const confirmBulkDelete = useCallback(() => {
+    const idsToDelete = new Set(selectedIds)
+    idsToDelete.forEach((id) => {
+      const isExisting = originalRows.some((r) => r.id === id)
+      if (isExisting) onDeleteWord(id)
+    })
+    setRows((prev) => prev.filter((r) => !idsToDelete.has(r.id)))
+    setSelectedIds(new Set())
+    setBulkDeleteConfirming(false)
+  }, [selectedIds, originalRows, onDeleteWord])
+
+  // Keyboard shortcuts scoped to the table: Delete/Backspace opens bulk-delete
+  // confirmation, Escape cancels the confirmation or clears the selection.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (isEditableTarget(e.target)) return
+
+      if (
+        (e.key === 'Delete' || e.key === 'Backspace') &&
+        selectedIds.size > 0
+      ) {
+        e.preventDefault()
+        requestBulkDelete()
+      } else if (e.key === 'Escape') {
+        if (bulkDeleteConfirming) cancelBulkDelete()
+        else if (selectedIds.size > 0) clearSelection()
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [
+    selectedIds,
+    bulkDeleteConfirming,
+    requestBulkDelete,
+    cancelBulkDelete,
+    clearSelection
+  ])
+
   // Row actions
   const updateRow = useCallback((id: string, updates: Partial<FullWord>) => {
     setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...updates } : r)))
@@ -194,6 +283,12 @@ export function useWordsTable({
       if (isExisting) onDeleteWord(id)
       setRows((prev) => prev.filter((r) => r.id !== id))
       setDeletingId(null)
+      setSelectedIds((prev) => {
+        if (!prev.has(id)) return prev
+        const next = new Set(prev)
+        next.delete(id)
+        return next
+      })
     },
     [originalRows, onDeleteWord]
   )
@@ -236,6 +331,17 @@ export function useWordsTable({
     sensors,
     handleDragEnd,
     DndContext,
-    closestCenter
+    closestCenter,
+    selectedIds,
+    isAllPageSelected,
+    isPageSelectionIndeterminate,
+    toggleRowSelected,
+    toggleSelectAllOnPage,
+    clearSelection,
+    bulkMoveToContext,
+    bulkDeleteConfirming,
+    requestBulkDelete,
+    confirmBulkDelete,
+    cancelBulkDelete
   }
 }

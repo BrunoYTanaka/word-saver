@@ -43,8 +43,7 @@ export function SortableRow({ id, rowColor, children }: SortableRowProps) {
             color: '#9ca3af',
             cursor: 'grab'
           }}
-          tabIndex={-1}
-          title="Arraste para reordenar"
+          aria-label="Arraste para reordenar"
         >
           <GripVertical
             style={{ width: '1rem', height: '1rem', flexShrink: 0 }}

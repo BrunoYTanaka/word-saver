@@ -5,11 +5,14 @@ interface TableHeadProps<TData> {
   headerGroups: HeaderGroup<TData>[]
   /** Column ids that render their own <th> (e.g. 'color', 'actions') */
   customColumns?: string[]
+  /** Rendered inside the 'select' column header, e.g. a select-all checkbox */
+  headerCheckbox?: React.ReactNode
 }
 
 export function TableHead<TData>({
   headerGroups,
-  customColumns = []
+  customColumns = [],
+  headerCheckbox
 }: TableHeadProps<TData>) {
   return (
     <thead>
@@ -30,6 +33,16 @@ export function TableHead<TData>({
                     className="sticky right-0 border-b border-border bg-surface px-2 py-3 text-center text-sm font-normal text-muted-foreground"
                   >
                     Ações
+                  </th>
+                )
+              }
+              if (header.id === 'select') {
+                return (
+                  <th
+                    key={header.id}
+                    className="w-10 border-b border-border px-2 py-3"
+                  >
+                    {headerCheckbox}
                   </th>
                 )
               }

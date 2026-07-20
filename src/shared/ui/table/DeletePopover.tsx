@@ -13,6 +13,7 @@ export function DeletePopover({
   onCancel
 }: DeletePopoverProps) {
   const ref = useRef<HTMLDivElement>(null)
+  const cancelRef = useRef<HTMLButtonElement>(null)
   const [pos, setPos] = useState({ top: 0, left: 0 })
 
   useEffect(() => {
@@ -25,8 +26,13 @@ export function DeletePopover({
     }
   }, [anchorRef])
 
+  // Focus the safe default action when the popover opens
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    cancelRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
       if (
         ref.current &&
         !ref.current.contains(e.target as Node) &&
@@ -35,13 +41,22 @@ export function DeletePopover({
         onCancel()
       }
     }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCancel()
+    }
+    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKey)
+    }
   }, [onCancel, anchorRef])
 
   return createPortal(
     <div
       ref={ref}
+      role="dialog"
+      aria-label="Confirmar exclusão"
       style={{ position: 'absolute', top: pos.top, left: pos.left }}
       className="z-50 flex -translate-x-full flex-col gap-2 rounded-lg border border-border bg-surface p-3 shadow-lg"
     >
@@ -50,6 +65,7 @@ export function DeletePopover({
       </p>
       <div className="flex gap-2">
         <button
+          ref={cancelRef}
           type="button"
           onClick={onCancel}
           className="rounded border border-border px-2 py-1 text-xs hover:bg-surface-muted"

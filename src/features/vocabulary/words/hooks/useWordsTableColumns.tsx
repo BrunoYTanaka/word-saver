@@ -8,6 +8,7 @@ import { SelectCell } from '../components/cells/SelectCell'
 import { TagsCell } from '../components/cells/TagsCell'
 import { ColorCell } from '../components/cells/ColorCell'
 import { ActionCell } from '../components/cells/ActionCell'
+import { RowCheckboxCell } from '../components/cells/RowCheckboxCell'
 import type { EditingCell } from './useWordsTable'
 
 interface UseWordsTableColumnsOptions {
@@ -20,6 +21,8 @@ interface UseWordsTableColumnsOptions {
   updateRow: (id: string, updates: Partial<FullWord>) => void
   deleteRow: (id: string) => void
   setDeletingId: (id: string | null) => void
+  selectedIds: Set<string>
+  toggleRowSelected: (id: string) => void
 }
 
 export function useWordsTableColumns({
@@ -31,10 +34,25 @@ export function useWordsTableColumns({
   editNextCell,
   updateRow,
   deleteRow,
-  setDeletingId
+  setDeletingId,
+  selectedIds,
+  toggleRowSelected
 }: UseWordsTableColumnsOptions): ColumnDef<FullWord>[] {
   return useMemo(
     () => [
+      {
+        id: 'select',
+        header: '',
+        size: 40,
+        enableSorting: false,
+        cell: ({ row }) => (
+          <RowCheckboxCell
+            word={row.original.word}
+            checked={selectedIds.has(row.original.id)}
+            onChange={() => toggleRowSelected(row.original.id)}
+          />
+        )
+      },
       {
         id: 'color',
         header: '',
@@ -175,7 +193,9 @@ export function useWordsTableColumns({
       editNextCell,
       updateRow,
       deleteRow,
-      setDeletingId
+      setDeletingId,
+      selectedIds,
+      toggleRowSelected
     ]
   )
 }
