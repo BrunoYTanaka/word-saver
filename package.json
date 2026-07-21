@@ -36,7 +36,8 @@
     "react-error-boundary": "^6.1.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.12.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

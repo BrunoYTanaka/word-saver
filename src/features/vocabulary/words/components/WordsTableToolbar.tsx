@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
-import { Search, Plus, X, Check, Pencil, Trash2 } from 'lucide-react'
+import { Search, Plus, X, Check, Pencil, Trash2, ImageUp } from 'lucide-react'
 import type { FullContext } from '@/features/vocabulary'
 import Button from '@/shared/ui/Button'
 import { cn } from '@/shared/utils/cn'
+import { useModal } from '@/shared/context/ModalContext'
+import { featureFlags } from '@/core/config'
 import { useAppDispatch } from '@/store/hooks'
 import {
   addContext,
@@ -36,6 +38,7 @@ export function WordsTableToolbar({
   searchInputRef
 }: WordsTableToolbarProps) {
   const dispatch = useAppDispatch()
+  const { openModal } = useModal()
 
   // --- New context inline form ---
   const [showNewContext, setShowNewContext] = useState(false)
@@ -190,9 +193,26 @@ export function WordsTableToolbar({
           )}
         </div>
 
-        <Button variant="primary" size="sm" onClick={onAddRow} icon={<Plus />}>
-          Adicionar Linha
-        </Button>
+        <div className="flex items-center gap-2">
+          {featureFlags.crosswordImport && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => openModal('IMPORT_CROSSWORD')}
+              icon={<ImageUp />}
+            >
+              Importar de Foto
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={onAddRow}
+            icon={<Plus />}
+          >
+            Adicionar Linha
+          </Button>
+        </div>
       </div>
 
       {/* Context filters */}

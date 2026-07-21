@@ -3,6 +3,8 @@ export interface Word {
   definition: string
   contextId: string
   tags?: string[]
+  status?: 'pending' | 'complete'
+  source?: 'manual' | 'crossword-ocr'
 }
 
 export interface FullWord extends Word {

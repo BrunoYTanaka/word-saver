@@ -55,6 +55,35 @@ export const addWord = createAsyncThunk(
   }
 )
 
+export const addPendingWords = createAsyncThunk(
+  'words/addPendingBatch',
+  async (entries: Word[], { rejectWithValue }) => {
+    try {
+      return await Promise.all(
+        entries.map((entry) => {
+          const fullWord: FullWord = {
+            id: crypto.randomUUID(),
+            createdAt: new Date().toISOString(),
+            reviewCount: 0,
+            lastReviewed: null,
+            difficulty: 'medium',
+            status: 'pending',
+            ...entry
+          }
+          return wordStore.add(fullWord).then(() => fullWord)
+        })
+      )
+    } catch (error) {
+      console.error('Error adding pending words:', error)
+      return rejectWithValue(
+        error instanceof Error
+          ? error.message
+          : `Add pending words failed, ${error}`
+      )
+    }
+  }
+)
+
 export const updateWord = createAsyncThunk(
   'words/update',
   async (wordData: FullWord, { rejectWithValue }) => {
@@ -132,6 +161,18 @@ const wordsSlice = createSlice({
         state.words = [action.payload, ...state.words]
       })
       .addCase(addWord.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload as string
+      })
+      .addCase(addPendingWords.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(addPendingWords.fulfilled, (state, action) => {
+        state.loading = false
+        state.words = [...action.payload, ...state.words]
+      })
+      .addCase(addPendingWords.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload as string
       })

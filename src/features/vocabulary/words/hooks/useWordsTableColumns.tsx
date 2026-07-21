@@ -84,12 +84,21 @@ export function useWordsTableColumns({
                 value={row.original.word}
                 isEditing={isEd}
                 onEdit={() => startEdit(row.original.id, 'word')}
-                onChange={(v) => updateRow(row.original.id, { word: v })}
+                onChange={(v) =>
+                  updateRow(row.original.id, {
+                    word: v,
+                    status: v.trim() ? 'complete' : row.original.status
+                  })
+                }
                 onCommit={stopEdit}
                 onCancel={stopEdit}
                 onTabNext={() => editNextCell(row.original.id, 'word')}
-                placeholder="Palavra"
-                required
+                placeholder={
+                  row.original.status === 'pending'
+                    ? 'Preencher palavra…'
+                    : 'Palavra'
+                }
+                required={row.original.status !== 'pending'}
               />
             </td>
           )

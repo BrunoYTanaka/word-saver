@@ -5,6 +5,8 @@ import SettingsModal from '@/features/settings/components/SettingsModal'
 import ExportDataModal from '@/features/data-management/export/components/ExportDataModal'
 import ImportDataModal from '@/features/data-management/import/components/ImportDataModal'
 import ReviewWordModal from '@/features/vocabulary/words/components/ReviewWordModal'
+import { ImportCrosswordModal } from '@/features/vocabulary/crossword-import'
+import { featureFlags } from '@/core/config'
 
 type ModalPropsMap = {
   ADD_ALERT: undefined
@@ -13,6 +15,7 @@ type ModalPropsMap = {
   EXPORT_DATA: undefined
   IMPORT_DATA: undefined
   REVIEW_WORD: { contextIds: string[]; alertId?: string }
+  IMPORT_CROSSWORD: undefined
 }
 
 type ModalType = keyof ModalPropsMap
@@ -59,6 +62,9 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
       {isOpen('IMPORT_DATA') && <ImportDataModal />}
       {isOpen('REVIEW_WORD') && (
         <ReviewWordModal {...getProps('REVIEW_WORD')!} />
+      )}
+      {featureFlags.crosswordImport && isOpen('IMPORT_CROSSWORD') && (
+        <ImportCrosswordModal />
       )}
     </ModalContext.Provider>
   )

@@ -84,6 +84,23 @@ export function useWordsTable({
     setEditing({ rowId: newWord.id, field: 'word' })
   }, [addRowSignal, contexts])
 
+  // Merge in words that were added from outside the table's own controlled
+  // flow (e.g. a bulk import) — `rows`/`originalRows` otherwise only change
+  // through this hook's own actions, so external Redux inserts would
+  // otherwise stay invisible until the table remounts.
+  useEffect(() => {
+    setRows((prev) => {
+      const knownIds = new Set(prev.map((r) => r.id))
+      const added = initialWords.filter((w) => !knownIds.has(w.id))
+      return added.length > 0 ? [...added, ...prev] : prev
+    })
+    setOriginalRows((prev) => {
+      const knownIds = new Set(prev.map((r) => r.id))
+      const added = initialWords.filter((w) => !knownIds.has(w.id))
+      return added.length > 0 ? [...added, ...prev] : prev
+    })
+  }, [initialWords])
+
   // Reset page and selection on filter/context change
   useEffect(() => {
     setPageIndex(0)
